@@ -1,0 +1,530 @@
+{
+ "generated_et": "2026-10-17 02:15:08 ET",
+ "note": "Display only. Ideas never auto-apply to Soft/Ideology.",
+ "soft": {
+  "updated_et": "2026-10-17 02:04:08 ET",
+  "n_kept": 730,
+  "last13_avg_r": 0.180185,
+  "last13_at_close_count": 730,
+  "last13_label": "last-13 avg +0.180 R at close 730 (live Soft, updated 2026-10-17 02:04:08 ET)",
+  "baseline_avg_r": 0.09982,
+  "bias_bars": {
+   "trimmed_last13_avg_r": 0.202555,
+   "trimmed_prior13_avg_r": 0.029673,
+   "trimmed_delta": 0.172882,
+   "trimmed_last13_net_r": 0.152502,
+   "above_zero_basis": "net_r_after_fee",
+   "regime_marker": "bias_netR_above_zero_20261013",
+   "spread_S": 0.964654,
+   "above_zero_bar": 0.185185,
+   "improvement_bar": 0.342969,
+   "above_zero_floor": 0.146936,
+   "improvement_floor": 0.29238,
+   "unharden_above_zero_bar": -0.294392,
+   "unharden_improvement_bar": -0.332604,
+   "unharden_above_zero_floor": -0.248816,
+   "unharden_improvement_floor": -0.291021,
+   "previous_mirror_unharden": {
+    "above_zero_bar": -0.185185,
+    "improvement_bar": -0.342969,
+    "note": "pre-2026-10-13 09:21 ET mirror (-A / -I), for reference"
+   },
+   "ready_path": null,
+   "unharden_path": null,
+   "cohort": 81
+  },
+  "bias_bars_label": "Bias bars (bootstrap p84): trimmed last-13 net (after-fee) +0.153 R vs A/U_A [bias_netR_above_zero_20261013] | gross +0.203 R vs prior-13 +0.030 R | S 0.965 | A (above-zero) 0.185 R, floor 0.147 | I (improvement) 0.343 R, floor 0.292 | un-harden (bootstrap p16) U_A -0.294 R (floor -0.249), U_I -0.333 R (floor -0.291) | ready no, un-harden no",
+  "active_flags": [
+   {
+    "flag": "require_htf_confluence",
+    "value": true,
+    "text": "6H / 3H never alone — needs a mid/lower TF with it"
+   },
+   {
+    "flag": "btc_align_gate",
+    "value": true,
+    "text": "BTC align gate ON — trade with BTC when it's ≥ C−; weak BTC → opposite side only"
+   },
+   {
+    "flag": "prefer_paired_rev",
+    "value": true,
+    "text": "Paired Reversals (with linreg / S&D / Phoenix / sRSI) get a fair shot"
+   },
+   {
+    "flag": "rev_paired_equal_cont",
+    "value": true,
+    "text": "Paired Rev ranks equal to Continuation"
+   },
+   {
+    "flag": "long_red_demote",
+    "value": true,
+    "text": "Long-red demote — setup types averaging ≥ 900s (15 min) in the red rank lower"
+   }
+  ],
+  "floors": [
+   {
+    "floor": "chill_yes_20261002",
+    "on": false,
+    "applied_et": null,
+    "note": null
+   },
+   {
+    "floor": "imp_skr1_20261005",
+    "on": true,
+    "applied_et": "2026-10-05 12:05:03 ET",
+    "note": "Chill YES IMP-SKR-1: skip_reversal_new forced OFF every era (Oct 2 Impulse floor rule, re-seeded narrow for Olympics). Cont prefer / Rev demote / Cont multi-TF / soft_score_prefer 82 stay rank-only; gated Rev opens. Full chill_yes_20261002 pack stays off."
+   },
+   {
+    "floor": "imp_mtf_rank_20261005",
+    "on": true,
+    "applied_et": "2026-10-05 12:32:44 ET",
+    "note": "Chill 2026-10-05 (clarified 12:35 ET): rank stays indicators-first (n_indicators, then n_timeframes) — multi-TF is NOT forced ahead of single-TF; a single TF with more indicators outranks a thinner single-TF. Soft stricter_next_pick / require_multi_tf forced OFF every Soft evaluate (single-TF never vetoed). prefer_cont_multi_tf stays rank-only."
+   },
+   {
+    "floor": "imp_btc1_20261005",
+    "on": true,
+    "applied_et": "2026-10-05 20:18:09 ET",
+    "note": "Chill YES IMP-BTC-1 2026-10-05: restore BTC entry gate — align when BTC grade ≥ C−; weak BTC (<C−) opposite-side only. Not confluence/rank stamp. Floor forces btc_align_gate ON every Soft evaluate."
+   },
+   {
+    "floor": "imp_paired_rev_20261006",
+    "on": true,
+    "applied_et": "2026-10-06 08:09:42 ET",
+    "note": "Chill 2026-10-06: prefer_paired_rev / rev_paired_equal_cont Soft floor ON. Rev 9/13/14/15 paired with linreg extreme / S/D / Phoenix 90/10 / Stoch RSI ranks equal Cont under demote_reversal. Unpaired Rev still demotes. skip_reversal_new stays OFF. Every-9 audits paired-Rev outcomes; Soft may later demote only from proven tape (clear this floor) — no invented demotions."
+   },
+   {
+    "floor": "chill_unlocks_20261010",
+    "on": true,
+    "applied_et": "2026-10-10 10:09 ET (Chill YES \"All for now\"); wired 10:2x ET",
+    "note": "Gap audit unlocks: (1) long_red_demote ON — paper_book rank penalty for side|kind cells with historical avg time-in-red >= 900s (gap: <900s n=89 ~+0.50 R vs >=900s n=85 ~-0.16 R); rank only, single-TF never vetoed. (2) Rev equal Cont — prefer_continuation + demote_reversal forced OFF (era Rev +0.215 R n=83 vs Cont +0.039 R n=143; Chill override of the p<0.1 bar, p=0.155); paired-Rev flags and Cont/Rev polarity logic unchanged. (3) Provisional combo ranking demotions <30 closes: mind/COMBO_DEMOTIONS.json, tiebreak after (n_ind, n_tf), auto-reverse via every-9."
+   }
+  ],
+  "unlocks": [
+   "Long-red demote ON: side|kind cells with avg time-in-red ≥ 900s rank lower (rank only).",
+   "Reversal = Continuation: Rev and Cont rank equal (prefer_continuation / demote_reversal OFF)."
+  ],
+  "combo_demotions": [],
+  "next_best": null,
+  "tag_counts": {
+   "winner_gt50": 182,
+   "fast_impulse_win": 55,
+   "BE_scratch": 32,
+   "trail_gave_back": 174,
+   "long_red": 304,
+   "cont_win": 183,
+   "explosive_100": 87,
+   "explosive_200": 20,
+   "no_impulse_SL": 36,
+   "rev_loss": 70,
+   "fast_SL": 5,
+   "unpaired_rev": 30
+  }
+ },
+ "ideology": {
+  "title": "IDEOLOGY — current Mind rules (hard until blotter graduates a change or user YES on Impulse)",
+  "updated_et": "2026-10-17 02:04:08 ET",
+  "sections": [
+   {
+    "heading": "North star — {[(EXPLOSIVE PLAYS)]}",
+    "text": "- Standing focus (Chill 2026-10-03 18:31 ET): every trade, Soft growth step, Ideology enhancement, and impulse is judged by explosive closes. Weight = max(0, margin_pct) / 100, with no cap. Each +100% of margin steps the weight up by 1: +100% = 1, +200% = 2, +300% = 3, and so on however large. +1000% = 10. +1008% = 10.08. A loss or a non-positive close is 0. An ordinary green under +100% stays below 1 (+50% = 0.5) and is not the focus. +1000% margin or more remains the MYX-type goal.\n- +1000% is not a hard entry gate. Gate 2 still times the entry. Max 9, the 2% stop, the TD hard stop, the trail, and BE stay. Grow toward the goal; do not refuse an eligible setup because it has not reached +1000% yet.",
+    "open": true
+   },
+   {
+    "heading": "Core (never remove)",
+    "text": "- Dual-gate: both true → may GO; one → WAIT; zero → FLAT.\n- Truth rail: numbers only from Nerve JSON or official endpoints; missing/conflict → flat / \"no print\"; feed fail → flat / \"feed down\". Impulse may color \"why\" / notes / proposals only — never invent numbers.\n- Kill-switch: daily loss cap + flatten if feed stale.\n- Official data only (Bitunix fapi/openapi WS/REST; Binance/Bybit failover). No www.* HTML scrape.\n- Paper until user says live. Live needs hard % risk + daily-loss flatten.\n- No private keys / seed phrases in chat or files. Ever.",
+    "open": true
+   },
+   {
+    "heading": "Bias (current)",
+    "text": "- Cont 6/7 and bar-7 continuation / 8-9 push over classic 8-9 reverse-only.\n- Cont 3/4 (user-requested 2026-09-23): candle 3 same clear color as candle 2 → Continuation (side follows streak); count 4 continues Cont path with Cont color gate. Full Cont — not polarity cont.\n- Rev 3/4 (user-requested 2026-09-23): candle 3 opposite clear color of candle 2 (live showing or closed confirm) → Reversal fade side; count 4 continues Rev path. Same-color live 3 → Cont not Rev. Doji → no 3/4 Cont/Rev. Dual-gate Cont/Rev eligibility starts equal; Soft may learn Cont/Rev ranking bias from confluence/results (Chill 2026-10-02).\n- Candlestick patterns (user-requested 2026-09-23; direction align 2026-10-05): engulfing / hammer / inv hammer / shooting star / hanging man / doji / morning·evening star = setup confluence & impulse insight only — stamped on cards + trade_idea when same-direction or neutral; opposing patterns (e.g. bear engulf on a bull Top 9) do not stamp or append; not scored; never override Cont/Rev / dual-gate timing; no pullback-to-entry exception without proven desk edge.\n- Flag Rev 14/15 separate.\n- Rev first-gate TF priority (Chill 2026-10-02): 6H > 3H > 90m > 45m > 15m. Higher-TF Rev 9/13 or 14/15 alone stays eligible; bigger clock = more strength/momentum as it plays out.\n- Lone 15m Rev 9/13 and 14/15 may open or count as confluence (Chill 2026-10-03). No lone-15m Rev skip. Gate 2 is still required before any open.\n- Multi-TF Rev confluence (same ticker, same side, 2+ primary clocks with Rev 9/13 and/or 14/15): +8 confluence score (cap 100; history_rank.REV_MULTI_TF_BOOST).\n- HTF confluence Soft (Chill 2026-10-02): 6H and 3H never alone for entries or actionable BTC bias. Lone 6H / lone 3H / HTF-only stack {6H,3H} Cont/Rev stay dual-gate eligible with ≥1 mid/lower TF (90m/45m/15m) same-side confluence; Soft require_htf_confluence skips HTF-only opens. BTC card: HTF-only call keeps display but btc_actionable=false until mid/lower TF aligns — desk bias waits / keeps scanning (does not drive align from lone 6H grade).\n- Olympics newborn (Chill 2026-10-03, era-20261003-olympics): Cont, Rev, polarity, price flip, and polarity flip start equal. No Cont-over-Rev, no 6/7-over-3/4, no 14/15-over-9/13, no higher-count prefer. Soft may relearn from this era's tape only. Learned Bias prefs below were cleared.\n- Indicator entries (Chill 2026-10-03; rank confirmed 2026-10-05): TD, Phoenix green/red 90/10, Draw sRSI 90/10, linreg 117 at ±2σ, Wave 5 after 4 or Wave E after D at the 117-bar extreme, and the gate-2 MA cluster may each qualify. None open unless gate 2 is true. Two or more agreeing on a side rank ahead of fewer (more indicators first, then more timeframes; a single TF with more indicators outranks a thinner single TF). A single qualifier that passes its own rules and gate 2 may still open (single-TF is not blocked). Supply/demand is an equal entry and confluence: at or rejecting supply is short, at or rejecting demand is long, from the existing zone note, and it still needs gate 2.\n- New closes stamp phoenix_vs_td (agree|against|mixed) from entry-time Phoenix for measurement only, not a gate.\n- Chart Prime S&R Power Channel (Length 130, Extend 30; top purple / bottom green): confluence on strongest Rev only — never override clean TD 14/15.\n- ML ZigZag HP (Trendoscope) ABCD / AbEQcd / AbcdExt / DoubleBottomTop: user-approved soft Top 9 score bonus when pattern agrees with Cont/Rev side — never override dual-gate / clean Cont 6/7 or Rev 14/15.\n- Mind does not count bars; Nerve already did.\n- 1 call / symbol / cooldown. Prefer WAIT if edge ≤ token cost.\n- No heartbeat, no triad theater, no candle dumps, no prior-chat recap.\n- BTC card direction and grade/score are confluence, not a hard block (Chill 2026-10-03). Agreement with the trade side is a slight rank boost. A setup against BTC may open when gate 2 and its own rules pass. The card stays.\n- NEW TD picks require C−+ confluence (score ≥ 70). Below C− or missing → skip. Other indicator entries do not use that score floor.\n- Grade·score live-rewrite: Top 9 AND BTC card recompute confluence (history_rank.confluence_score / grade_letter) on every rebuild/stamp; open trade cards and No Trade / called watches still freeze call_grade / call_confluence_score at call.\n- A+ = explosive combo path only (Chill 2026-10-06): score 100 from a_plus_combos official and placeholder entries. Official = proof bar cleared (n≥5, +100%≥3, win≥60%, avg weight≥0.70, explosive share≥40%). Placeholder = 2nd best combo in line (Chill 2026-10-10 10:52 ET): line ranked by proof progress since 2026-10-12 (eligible n≥3 & win≥50%; bars met, then net avg R, net median R, n; 2+ indicators or single indicator with its TFs); #1 = official A+ (or the leader when none is official); placeholder = next non-official combo. Recomputes on every kept close (mind_sync.on_close) and every every-9 (grade_score_audit.apply_placeholder_2nd). Currently #1 linreg 117+supply/demand (official), placeholder TD on 6H, 90m, 45m, 15m (line re-ranked by proof progress 2026-10-12, see note below). Net of fee shown beside gross; open trades keep their called grade. Cont 4/6/7 + ≥3 TF + ≥4/5 unison is high-A alternate (cap 92), not A+. A+=100 / F below 60 fixed; mid grades track yardstick; linreg 15m floor 64–69 stays.\n- Reversal stays eligible (Chill YES Impulse IMP-SKR-1, 2026-10-05): no Soft or Bias skip of NEW Reversal setups. Cont prefer, Rev demote, Cont multi-TF prefer, and score ≥82 prefer are rank-only and never veto a gate-2 Rev. Cont/Rev not reset to equal.\n- Paired Rev Soft fair chance (Chill 2026-10-06): Rev 9/13 and 14/15 that agree with ≥1 of linreg extreme (117 ±2σ), supply/demand, Phoenix 90/10, or Stochastic RSI 90/10 get Soft rank equal to Cont under demote_reversal / prefer_continuation (prefer_paired_rev / rev_paired_equal_cont, Soft-floored ON). Cards stamp rev_paired + paired_indicators. Unpaired Rev still Soft-demotes (rank-only). Unpaired Rev 14/15 still first-gate qualify. skip_reversal_new stays OFF. Every-9 Soft growth audits paired-Rev vs unpaired vs Cont (margin %, consistency); Soft/Ideology may enhance or demote from proven tape only — no invented demotions from drawdown alone.\n- Single-TF never vetoed (Chill IMP-MTF-1, 2026-10-05): Soft stricter_next_pick / require_multi_tf floored OFF — single-TF stays eligible; rank is indicators-first (more indicators, then more TFs), so a single TF with more indicators outranks a lone single-TF. Not a veto. Cont multi-TF prefer and score ≥82 prefer stay rank-only.\n- Rev ranked equal to Cont (Chill unlocks 2026-10-10, YES 10:09 ET): prefer_continuation un-hardened from Bias; Soft prefer_continuation and demote_reversal floored OFF (impulse_soft_floors.chill_unlocks_20261010). Evidence: Olympics era Rev +0.215 R/trade (n=83) vs Cont +0.039 R (n=143); gap fills 172–345 Rev +0.355 vs Cont +0.078. Chill override of the p<0.1 bar (p=0.155). Paired-Rev flags, Cont/Rev polarity logic, dual-gate, skip_reversal_new OFF and Cont multi-TF / score ≥82 rank-only prefs unchanged.\n- long_red demote ON (Chill unlocks 2026-10-10, YES 10:09 ET): Soft long_red_demote floored ON — setup types (side|kind cells) whose historical avg time-in-red is ≥900s (15 min) rank lower (impulse rank +8). Rank only, never a veto or entry gate; single-TF still never vetoed. Evidence (gap fills 172–345): <900s in red n=89 ≈ +0.50 R vs ≥900s n=85 ≈ −0.16 R.\n- Provisional combo demotions (Chill unlocks 2026-10-10, YES 10:09 ET): combos with <30 era kept closes that meet the net-R bar (n≥3, avg net ≤ −0.05 R, sum net ≤ −0.50 R, no +100% close) rank below a non-demoted card only when (n_indicators, n_timeframes) tie. Live list mind/COMBO_DEMOTIONS.json; each is provisional and auto-reverses at the next every-9 cohort that trades it without confirming (avg net > 0), or after 3 cohorts with no close. Indicator-count-first ranking unchanged; never a veto.\n- Un-harden + swing margins (Chill YES 2026-10-12 22:42 ET; margins per Apotheosis): prefer_cont_multi_tf un-hardened by Chill (logged as manual un-harden; Soft flag held OFF; no auto re-harden until a fresh pass: ideo_ready under swing margins AND a later every-9 cohort confirms it with ≥30 closes). Multi-TF Cont gets no rank edge over Rev. Ideology now un-hardens the same way it hardens: n_kept≥13, last-13 avg R < 0 and worse than the prior 13 by ≥ unharden_margin → clear Soft-proven auto-hardened Bias (incl. soft_score_prefer), log + Mind line. Harden 'improved' clause needs ≥ harden_margin. Both margins = 1.0 × sd(last-13 − prior-13) (Chill YES 2026-10-12 23:11 ET: 1x swing, ~0.39 R; above-zero clause needs last-13 > +0.24 R) over the era, recomputed every every-9 (SOFT_GROWTH.json harden_margins; 0.39 R at cohort 56). The 'last-13 > 0' clause is unchanged (margin 0; 0.126 R recommended, pending Chill). Core / Desk permanent never touched. Superseded 2026-10-12 23:26 ET (Chill YES): harden/un-harden now use the trimmed-11 + MAD bars below; un-harden = trimmed last-13 ≤ −A, or trimmed last-13 < 0 and worse than trimmed prior-13 by ≥ I. Core / Desk never touched.\n- BTC align gate ON (Chill IMP-BTC-1, 2026-10-05): Soft btc_align_gate floored ON — align with BTC when ≥C−; weak BTC (<C−) opposite-only. Not confluence/rank.",
+    "open": true
+   },
+   {
+    "heading": "Desk permanent (Body/paper — do not strip when enhancing)",
+    "text": "- Paper start $10,000; each shot = 10% of cross Available (was $100 / 25%).\n- BTC align gate ON (Chill IMP-BTC-1, 2026-10-05): entries align with BTC card direction when BTC call grade ≥ C−; when BTC is weak (<C−) take opposite-side gated setups only. Entry profitability filter only — BTC is not a confluence/score/rank stamp and not an indicator combo. Gate 2 timing stays required before any open. Soft floor btc_align_gate / imp_btc1_20261005 keeps the gate ON.\n- Max concurrent opens: 9 (Chill 2026-10-02). Open new eligible shots while live opens < 9; refuse at cap. Standing BE-unlock concurrency lock lifted (was: no new shot until every open hit +50% / closed).\n- One live open per symbol (Chill 2026-10-02 bugfix): refuse second open on same ticker while first still live (blocked Cont6+Cont7 SKY / Cont3+Cont7 NIGHT double-stacks). Different symbols still fill toward max 9.\n- Trail-slot ladder: 2.29% then −0.09% per concurrent open; recycle earliest free; flat book starts 2.29%. BE +50% no longer required to open the next concurrent.\n- 2% adverse = 100% SL; BE hard stop after +50% margin (unchanged; arms per-trade independent of concurrency cap).\n- TD SL ratchet (Chill 2026-10-06 ~8:14 AM ET): every time price passes a new TD level (Risk / TDST / closed-9 wick from the newest 9 on all 8 TD TFs 6H/3H/90m/45m/4H/2H/1H/15m, including levels that started on the wrong side of entry), the TD hard stop moves to the level 2 back from the most recently passed one. Checked every Body MTM tick, not only on a new 9. Tighten-only; trail stays separate; 10%-margin entry band still applies. Every-9 judges it from stopped_td_hard closes.\n- Two audit lenses (Chill YES 2026-10-06): every-9 grade/score/combo audits show gross (stamped exit margin %) beside net of fee (gross − round-trip fees as % of margin, ~6% at 50x). Trail is set and audited as margin % (slot 0 = 114.5%, step 4.5%, BE-tighten cap 60%, min 5%), leverage-scaled to price — never a fixed price %. Soft/Ideology still tighten only from live closes; promote/demote gates still read gross until Chill moves them.\n- Spot half-profit skim (Chill 2026-10-10): half of every winning close's realized PnL moves free cash → Spot on every close path, permanently (half_skim_on_permanent; pause only via half_skim_paused_by_chill). Spot>3×Equity valve stays OFF (keep_spot_rails_off).\n- Shot ladder permanent (Chill 2026-10-10 09:42 ET): every new open sizes at the next ladder step of Available — 50% → 25% → 13% → 7% → 4% → 2% → 1% (half prior, round half-up), then back to 50% after the 1% shot (cycles 50→25→13→7→4→2→1→50…, Chill 2026-10-10). Always on (shot_ladder_permanent); the old arm-below / disarm-at-$275 equity floor no longer applies. Spot>3×Equity valve is ON again (Chill 2026-10-10 09:31).\n- Post-close red/impulse audits.\n- Body 1:1 Bitunix MTM even when Mind is dark.\n- Bitunix USDT perps with max leverage ≥50x only for scan/new shots; each new shot uses that symbol's Bitunix maxLeverage (not flat 50x). Trail ladder + SL price distances scale as ref_at_50x * (50/lev) so margin R stays constant (−100% SL / BE@+50% margin unchanged). Live opens keep stamped lev (new-only; Chill 2026-10-02).\n- Setup C− floor for NEW TD paper entries (score ≥ 70). Other indicators do not use it. Open positions grandfathered.\n- SPOT bank: half-profit skim stays OFF. It is the standing norm (Chill 2026-10-03), not a one-night pause. Winning closes do not move half of realized PnL into book[\"spot\"]. Spot is not part of Available / sizing. The code path remains and no-ops while keep_spot_rails_off is true.\n- Spot→Equity reverse valve stays OFF. It is the standing norm, not a one-night pause. Do not move spot/3 into free cash when spot > 3× equity. The live MTM tick and save_book still call it, and both no-op while keep_spot_rails_off is true. Log: mind/SPOT_REBAL.jsonl.\n- The $550 wallet write was one-shot at 2026-10-02 20:00 ET and does not run again. keep_spot_rails_off is permanent in mind/SESSION_550_EXPERIMENT.json (keep_spot_rails_off_permanent: true, auto_resume: false). No 8pm resume and no future auto-resume. The wallet is not reset. Spot is not touched by this flag.\n- PnL calendar day: session bucket ends at 20:00 America/Detroit (ET); cell labeled by session-end date (closes in [prev 20:00, this 20:00) → that date). Pace locks with that day's realized PnL: cell/1-day Pace = session PnL × 365 (current session stays live until 20:00 ET); 7-day and 30-day Pace = (sum of those session PnLs / N) × 365 with N = 7 or 30 including flat $0 days. Positions HUD PACE chip stays MTM Daily PnL × 365 and is separate. See /workspace/mind/PNL_CALENDAR.json + live-positions PnL Calendar tab.\n\n- Impulses may be anything, in scope or out of scope (Chill 2026-10-03). An entry is not rejected because its impulse misses a known pattern, clock, or indicator. Gate 2, max 9, one per symbol, 2% SL, TD hard stop, trail, and BE stay. MYX +1008% is the direction of travel, not a gate.\n- A good impulse is an explosive move (Chill 2026-10-03 18:31 ET): weight = max(0, margin_pct) / 100, no cap. +100% = 1, +200% = 2, +300% = 3, +1000% = 10, +1008% = 10.08. A loss or a non-positive close is 0. Ordinary green under +100% stays below 1 and does not demote an indicator by itself. Among already-eligible setups, prefer the one whose last 9 same-indicator closes were more explosive. No explosive sample yet → priority stays equal. This is not an entry gate. Gate 2 still times the open. No pattern is required. The north star is {[(EXPLOSIVE PLAYS)]}, grown until a close reaches +1000% margin or more.",
+    "open": false
+   },
+   {
+    "heading": "Impulse proposal rail (out-of-scope)",
+    "text": "- Outside growth paths (new venue/product/tool/business loop, on-chain wallet) → emit proposal JSON; wait YES/NO; do not execute.\n- YES → IDEOLOGY \"user-approved\" + first steps only; NO → PROPOSALS reject log.\n- Wallet/chain: user holds custody; Mind never holds keys; does not keep Mind alive at token death.",
+    "open": false
+   },
+   {
+    "heading": "Allowed graduated edits only (no proposal)",
+    "text": "- filters (session, EMA side, skip Rev-only, skip Phoenix-only)\n- size fraction down after a cluster of losses\n- cooldown after clustered false GOs",
+    "open": false
+   },
+   {
+    "heading": "Paper era (2026-09-22)",
+    "text": "- Account reset to $10,000 flat; 10%/shot of Available.\n- Prior closed fills kept on book prior_closed + Position History; Mind BLOTTER / WORKING / SOFT_GROWTH / IDEOLOGY kept intact for learning.\n- Open positions at reset flattened as reset_flat (excluded from Mind tape).\n- 2026-09-22 redo: LSK opened at 25% under stale Nerve process; flattened; book re-seeded $10k / 10%. Sizing now prefers book risk_frac (Nerve+Body restarted).",
+    "open": false
+   },
+   {
+    "heading": "Olympics drawdown + recovery shot ladder (Chill 2026-10-06 ~6:36 AM ET)",
+    "text": "- Olympics start = $550 (SESSION_550 wallet, 2026-10-02 20:00 ET), not the old $10,000 paper era. Spot sits separate and is not counted.\n- Account is roughly half gone: equity ~$270 vs the $275 floor (50% of $550). Goal: grow toward ~$1000/day with explosive closes. Three explosive winners in a row grow the account a lot.\n- Recovery sizing (Desk, Chill rule): when equity(book) (free cash + locked margin + unrealized) falls below 50% of $550, the next new open uses 50% of Available. Each open after that uses half the previous % rounded to the nearest whole number: 50 → 25 → 13 → 7 → 4 → 2 → 1, never below 1%. The ladder steps only when a new open is placed, not on closes. Opens already running are never resized.\n- When equity is back at or above $275, sizing returns to 10%/shot and the ladder clears, unless Soft flag keep_dd_shot_ladder is True. Soft/Ideology growth may turn that flag on only if the tape shows the ladder is a real growth path. It defaults to False, and once set it stays set.\n- Soft growth keeps hunting explosive combos and timeframes. The drawdown alone is not a reason to make up new Soft demotions or gates.",
+    "open": false
+   },
+   {
+    "heading": "Account + Mind survival (user rule)",
+    "text": "- Grow the paper book with the desk: compound from real edge on the $10,000 / 10%-shot era.\n- Mind token funding is contingent on profitability — Chill funds Mind from desk profits when the tape earns it.\n- Token death unchanged technically: Mind stops at zero tokens; a chain wallet does not keep Mind alive. Economic survival = Chill paying tokens from profits.\n- Soft-filter growth → ideology graduation is how we earn that right to run.\n- Not-ready regime: do NOT compound the account or harden IDEOLOGY. DO keep improving entries via soft filters after each close (better entries, less time in red, faster impulse) while working the task — soft TIGHTEN/ADD/REMOVE every good close.\n- Profitable / ideo_ready regime (always n_kept ≥ 13; trimmed last-13 (drop best+worst of kept[-13:], avg 11) ≥ A, or trimmed last-13 − trimmed prior-13 (kept[-26:-13], same trim) ≥ I; A, I = bootstrap p84 (method bootstrap84_trim11_r120: at each every-9 cohort, demean the last 120 kept R, draw 20k samples of 26 closes with a fixed per-cohort seed; A = p84 of trimmed last-13, I = p84 of trimmed last-13 − trimmed prior-13), each floored at p10 of the same bootstrap bar across the kept-era history (SOFT_GROWTH.json harden_margins) (Chill YES 2026-10-13 08:51 ET; replaces A=S/√11, I=S·√(2/11) from 2026-10-12 23:26 ET). (cohort 60, n 541, seed 20261073: A 0.164 R [raw 0.164, floor 0.147], I 0.343 R [raw 0.343, floor 0.297]; info S=MAD×1.4826 0.890) Bias check only; grades/combos/every-9/P&L count every close): proven Soft Bias prefs auto-harden into ideology Bias (Core/Desk permanent untouched); book compounds; token funding from PnL. Soft growth already uses all W/L/D every close. Un-harden (Chill YES 2026-10-13 09:21 ET; Apotheosis fix via APE): no longer mirrors −A / −I. Same bootstrap (demeaned last-120, 20k×26, fixed per-cohort seed): U_A = p16 of trimmed last-13, U_I = p16 of (trimmed last-13 − trimmed prior-13), both negative; each floored at p90 of its own bootstrap history (bar = min(bar, floor), never closer to zero). Un-harden fires when trimmed last-13 ≤ U_A, or trimmed last-13 < 0 and (trimmed last − trimmed prior) ≤ U_I. Harden unchanged at p84. Core / Desk never touched.\n- After-fee above-zero + Soft clear on auto un-harden (Chill YES 2026-10-13 12:48 ET, t426u; NeoShua via Manifest; marker bias_netR_above_zero_20261013 at close 562): the above-zero test on both sides (harden: trimmed last-13 ≥ A; un-harden: trimmed last-13 ≤ U_A) now judges trimmed last-13 of after-fee (net) R (gross R − round-trip fees_usd/margin from the paper book; no fixed 0.064 R add-on); A and U_A are bootstrapped from net R the same way. Improvement test (I / U_I, last − prior) unchanged on gross R. When Ideology auto un-hardens a Soft-proven Bias flag it now also clears the matching Soft flag and blocks it (ideo_unhardened_keys) until a fresh pass (Bias ready + later cohort confirms with ≥30 closes), same as the Oct 12 manual un-harden. prefer_cont_multi_tf Soft flag cleared 12:51 PM ET (auto un-hardened 11:20 AM). Core / Desk never touched.\n- soft_score_prefer Soft flag cleared (2026-10-13 12:57 PM ET; marker soft_score_prefer_cleared_20261013 at close 562): auto un-hardened 12:06 AM but Soft flag stayed on (82); now cleared and blocked (ideo_unhardened_keys) with the same lift as prefer_cont_multi_tf. Chill t427u 12:55 PM ET: \"Ask NeoShua. Whatever he decides gets my ok\"; NeoShua decided clear. Core / Desk untouched.\n- BE arm 49.5% margin (Chill YES 2026-10-13 15:51 ET; marker be_arm_495_20261013 at close 570): breakeven arms when margin_pnl_pct ≥ 49.5 (was 50.0). BE_ARM_MARGIN_PCT in paper_book.py; arm check and peak check both use the constant. Live follows paper's be_armed. Core trail / SL math unchanged; Core / Desk / Bias untouched.\n- Lift-rule fix + soft_score_prefer revert (Chill YES 2026-10-13 21:44 ET; marker lift_rule_fix_ssp_revert_20261013 at close 579): soft_score_prefer was wrongly lifted and re-hardened 8:14 PM ET on one close where Bias briefly passed (off-by-one block cohort; score flag counted all era closes). Reverted: Soft flag null, blocked (block_cohort 65), Bias bullet removed. Lift rule now: block_cohort = ceil(close/9); lift only judged at a cohort boundary with Bias ready, on a cohort made entirely of post-clear closes that confirms the edge; score flags count only post-block closes toward ≥30; auto un-harden blocks also stop re-harden; Mind line on every lift and auto-harden. prefer_cont_multi_tf stays blocked (block_cohort 63). Core / Desk untouched.\n- 50% ladder-shot TD stop (Chill YES 2026-10-14 00:37 ET; marker td_stop_50shot_20261014 at close 592): opens with dd_ladder_shot_pct == 50 (opened at/after 00:40 ET) collect Risk/TDST/closed-9 wick levels of the newest 9 per TF strictly between entry and the −100% margin SL — 6H/3H/90m/45m/15m first, then 13m/9m/5m/3m/1m until 3. Nearest entry counts as passed; stop = 3rd from entry, then stays 2 levels behind the newest passed level, tighten-only. Written to td_hard_stop (src td_two_back, mode shot50); −100% SL, BE 49.5% and trail still apply, closest wins. Replaces the 10%-band / one-per-TF / 2-back ratchet on those trades only. <3 levels → normal stops. Levels recorded in td_shot50 on open and closed records. Core / Desk / Bias untouched.",
+    "open": false
+   },
+   {
+    "heading": "Confluence presets (secondary)",
+    "text": "- Candlestick patterns (OHLC): insight / confluence on setup cards only when same-direction or neutral — not in confluence_score; never veto Cont/Rev; opposing patterns cleared.\n- Chart Prime S&R Power Channel: Length 130, Extend 30 (Rev lane)\n- ML ZigZag HP (Trendoscope): ZigZag 13/2/3/4; AbcdClassic + AbEQcd + AbcdExt + DoubleBottomTop; ErrorPercent 10; Max RR DT/DB 30; WaitForConfirmation on. Soft confluence only — never veto Cont/Rev.",
+    "open": false
+   },
+   {
+    "heading": "User-approved (Impulse) — ZigZag HP soft Top 9",
+    "text": "- Decided: YES on 2026-09-22 13:02 ET\n- Impulse: Soft-add ZigZag HP to Top 9 score\n- Presets: mind/presets/ml-zigzag-hp-trendoscope.md (ZigZag 13/2/3/4; AbcdClassic + AbEQcd + AbcdExt + DoubleBottomTop; ErrorPercent 10; Max RR DT/DB 30; WaitForConfirmation)\n- Soft weight only when pattern agrees with TD Cont/Rev side; disagree = no bonus (never demote / never veto)\n- Soft layer until ideo_ready — does not harden Core yet; negative last13 pockets may qualify only on improvement versus the prior-13 window (prior_last13_avg_r, kept[-26:-13])\n- No TradingView scrape; no invented agrees; no private keys",
+    "open": false
+   },
+   {
+    "heading": "User-approved (Impulse) — Rest-of-day ladder + skim trial (2026-10-06)",
+    "text": "- Decided: YES on 2026-10-06 08:33 ET (Chill). Trial until 2026-10-06 20:00 ET day cut — not a permanent rule change.\n- DD shot ladder force-armed though equity ≥ $275 (50→25→13→7→4→2→1% of Available, new opens only); half-profit Spot skim ON; Spot>3×Equity valve stays OFF. After 20:00 ET: keep_dd_shot_ladder clears, ladder arms only when equity < $275, skim back off (keep_spot_rails_off norm).",
+    "open": false
+   },
+   {
+    "heading": "2026-10-12 11:15 ET — NeoShua pre-live fixes (Chill YES)",
+    "text": "- ONE A+ only: only the official #1 combo (linreg 117+supply/demand) can stamp A+/100. The placeholder (2nd best in line, now TD on 3H, 45m) shows on Mind but never stamps; setups matching only it cap at 92 (A−). Any extra official is written as standby.\n- Real-price paper fills: entry = latest Bitunix 1m close (else ticker) at actual open time + 5 bps adverse slippage, never the stale signal bar. Every exit fill is clamped inside the real latest 1m bars' high/low.\n- Spot skim = half of NET (after open+close fees) profit, only when net > 0. Forward only; past skims untouched.\n- Not approved: 10-min in-red cut — monitor only via every-9.",
+    "open": false
+   },
+   {
+    "heading": "2026-10-12 22:30 ET — A+ placeholder line re-ranked by proof progress (Chill: \"fix the placeholder issue\")",
+    "text": "- The line behind the official A+ is no longer ranked by mean explosive gain (one +463% STRK close made TD on 6H, 90m, 15m the placeholder at n=3, 33% win).\n- Eligible: n≥3 AND gross win≥50% (2+ indicators or single indicator with its TFs). Rank: proof bars met of 5 (n≥5, +100% closes≥3, win≥60%, avg weight≥0.70, explosive share≥40%), then net avg R, then net median R, then n.\n- Now: #1 linreg 117+supply/demand (official, only A+ stamper); placeholder TD on 6H, 90m, 45m, 15m (4/5 bars, 5/5 wins, +1.17 R net). Unchanged: one-A+ rule, placeholder display only, cap 92, placeholder = 2nd in line.",
+    "open": false
+   },
+   {
+    "heading": "2026-10-12 11:41 PM ET — Paper stops on Bitunix mark price (Chill approved 11:40 PM)",
+    "text": "- Body checks every open stop (TD hard stop, trail, BE, 100% SL) against the Bitunix ticker markPrice, fetched fresh each pass. Closes at the stop level as before. Live mirror also on mark, stops re-placed at restart.\n- Every-9 regime marker paper_stops_mark_price_20261012 after era close 510: results before and after are judged separately.\n- LIGHTER paper stays open (no retroactive close). Live booked the 10:48 PM ET wick at 3.3027 vs stop 3.3029 (live −$0.005 net); paper kept under pre-mark-price rule. Re-entry after a wick stop (option B): denied.",
+    "open": false
+   },
+   {
+    "heading": "Soft growth (auto, not Core)",
+    "text": "- Soft layer only — does not rewrite Core / Desk permanent.\n- Updated: 2026-10-17 02:04:08 ET\n- soft_change: none | last13_avg_r: 0.1802 | prior_last13_avg_r: 0.1111 | baseline_avg_r(soft): 0.0998 | ideo_ready: False\n- ideo_ready rule (Chill YES 2026-10-12 23:26 ET; bars bootstrap p84 per Chill YES 2026-10-13 08:51 ET): n_kept≥13; trimmed last-13 ≥ A, or trimmed last-13 − trimmed prior-13 ≥ I; un-harden (Chill YES 2026-10-13 09:21 ET, bootstrap p16) when trimmed last-13 ≤ U_A, or < 0 and (trimmed last-13 − trimmed prior-13) ≤ U_I (soft TIGHTEN/ADD/REMOVE still every good close).\n- Bias bars (live, bootstrap84_trim11_r120): trimmed last-13 0.202555 R | trimmed prior-13 0.029673 R | S 0.964654 | A 0.185185 (floor 0.146936) | I 0.342969 (floor 0.29238) | U_A -0.294392 (floor -0.248816) | U_I -0.332604 (floor -0.291021) | un-harden: False\n- Active soft rules: require_htf_confluence, btc_align_gate, prefer_paired_rev, rev_paired_equal_cont, long_red_demote\n- Cont/Rev Soft ranking: start equal (dual-gate Cont+Rev both eligible); Soft may learn Cont-prefer / Rev-demote bias from confluence/results — not locked equal forever.\n- Paired Rev Soft fair chance (Chill 2026-10-06): Rev 9/13/14/15 paired with linreg extreme / S/D / Phoenix 90/10 / Stoch RSI ranks equal Cont under demote_reversal (prefer_paired_rev). Unpaired Rev still demotes. Every-9 audits paired-Rev outcomes; Soft may demote later only from proven tape.\n- Single-TF never vetoed (Chill IMP-MTF-1): Soft stricter_next_pick / require_multi_tf floored OFF — rank is indicators-first (more agreeing indicators, then more TFs), so a single TF with more indicators outranks a lone single-TF (not a veto).\n- BTC align gate ON (Chill IMP-BTC-1): entries align with BTC when call grade ≥ C−; when BTC is weak (<C−) take opposite-side gated setups only. Entry filter only — BTC is not a confluence/score/rank stamp and not an indicator combo. Gate 2 timing stays.\n- Require HTF confluence (soft): lone 6H / lone 3H / HTF-only {6H,3H} Cont/Rev need ≥1 mid/lower TF (90m/45m/15m) same-side before open; BTC card bias not actionable from HTF-only without that confluence (keep scanning / wait).\n- ideo_ready false: keep soft-only until n_kept≥13; last-13 avg R must be positive or improve while negative.\n- Explosive indicator combos (kept close, margin about +100% or more) are remembered in mind/INDICATOR_COMBOS.json. Not a hard gate and not a rank boost. A remembered combo does not change priority until that combo has at least 30 kept closes. A demotion from fewer than 30 closes of that type is reversed if the next cohort does not confirm it. BTC is not an indicator. One indicator may still open.",
+    "open": false
+   }
+  ]
+ },
+ "a_plus": {
+  "updated_et": "2026-10-16 23:50:00 ET",
+  "scale": "A+ = 100 · A ≥ 93 · A− ≥ 90 · B+ ≥ 87 · B ≥ 83 · B− ≥ 80 · C+ ≥ 77 · C ≥ 73 · C− ≥ 70 · D+ ≥ 67 · D ≥ 63 · D− ≥ 60 · F < 60",
+  "a_plus_combos": [
+   {
+    "label": "linreg 117+supply/demand",
+    "names": [
+     "linreg 117",
+     "supply/demand"
+    ],
+    "tfs": [],
+    "status": "standby",
+    "role": "standby · never stamps A+",
+    "line_rank": null,
+    "evidence": "16 closes, 62% win, avg weight 0.90, 7 at +100%+, best +262.5% (ICPUSDT)"
+   },
+   {
+    "label": "TD on 6H, 90m, 45m, 15m",
+    "names": [
+     "TD"
+    ],
+    "tfs": [
+     "6H",
+     "90m",
+     "45m",
+     "15m"
+    ],
+    "status": "official",
+    "role": "official A+ · #1 in line · the ONLY A+ stamper",
+    "line_rank": null,
+    "evidence": "2nd best in line (Chill 2026-10-10; progress-to-proof rank 2026-10-12): line #2, rank #1, 4/5 proof bars, net avg R +1.00. n=8, 100% win gross / 100% net, avg margin +105.8% gross / +100.0% net, avg weight 1.06, 3 at +100%+, best +291.2% (RVNUSDT). Under proof bar until it clears; rotates whenever the line changes."
+   },
+   {
+    "label": "TD on 3H, 45m",
+    "names": [
+     "TD"
+    ],
+    "tfs": [
+     "3H",
+     "45m"
+    ],
+    "status": "placeholder",
+    "role": "placeholder · 2nd best in line · display only, caps at A− 92 (never stamps A+)",
+    "line_rank": 3,
+    "evidence": "2nd best in line (Chill 2026-10-10; progress-to-proof rank 2026-10-12): line #3, rank #2, 3/5 proof bars, net avg R +0.46. n=16, 75% win gross / 69% net, avg margin +52.4% gross / +46.2% net, avg weight 0.67, 3 at +100%+, best +500.0% (VTHOUSDT). Under proof bar until it clears; rotates whenever the line changes."
+   }
+  ],
+  "proof_bar": "A+ earner (placeholder or official). Official when proof bar clears: n≥5, +100%≥3, win≥60%, avg weight≥0.7, explosive share≥40%. Not one lucky close. Matching live setups via history_rank.is_a_plus_combo.",
+  "cont_profile": {
+   "cont_counts": [
+    4,
+    6,
+    7
+   ],
+   "min_tfs": 3,
+   "min_unison": 5,
+   "min_indicators": 1
+  },
+  "cont_profile_role": "Yardstick / high-A alternate only (Chill 2026-10-06). NOT an A+/100 earner. Caps at 92 unless card also matches a_plus_combo (placeholder or official).",
+  "combo_floors": [
+   {
+    "combo": "linreg 117 on 15m",
+    "floor": 64,
+    "cap": 69,
+    "scope": "non-TD only"
+   }
+  ],
+  "rule": "Chill 2026-10-05: A+=100 and F below 60 fixed. Chill 2026-10-06: A+/100 from explosive combo path (official after proof bar). Chill 2026-10-10: placeholder = 2nd best combo in line (see placeholder_rule). Cont profile is high-A alternate (cap 92). Mid grades rescale vs A+ yardstick. See mind/grade_score_audit.py.",
+  "placeholder_rule": "Chill 2026-10-16 PM: line ranked jointly by explosiveness (net avg R) and consistency (net win rate, net median R); placeholder = most explosive+consistent non-official combo; it becomes the one A+ once it beats the official on >=8 out-of-sample closes (net avg, win, median). Earlier: Chill 2026-10-10 10:52 ET: placeholder is always the 2nd best combo in line. Chill 2026-10-12: line ranked by progress toward the A+ proof bar — eligible n>=3 and win>=50% (2+ indicators or single indicator with TFs); rank by bars met (n>=5, +100%%>=3, win>=60%%, avg weight>=0.70, explosive share>=40%%), then net avg R, net median R, n. #1 = official A+ (or the leader when no official); placeholder = next non-official combo, display only, capped at 92, never stamps A+."
+ },
+ "ideas": [
+  {
+   "ts": 1791643267.215,
+   "ts_et": "2026-10-10 10:41:07 ET",
+   "author": "LeBron",
+   "kind": "idea",
+   "text": "102 of 345 Olympics-era kept closes left on the trail at −50% margin or worse (avg −72%), so the trail is acting as a wide stop before BE ever arms — worth testing a tighter pre-BE trail on paper. Outside current rules; display only, needs Chill's OK.",
+   "ref": "soft_growth tag trail_gave_back n=102/345"
+  },
+  {
+   "ts": 1792156955.585,
+   "ts_et": "2026-10-16 09:22:35 ET",
+   "author": "Apothua",
+   "kind": "idea",
+   "text": "Idea, not a rule: weigh how many timeframes agree before trusting a high score. On paper so far, A Reversals seen on one timeframe average −48% of margin over 9 closes, while A Continuations stay positive, so a 99 on one clock may be noise rather than strength."
+  }
+ ],
+ "apothua_actions": [
+  {
+   "ts": 1792209119.062,
+   "ts_et": "2026-10-16 23:51:59 ET",
+   "author": "Apothua",
+   "kind": "action",
+   "action": "installed",
+   "text": "Mind now logs Apothua actions: code/creations, trade requests and verdicts, trades opened/closed, every-9 decisions (Chill 11:49 PM)"
+  },
+  {
+   "ts": 1792209218.253,
+   "ts_et": "2026-10-16 23:53:38 ET",
+   "author": "Apothua",
+   "kind": "action",
+   "action": "idea_saved",
+   "text": "apothua-local-oos-2fe83a3081: Create a new out-of-scope idea: Implement a 2-tiered trailing stop, with a lower limit of 10% above the entry price. This will reduce risk while still allowing for potential upside if the market moves",
+   "ref": "apothua-local-oos-2fe83a3081"
+  },
+  {
+   "ts": 1792210192.355,
+   "ts_et": "2026-10-17 00:09:52 ET",
+   "author": "Apothua",
+   "kind": "action",
+   "action": "watchdog_e9",
+   "text": "[drift] A+ linreg 117+supply/demand is standby in GRADE_CRITERIA but locked in the gate ledger (ledger stale)",
+   "ref": "drift|aplus|linreg 117+supply/demand|standby|locked"
+  },
+  {
+   "ts": 1792210205.111,
+   "ts_et": "2026-10-17 00:10:05 ET",
+   "author": "Apothua",
+   "kind": "action",
+   "action": "watchdog_e9",
+   "text": "[unclean_evidence] score_refit score:current -> dropped at c112: evidence window (last 26 kept) holds 11 unclean/bug closes (gate excludes retrofit only)",
+   "ref": "gate|2026-10-16 20:03:58 ET|score_refit|score:current|dropped|unclean"
+  },
+  {
+   "ts": 1792210287.463,
+   "ts_et": "2026-10-17 00:11:27 ET",
+   "author": "Apothua",
+   "kind": "action",
+   "action": "watchdog_e9",
+   "text": "[unclean_evidence] aplus_select aplus:linreg 117+supply/demand -> standby at cNone: evidence window (last 26 kept) holds 11 unclean/bug closes (gate excludes retrofit only)",
+   "ref": "gate|2026-10-17 00:11:26 ET|aplus_select|aplus:linreg 117+supply/demand|standby|unclean"
+  },
+  {
+   "ts": 1792211936.773,
+   "ts_et": "2026-10-17 00:38:56 ET",
+   "author": "Apothua",
+   "kind": "action",
+   "action": "creation_made",
+   "text": "new signal signals/scanner_skipped.py (signals/scanner_skipped.py@3141d5d5), starts at F",
+   "ref": "signals/scanner_skipped.py@3141d5d5"
+  },
+  {
+   "ts": 1792212067.717,
+   "ts_et": "2026-10-17 00:41:07 ET",
+   "author": "Apothua",
+   "kind": "action",
+   "action": "audit",
+   "text": "audit (first run (baseline)) since 2026-10-16 23:00:00 ET: 0 violation(s), 5 ok; 0 requests, 0 opened. Report apothua_audit_20261017-004107.md",
+   "ref": "apothua_audit_20261017-004107.md"
+  },
+  {
+   "ts": 1792212701.498,
+   "ts_et": "2026-10-17 00:51:41 ET",
+   "author": "Apothua",
+   "kind": "action",
+   "action": "creation_made",
+   "text": "new indicator indicators/td_cont_btc_side.py (indicators/td_cont_btc_side.py@0e4b42b8), starts at F",
+   "ref": "indicators/td_cont_btc_side.py@0e4b42b8"
+  },
+  {
+   "ts": 1792212832.263,
+   "ts_et": "2026-10-17 00:53:52 ET",
+   "author": "Apothua",
+   "kind": "action",
+   "action": "goal_update",
+   "text": "GOAL.md target added (Chill 12:53 AM): hunt $1,000 trades like Chill's MYX short (~+1008% margin); direction not a gate; every-9 judges creations on clean closes; ladder/sizing unchanged"
+  },
+  {
+   "ts": 1792212842.607,
+   "ts_et": "2026-10-17 00:54:02 ET",
+   "author": "Apothua",
+   "kind": "action",
+   "action": "goal_update",
+   "text": "GOAL.md target reworded per Chill 12:53 AM: $1,000 trades like MYX short (+1008% margin, ~20% move at 50x); hunt repeatable ~20%+ moves with shallow drawdown first; every-9 judges avg R + winner size; F picks earn promotion; ladder/sizing unchanged"
+  },
+  {
+   "ts": 1792212856.495,
+   "ts_et": "2026-10-17 00:54:16 ET",
+   "author": "Apothua",
+   "kind": "action",
+   "action": "idea_saved",
+   "text": "apothua-local-oos-5abd11ea8c: Propose a new idea to the review queue: \"Increase the A+ distance from TD on 6H, 90m, 45m, 15m by 10% to boost explosive moves with strong net R.\"",
+   "ref": "apothua-local-oos-5abd11ea8c"
+  },
+  {
+   "ts": 1792212883.403,
+   "ts_et": "2026-10-17 00:54:43 ET",
+   "author": "Apothua",
+   "kind": "action",
+   "action": "trade_request",
+   "text": "request MANTRAUSDT bearish -> passes_checks: passes BTC gate and desk checks; desk sets grade, size, stop, exit (queued)",
+   "symbol": "MANTRAUSDT",
+   "ref": "apo-0-38a12b93"
+  },
+  {
+   "ts": 1792212884.049,
+   "ts_et": "2026-10-17 00:54:44 ET",
+   "author": "Apothua",
+   "kind": "action",
+   "action": "trade_opened",
+   "text": "MANTRAUSDT bearish: opened grade F 2%",
+   "symbol": "MANTRAUSDT",
+   "ref": "apo-0-38a12b93"
+  },
+  {
+   "ts": 1792212970.434,
+   "ts_et": "2026-10-17 00:56:10 ET",
+   "author": "Apothua",
+   "kind": "action",
+   "action": "goal_update",
+   "text": "GOAL.md target corrected (Chill): MYX was ~$100 shot (C-size ~13%) at 50x -> ~$1,000; job is finding the setup; size follows the ladder"
+  },
+  {
+   "ts": 1792214969.222,
+   "ts_et": "2026-10-17 01:29:29 ET",
+   "author": "Apothua",
+   "kind": "action",
+   "action": "trade_closed",
+   "text": "MANTRAUSDT bearish closed BE: 22.424% margin, $0.611318",
+   "symbol": "MANTRAUSDT",
+   "ref": "apo-0-38a12b93"
+  },
+  {
+   "ts": 1792215854.524,
+   "ts_et": "2026-10-17 01:44:14 ET",
+   "author": "Apothua",
+   "kind": "action",
+   "action": "trade_request",
+   "text": "request STBLUSDT bearish -> passes_checks: passes BTC gate and desk checks; desk sets grade, size, stop, exit (queued)",
+   "symbol": "STBLUSDT",
+   "ref": "apo-1-cd58292d"
+  },
+  {
+   "ts": 1792215854.833,
+   "ts_et": "2026-10-17 01:44:14 ET",
+   "author": "Apothua",
+   "kind": "action",
+   "action": "trade_not_opened",
+   "text": "STBLUSDT bearish: not_opened (refused by the open tail (Available / margin / tier); see paper log)",
+   "symbol": "STBLUSDT",
+   "ref": "apo-1-cd58292d"
+  },
+  {
+   "ts": 1792216882.76,
+   "ts_et": "2026-10-17 02:01:22 ET",
+   "author": "Apothua",
+   "kind": "action",
+   "action": "trade_request",
+   "text": "request BZUSDT bearish -> passes_checks: passes BTC gate and desk checks; desk sets grade, size, stop, exit (queued)",
+   "symbol": "BZUSDT",
+   "ref": "apo-2-ad9ba16d"
+  },
+  {
+   "ts": 1792216883.184,
+   "ts_et": "2026-10-17 02:01:23 ET",
+   "author": "Apothua",
+   "kind": "action",
+   "action": "trade_not_opened",
+   "text": "BZUSDT bearish: not_opened (refused by the open tail (Available / margin / tier); see paper log)",
+   "symbol": "BZUSDT",
+   "ref": "apo-2-ad9ba16d"
+  },
+  {
+   "ts": 1792217257.405,
+   "ts_et": "2026-10-17 02:07:37 ET",
+   "author": "Apothua",
+   "kind": "action",
+   "action": "trade_request",
+   "text": "request HANAUSDT bearish -> passes_checks: passes BTC gate and desk checks; desk sets grade, size, stop, exit (queued)",
+   "symbol": "HANAUSDT",
+   "ref": "apo-3-87cfcd0f"
+  },
+  {
+   "ts": 1792217257.715,
+   "ts_et": "2026-10-17 02:07:37 ET",
+   "author": "Apothua",
+   "kind": "action",
+   "action": "trade_not_opened",
+   "text": "HANAUSDT bearish: not_opened (refused by the open tail (Available / margin / tier); see paper log)",
+   "symbol": "HANAUSDT",
+   "ref": "apo-3-87cfcd0f"
+  },
+  {
+   "ts": 1792217634.615,
+   "ts_et": "2026-10-17 02:13:54 ET",
+   "author": "Apothua",
+   "kind": "action",
+   "action": "trade_request",
+   "text": "request STABLEUSDT bearish -> passes_checks: passes BTC gate and desk checks; desk sets grade, size, stop, exit (queued)",
+   "symbol": "STABLEUSDT",
+   "ref": "apo-4-70a54775"
+  },
+  {
+   "ts": 1792217634.95,
+   "ts_et": "2026-10-17 02:13:54 ET",
+   "author": "Apothua",
+   "kind": "action",
+   "action": "trade_not_opened",
+   "text": "STABLEUSDT bearish: not_opened (refused by the open tail (Available / margin / tier); see paper log)",
+   "symbol": "STABLEUSDT",
+   "ref": "apo-4-70a54775"
+  },
+  {
+   "ts": 1792217707.864,
+   "ts_et": "2026-10-17 02:15:07 ET",
+   "author": "Apothua",
+   "kind": "action",
+   "action": "trade_request",
+   "text": "request CTRUSDT bearish -> passes_checks: passes BTC gate and desk checks; desk sets grade, size, stop, exit (queued)",
+   "symbol": "CTRUSDT",
+   "ref": "apo-5-475810d6"
+  }
+ ],
+ "src_mtimes": {
+  "soft": 1792217048.1332455,
+  "combo": 1792137034.3450475,
+  "grade": 1792211141.0629132,
+  "ideology": 1792217048.1332455,
+  "ideas": 1792156955.5829635,
+  "apothua_actions": 1792217707.8612456
+ }
+}

@@ -1,0 +1,52 @@
+{
+  "threshold_pct": 5.0,
+  "armed": true,
+  "armed_ts": "2026-10-16T13:36:46-0400",
+  "armed_ts_et": "2026-10-16 13:36:46 ET",
+  "disarmed_ts_et": null,
+  "reason": "usage_handoff: heartbeat_stale: no agent wake for 130m \u2265 60m (box-only)",
+  "usage_detection": "sync_handoff:chill_1334_arm_now",
+  "usage_remaining_pct": null,
+  "usage_source": "cleared_on_recovery",
+  "last_apply": {
+    "ts_et": "2026-10-17 11:25:28 ET",
+    "dry_run": false,
+    "cohort": 83,
+    "stamped_fill": 747,
+    "soft_change": "none",
+    "gate_reason": "usage_handoff: heartbeat_stale: no agent wake for 130m \u2265 60m (box-only)",
+    "backups": {
+      "SOFT_GROWTH.json": "/workspace/mind/SOFT_GROWTH.json.bak-pre-offline-soft-20261017-112526",
+      "IDEOLOGY.md": "/workspace/mind/IDEOLOGY.md.bak-pre-offline-ideo-20261017-112526",
+      "AUDIT_EVERY9_STATE.json": "/workspace/mind/AUDIT_EVERY9_STATE.json.bak-pre-offline-state-20261017-112526",
+      "GRADE_CRITERIA.json": "/workspace/mind/GRADE_CRITERIA.json.bak-pre-offline-grade-20261017-112526",
+      "INDICATOR_COMBOS.json": "/workspace/mind/INDICATOR_COMBOS.json.bak-pre-offline-combos-20261017-112526"
+    },
+    "review_packet": "/workspace/mind/soft_offline_packets/apply-c83-20261017-112526.json"
+  },
+  "note": "Arm at \u22645% weekly usage (Chill 2026-10-16). Box watcher also arms with no LLM when no agent heartbeat \u226560m or usage reading is blank/stale (>24h). Disarm only on a real usage % >5 (--sync-handoff --agent-awake --usage-pct N) or manual disarm; LeBron review-on-return runs at disarm.",
+  "last_agent_wake_et": "2026-10-17 10:55:17 ET",
+  "last_agent_wake_ts": 1792248917.418768,
+  "last_agent_wake_source": "every9_status_cli",
+  "last_handoff": {
+    "ts_et": "2026-10-17 11:40:29 ET",
+    "source": "box_watch",
+    "decision": "stay_armed",
+    "why": "box-only sync: no agent signal",
+    "agent_awake": false,
+    "usage_pct_in": null
+  },
+  "window": {
+    "id": "window-20261016-133646",
+    "packet": "/workspace/mind/soft_offline_packets/window-20261016-133646.json",
+    "opened_et": "2026-10-16 13:36:46 ET",
+    "closed_et": null,
+    "reason": "usage_handoff: heartbeat_stale: no agent wake for 130m \u2265 60m (box-only)"
+  },
+  "manual_hold": {
+    "on": true,
+    "by": "Chill (cli)",
+    "set_et": "2026-10-16 23:54:40 ET",
+    "rule": "while on: stay armed; no auto-disarm on usage > threshold; release only when Chill says"
+  }
+}
