@@ -1,0 +1,847 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Live Positions · History</title>
+<style>
+  :root {
+    --bg: #0c0e12;
+    --panel: #141821;
+    --card: #1a2030;
+    --muted: #8b95a5;
+    --white: #e8edf5;
+    --bull: #2ec47e;
+    --bear: #e85858;
+    --line: #2a3344;
+    --accent: #5aa0ff;
+    --be: #5ec8ff;
+    --trail: #c9a227;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0; width: 100%; height: 100%;
+    background: var(--bg); color: var(--white);
+    font: 13px/1.35 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    cursor: default;
+  }
+  #chrome {
+    display: flex; flex-direction: column; height: 100%;
+  }
+  #tabs {
+    display: flex; gap: 4px; padding: 10px 14px 0;
+    background: var(--panel); border-bottom: 1px solid var(--line);
+    flex: 0 0 auto;
+  }
+  .tab {
+    appearance: none; border: 0; cursor: pointer;
+    background: transparent; color: var(--muted);
+    padding: 10px 16px; border-radius: 10px 10px 0 0;
+    font: 600 13px/1 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+  .tab:hover { color: var(--white); }
+  .tab.active {
+    background: var(--bg); color: var(--white);
+    border: 1px solid var(--line); border-bottom-color: var(--bg);
+  }
+  #panels { flex: 1 1 auto; min-height: 0; position: relative; }
+  .panel { display: none; width: 100%; height: 100%; }
+  .panel.active { display: block; }
+  #board, #acct-board {
+    display: block; width: 100%; height: 100%;
+    object-fit: contain; background: var(--bg);
+    cursor: default;
+  }
+  /* No fixed bottom trade HUD/ticker: keep Top 9 Confluence unobstructed. */
+  #hud { display: none !important; }
+  #history-wrap {
+    height: 100%; overflow: auto; padding: 12px 14px 24px;
+  }
+  #hist-summary {
+    display: flex; flex-wrap: wrap; gap: 14px 22px;
+    margin-bottom: 12px; color: var(--muted); font-size: 12px;
+  }
+  #hist-summary strong { color: var(--white); font-weight: 600; }
+  table.hist {
+    width: 100%; border-collapse: collapse; min-width: 1100px;
+  }
+  table.hist th, table.hist td {
+    text-align: left; padding: 9px 10px;
+    border-bottom: 1px solid var(--line); white-space: nowrap;
+  }
+  table.hist th {
+    position: sticky; top: 0; background: var(--panel);
+    color: var(--muted); font-size: 11px; font-weight: 600;
+    letter-spacing: 0.02em; z-index: 1;
+  }
+  table.hist tr:hover td { background: rgba(255,255,255,0.02); }
+  .up { color: var(--bull); }
+  .dn { color: var(--bear); }
+  .badge {
+    display: inline-block; padding: 2px 8px; border-radius: 6px;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.03em;
+  }
+  .badge.long { color: var(--bull); background: rgba(46,196,126,0.12); border: 1px solid rgba(46,196,126,0.35); }
+  .badge.short { color: var(--bear); background: rgba(232,88,88,0.12); border: 1px solid rgba(232,88,88,0.35); }
+  .badge.SL { color: var(--bear); background: rgba(232,88,88,0.14); border: 1px solid rgba(232,88,88,0.4); }
+  .badge.BE { color: var(--be); background: rgba(94,200,255,0.12); border: 1px solid rgba(94,200,255,0.4); }
+  .badge.TRAIL { color: var(--trail); background: rgba(201,162,39,0.14); border: 1px solid rgba(201,162,39,0.45); }
+  .badge.MANUAL, .badge.RESET, .badge.UNKNOWN {
+    color: var(--muted); background: rgba(139,149,165,0.1); border: 1px solid rgba(139,149,165,0.35);
+  }
+  .empty {
+    color: var(--muted); padding: 48px 16px; text-align: center; font-size: 15px;
+  }
+
+  /* PnL Calendar tab */
+  #pnl-wrap {
+    height: 100%; overflow: auto; padding: 14px 16px 28px;
+  }
+  #pnl-strip {
+    display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center;
+    margin-bottom: 16px; padding: 12px 14px;
+    background: var(--panel); border: 1px solid var(--line); border-radius: 12px;
+  }
+  #pnl-strip .chip {
+    display: flex; flex-direction: column; gap: 2px; min-width: 148px;
+  }
+  #pnl-strip .chip .lbl {
+    color: var(--muted); font-size: 11px; font-weight: 600;
+    letter-spacing: 0.04em; text-transform: uppercase;
+  }
+  #pnl-strip .chip .val {
+    font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums;
+  }
+  #pnl-strip .meta {
+    color: var(--muted); font-size: 12px; margin-left: auto;
+    max-width: 420px; text-align: right; line-height: 1.35;
+  }
+  #pnl-cal-head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    margin: 4px 0 10px;
+  }
+  #pnl-cal-head h2 {
+    margin: 0; font-size: 16px; font-weight: 700; letter-spacing: 0.02em;
+  }
+  #pnl-cal-head .sub { color: var(--muted); font-size: 12px; }
+  .cal-grid {
+    display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px;
+    max-width: 920px;
+  }
+  .cal-dow {
+    text-align: center; color: var(--muted); font-size: 11px; font-weight: 600;
+    padding: 6px 0 2px; letter-spacing: 0.04em;
+  }
+  .cal-cell {
+    min-height: 98px; border-radius: 10px; border: 1px solid var(--line);
+    background: var(--card); padding: 8px 8px 6px;
+    display: flex; flex-direction: column; gap: 2px;
+  }
+  .cal-cell.blank { visibility: hidden; border: 0; background: transparent; }
+  .cal-cell.future { opacity: 0.45; }
+  .cal-cell.today {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px rgba(90,160,255,0.35);
+  }
+  .cal-cell .d {
+    color: var(--muted); font-size: 11px; font-weight: 600;
+  }
+  .cal-cell.today .d { color: var(--accent); }
+  .cal-cell .pnl {
+    font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums;
+  }
+  .cal-cell .pnl.zero { color: var(--muted); font-weight: 500; }
+  .cal-cell .pnl .cf {
+    font-size: 11px; font-weight: 600; color: var(--muted);
+    margin-left: 3px; white-space: nowrap;
+  }
+  .cal-cell .pace {
+    font-size: 11px; font-weight: 600; font-variant-numeric: tabular-nums;
+    letter-spacing: 0.01em;
+  }
+  .cal-cell .pace.zero { color: var(--muted); font-weight: 500; }
+  .cal-cell .pace .tag {
+    color: var(--muted); font-weight: 600; font-size: 10px;
+    letter-spacing: 0.03em; text-transform: uppercase; margin-right: 3px;
+  }
+  .cal-cell .subn {
+    color: var(--muted); font-size: 10px; margin-top: auto;
+  }
+  .cal-cell.up-bg { background: rgba(46,196,126,0.08); }
+  .cal-cell.dn-bg { background: rgba(232,88,88,0.08); }
+
+  #tabs { align-items: flex-end; }
+  #soft-offline-badge {
+    margin-left: auto;
+    margin-bottom: 8px;
+    margin-right: 4px;
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 12px; border-radius: 999px;
+    font: 700 11px/1 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    letter-spacing: 0.04em; text-transform: uppercase;
+    border: 1px solid var(--line); color: var(--muted);
+    background: rgba(139,149,165,0.08);
+    user-select: none;
+  }
+  #soft-offline-badge .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--muted); flex: 0 0 auto;
+  }
+  #soft-offline-badge.live {
+    color: #ffb84d;
+    border-color: rgba(255,184,77,0.45);
+    background: rgba(255,184,77,0.12);
+  }
+  #soft-offline-badge.live .dot {
+    background: #ffb84d;
+    box-shadow: 0 0 0 3px rgba(255,184,77,0.22);
+  }
+  #soft-offline-badge .sub {
+    font-weight: 600; text-transform: none; letter-spacing: 0;
+    color: inherit; opacity: 0.75; font-size: 10px;
+  }
+
+  /* Mind tab — live trader-thought stream (mind/MIND_STREAM.jsonl) */
+  #mind-wrap {
+    height: 100%; display: flex; flex-direction: column;
+    padding: 12px 14px 24px; gap: 10px; overflow-y: auto;
+  }
+  #mind-head {
+    display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;
+    color: var(--muted); font-size: 12px;
+  }
+  #mind-head strong { color: var(--white); font-weight: 600; }
+  #mind-box {
+    flex: 0 0 auto; height: 44vh; min-height: 220px; overflow-y: auto;
+    background: var(--panel); border: 1px solid var(--line); border-radius: 12px;
+    padding: 10px 14px;
+    font: 13px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  #mind-box .mline {
+    display: grid; grid-template-columns: 74px 92px 1fr; gap: 10px;
+    padding: 3px 0 3px 8px; border-left: 2px solid transparent;
+    border-bottom: 1px solid rgba(42,51,68,0.45);
+  }
+  #mind-box .mline:last-child { border-bottom: 0; }
+  #mind-box .t { color: var(--muted); font-variant-numeric: tabular-nums; }
+  #mind-box .a { color: var(--white); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  #mind-box .x {
+    color: #cfd6e2; white-space: pre-wrap; word-break: break-word;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+  #mind-box .k { font-size: 10px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; margin-right: 6px; opacity: 0.85; }
+  #mind-box .mline.close  { border-left-color: rgba(201,162,39,0.6); }  .mline.close  .k { color: var(--trail); }
+  #mind-box .mline.pick   { border-left-color: rgba(46,196,126,0.6); }  .mline.pick   .k { color: var(--bull); }
+  #mind-box .mline.skip   { border-left-color: rgba(139,149,165,0.45);} .mline.skip   .k { color: var(--muted); }
+  #mind-box .mline.soft   { border-left-color: rgba(94,200,255,0.6); }  .mline.soft   .k { color: var(--be); }
+  #mind-box .mline.ideology { border-left-color: rgba(180,140,255,0.6);} .mline.ideology .k { color: #b48cff; }
+  #mind-box .mline.every9 { border-left-color: rgba(255,184,77,0.6); }  .mline.every9 .k { color: #ffb84d; }
+  #mind-box .mline.out_of_scope{ border-left-color: rgba(255,170,60,0.8); } .mline.out_of_scope .k { color: #ffaa3c; }
+  #mind-box .mline.thought{ border-left-color: rgba(90,160,255,0.6); }  .mline.thought .k { color: var(--accent); }
+  #mind-panels {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 10px;
+  }
+  .mpanel {
+    background: var(--panel); border: 1px solid var(--line); border-radius: 12px;
+    padding: 10px 14px 12px; min-width: 0;
+  }
+  .mpanel h3 {
+    margin: 0 0 8px; font-size: 12px; font-weight: 700; letter-spacing: 0.04em;
+    text-transform: uppercase; color: var(--muted); display: flex; justify-content: space-between; gap: 8px;
+  }
+  .mpanel h3 .sub { text-transform: none; letter-spacing: 0; font-weight: 600; opacity: 0.8; }
+  .mpanel .body { max-height: 340px; overflow-y: auto; font-size: 12.5px; line-height: 1.45; color: #cfd6e2; }
+  .mpanel ul { margin: 2px 0 8px; padding-left: 18px; }
+  .mpanel li { margin: 2px 0; }
+  .mpanel .lbl2 { color: var(--muted); font-size: 11px; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase; margin: 8px 0 2px; }
+  .mpanel .chipline { display: flex; flex-wrap: wrap; gap: 6px 14px; color: var(--muted); font-size: 12px; margin-bottom: 4px; }
+  .mpanel .chipline strong { color: var(--white); }
+  .mpanel details { border-top: 1px solid rgba(42,51,68,0.6); padding: 4px 0; }
+  .mpanel summary { cursor: pointer; color: var(--white); font-weight: 600; }
+  .mpanel details pre { white-space: pre-wrap; word-break: break-word; margin: 4px 0 6px; font: 12px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #cfd6e2; }
+  .mpanel .ph { color: var(--bull); } .mpanel .off { color: var(--muted); }
+  .mpanel .idea { padding: 4px 0; border-bottom: 1px solid rgba(42,51,68,0.45); }
+  .mpanel .idea:last-child { border-bottom: 0; }
+  .mpanel .idea .t { color: var(--muted); font-size: 11px; margin-right: 8px; }
+  .mpanel .ro { color: var(--muted); font-size: 11px; margin-top: 6px; }
+  #mind-box .quiet { color: var(--muted); padding: 40px 0; text-align: center; font-size: 15px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+  /* Liquidation chip hotspot (Chill 2026-10-14): tooltip + MT4-style red pulse */
+  #liq-hot { position:absolute; left:30.5%; top:0.6%; width:13.5%; height:8.4%; border-radius:8px; cursor:help; }
+  #liq-hot.red { animation: liqpulse 1s ease-in-out infinite; }
+  #liq-hot.amber { box-shadow: 0 0 0 2px rgba(240,176,64,.55) inset; }
+  @keyframes liqpulse { 0%,100% { box-shadow:0 0 0 2px rgba(232,88,88,.9) inset, 0 0 10px rgba(232,88,88,.7);} 50% { box-shadow:0 0 0 2px rgba(232,88,88,.15) inset, 0 0 0 rgba(232,88,88,0);} }
+</style>
+</head>
+<body>
+<div id="chrome">
+  <div id="tabs" role="tablist">
+    <button class="tab active" data-tab="live" role="tab" aria-selected="true">Paper Positions</button>
+    <button class="tab" data-tab="acct" role="tab" aria-selected="false">Live Account (Bitunix)</button>
+    <button class="tab" data-tab="history" role="tab" aria-selected="false">Position History</button>
+    <button class="tab" data-tab="pnl" role="tab" aria-selected="false">PnL Calendar</button>
+    <button class="tab" data-tab="mind" role="tab" aria-selected="false">Mind</button>
+    <div id="soft-offline-badge" title="Soft Offline fallback status" aria-live="polite">
+      <span class="dot" aria-hidden="true"></span>
+      <span class="lbl">Soft Offline · —</span>
+      <span class="sub"></span>
+    </div>
+  </div>
+  <div id="panels">
+    <div id="panel-live" class="panel active" role="tabpanel">
+      <div id="board-wrap" style="position:relative;display:inline-block;max-width:100%">
+      <img id="board" alt="Live Positions board" src="positions-board.png"/>
+      <div id="liq-hot" title="Liquidation: loading…"></div>
+      <div id="slot-split" style="position:absolute;top:84px;left:190px;z-index:5;font:600 12px system-ui,sans-serif;background:rgba(0,0,0,.65);color:#e6e6e6;padding:2px 8px;border-radius:6px" title="Chill 11:26 AM 10/19: slots 1-8 scanner, slot 9 Apothua only">Paper –/8 · Apothua –/1</div>
+      </div>
+    </div>
+    <div id="panel-acct" class="panel" role="tabpanel">
+      <div id="acct-board-wrap" style="position:relative;display:inline-block;max-width:100%">
+      <img id="acct-board" alt="Live Account (Bitunix) board" src="live-account-board.png"/>
+      </div>
+      <div id="acct-summary" class="empty" style="display:none">Live account board unavailable.</div>
+    </div>
+    <div id="panel-history" class="panel" role="tabpanel">
+      <div id="history-wrap">
+        <div id="hist-summary">Loading history…</div>
+        <div id="hist-table"></div>
+      </div>
+    </div>
+    <div id="panel-pnl" class="panel" role="tabpanel">
+      <div id="pnl-wrap">
+        <div id="pnl-strip">Loading calendar…</div>
+        <div id="pnl-cal-head">
+          <h2 id="pnl-month-label">—</h2>
+          <div class="sub" id="pnl-month-sub"></div>
+        </div>
+        <div id="pnl-grid" class="cal-grid"></div>
+      </div>
+    </div>
+    <div id="panel-mind" class="panel" role="tabpanel">
+      <div id="mind-wrap">
+        <div id="mind-head"><span>Trader thought · LeBron + Apothua</span><span id="mind-meta"></span></div>
+        <div id="mind-box" aria-live="polite"><div class="quiet">Mind is quiet.</div></div>
+        <div id="mind-panels">
+          <div class="mpanel" id="mp-soft"><h3>Current Soft Growth <span class="sub"></span></h3><div class="body">Loading…</div></div>
+          <div class="mpanel" id="mp-aplus"><h3>A+ Criteria <span class="sub"></span></h3><div class="body">Loading…</div></div>
+          <div class="mpanel" id="mp-ideo"><h3>Ideology <span class="sub"></span></h3><div class="body">Loading…</div></div>
+          <div class="mpanel" id="mp-shadow"><h3>Shadow account (live balance, never sends orders) <span class="sub"></span></h3><div class="body">Loading…</div></div>
+          <div class="mpanel" id="mp-ideas"><h3>Out-of-scope ideas <span class="sub"></span></h3><div class="body">No ideas yet.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+const img = document.getElementById('board');
+const histSummary = document.getElementById('hist-summary');
+const histTable = document.getElementById('hist-table');
+
+function bust(url) {
+  return url + (url.includes('?') ? '&' : '?') + 'ts=' + Date.now();
+}
+function fmtPx(v) {
+  if (v == null || v === '') return '—';
+  const n = Number(v);
+  if (!Number.isFinite(n)) return String(v);
+  if (Math.abs(n) >= 100) return n.toFixed(2);
+  if (Math.abs(n) >= 1) return n.toFixed(4);
+  if (Math.abs(n) >= 0.01) return n.toFixed(5);
+  return n.toFixed(6);
+}
+function fmtUsd(v) {
+  if (v == null || !Number.isFinite(Number(v))) return '—';
+  const n = Number(v);
+  const sign = n > 0 ? '+' : '';
+  return sign + '$' + n.toFixed(2);
+}
+function fmtPct(v) {
+  if (v == null || !Number.isFinite(Number(v))) return '—';
+  const n = Number(v);
+  const sign = n > 0 ? '+' : '';
+  return sign + n.toFixed(2) + '%';
+}
+function fmtDur(sec) {
+  if (sec == null || !Number.isFinite(Number(sec))) return '—';
+  let s = Math.max(0, Math.round(Number(sec)));
+  const h = Math.floor(s / 3600); s %= 3600;
+  const m = Math.floor(s / 60); s %= 60;
+  if (h) return h + 'h ' + m + 'm';
+  if (m) return m + 'm ' + s + 's';
+  return s + 's';
+}
+/* Chill confluence grade colors — same ladder as render_last9.score_grade */
+const GRADE_HEX = {
+  'A+': '#4EFF9A', 'A': '#2EC47E', 'A-': '#1FA866',
+  'B+': '#7EE8B0', 'B': '#B4D84A', 'B-': '#8AA82E',
+  'C+': '#F5E040', 'C': '#E8B820', 'C-': '#C98A14',
+  'D+': '#FF9A4A', 'D': '#F07828', 'D-': '#D05018',
+  'F': '#E85858', '—': '#8B95A5'
+};
+function gradeLetter(score) {
+  if (score == null || score === '') return '—';
+  const s = Math.max(0, Math.min(100, Math.round(Number(score))));
+  if (!Number.isFinite(s)) return '—';
+  if (s >= 100) return 'A+';
+  if (s >= 93) return 'A';
+  if (s >= 90) return 'A-';
+  if (s >= 87) return 'B+';
+  if (s >= 83) return 'B';
+  if (s >= 80) return 'B-';
+  if (s >= 77) return 'C+';
+  if (s >= 73) return 'C';
+  if (s >= 70) return 'C-';
+  if (s >= 67) return 'D+';
+  if (s >= 63) return 'D';
+  if (s >= 60) return 'D-';
+  return 'F';
+}
+function gradeHex(letter, score) {
+  const L = (score != null && score !== '') ? gradeLetter(score)
+    : ((letter && letter !== '') ? String(letter) : '—');
+  return GRADE_HEX[L] || GRADE_HEX['—'];
+}
+function gradeBadgeHtml(grade, score) {
+  let letter = grade || '—';
+  let label;
+  if (score != null && score !== '') {
+    letter = gradeLetter(score);
+    label = letter + '·' + Number(score);
+  } else {
+    label = '—';
+    letter = '—';
+  }
+  const hex = gradeHex(letter, score);
+  return '<span class="grade" style="color:' + hex + '">' + label + '</span>';
+}
+
+document.querySelectorAll('.tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(b => {
+      b.classList.toggle('active', b === btn);
+      b.setAttribute('aria-selected', b === btn ? 'true' : 'false');
+    });
+    const id = btn.dataset.tab;
+    document.getElementById('panel-live').classList.toggle('active', id === 'live');
+    document.getElementById('panel-history').classList.toggle('active', id === 'history');
+    document.getElementById('panel-pnl').classList.toggle('active', id === 'pnl');
+    document.getElementById('panel-mind').classList.toggle('active', id === 'mind');
+    document.getElementById('panel-acct').classList.toggle('active', id === 'acct');
+    if (id === 'acct') refreshAcct();
+    if (id === 'history') refreshHistory();
+    if (id === 'pnl') refreshPnl();
+    if (id === 'mind') { mindStick = true; refreshMind(); refreshMindPanels(); }
+  });
+});
+
+function refreshPng() {
+  const next = new Image();
+  next.onload = () => { img.src = next.src; };
+  next.src = bust('positions-board.png');
+}
+
+async function refreshHistory() {
+  try {
+    const r = await fetch(bust('position-history.json'), {cache: 'no-store'});
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const d = await r.json();
+    const rows = d.positionList || [];
+    const bt = d.by_trigger || {};
+    const trigBits = Object.keys(bt).sort().map(k => k + ' ' + bt[k]).join(' · ') || '—';
+    histSummary.innerHTML =
+      '<span>Updated <strong>' + (d.updated_iso || '—') + '</strong></span>' +
+      '<span>Closed <strong>' + (d.n || 0) + '</strong></span>' +
+      '<span>Wins <strong class="up">' + (d.wins || 0) + '</strong> · Losses <strong class="dn">' + (d.losses || 0) + '</strong></span>' +
+      '<span>Realized <strong class="' + ((d.realized_pnl_usd || 0) >= 0 ? 'up' : 'dn') + '">' +
+        fmtUsd(d.realized_pnl_usd) + '</strong></span>' +
+      '<span>Exits <strong>' + trigBits + '</strong></span>';
+    if (!rows.length) {
+      histTable.innerHTML = '<div class="empty">No closed paper positions yet.</div>';
+      return;
+    }
+    let html = '<table class="hist"><thead><tr>' +
+      '<th>Symbol</th><th>Side</th><th>Entry</th><th>Close</th>' +
+      '<th>Qty (notional)</th><th>Margin</th><th>Lev</th>' +
+      '<th>Realized PnL</th><th>Margin %</th><th>Fee</th><th>Funding</th>' +
+      '<th>Exit</th><th>Trail %</th><th>Kind</th>' +
+      '<th>Opened</th><th>Closed</th><th>Duration</th>' +
+      '</tr></thead><tbody>';
+    for (const row of rows) {
+      const pnl = Number(row.realizedPNL != null ? row.realizedPNL : row.pnl_usd);
+      const pct = Number(row.pnl_margin_pct);
+      const pnlCls = pnl >= 0 ? 'up' : 'dn';
+      const pctCls = pct >= 0 ? 'up' : 'dn';
+      const side = (row.side_ui || '—').toUpperCase();
+      const sideCls = side === 'LONG' ? 'long' : (side === 'SHORT' ? 'short' : '');
+      const trig = row.exit_trigger || 'UNKNOWN';
+      const trail = row.trail_pct != null ? (Number(row.trail_pct) + '%') : '—';
+      html += '<tr>' +
+        '<td><strong>' + (row.symbol || row.name || '—') + '</strong></td>' +
+        '<td><span class="badge ' + sideCls + '">' + side + '</span></td>' +
+        '<td>' + fmtPx(row.entryPrice != null ? row.entryPrice : row.entry) + '</td>' +
+        '<td>' + fmtPx(row.closePrice != null ? row.closePrice : row.exit) + '</td>' +
+        '<td>' + fmtPx(row.maxQty != null ? row.maxQty : row.notional) + '</td>' +
+        '<td>' + (row.margin != null ? ('$' + Number(row.margin).toFixed(2)) : '—') + '</td>' +
+        '<td>' + (row.leverage != null ? (row.leverage + '×') : '—') + '</td>' +
+        '<td class="' + pnlCls + '">' + fmtUsd(pnl) + '</td>' +
+        '<td class="' + pctCls + '">' + fmtPct(pct) + '</td>' +
+        '<td>' + (row.fee != null ? ('$' + Number(row.fee).toFixed(4)) : '—') + '</td>' +
+        '<td>' + (row.funding != null ? Number(row.funding).toFixed(4) : '0.0000') + '</td>' +
+        '<td><span class="badge ' + trig + '">' + trig + '</span></td>' +
+        '<td>' + trail + '</td>' +
+        '<td>' + (row.kind || '—') + '</td>' +
+        '<td>' + (row.opened_et || '—') + '</td>' +
+        '<td>' + (row.closed_et || '—') + '</td>' +
+        '<td>' + fmtDur(row.duration_sec) + '</td>' +
+        '</tr>';
+    }
+    html += '</tbody></table>';
+    histTable.innerHTML = html;
+  } catch (e) {
+    histSummary.textContent = 'Waiting for history… (' + e.message + ')';
+    histTable.innerHTML = '';
+  }
+}
+
+
+const MONTH_NAMES = ['January','February','March','April','May','June',
+  'July','August','September','October','November','December'];
+const DOW = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+
+function fmtUsdSigned(v) {
+  if (v == null || !Number.isFinite(Number(v))) return '—';
+  const n = Number(v);
+  if (Math.abs(n) < 0.005) return '$0.00';
+  const sign = n > 0 ? '+' : '−';
+  const body = Math.abs(n).toLocaleString('en-US', {
+    minimumFractionDigits: 2, maximumFractionDigits: 2
+  });
+  return sign + '$' + body;
+}
+function fmtR(v) {
+  if (v == null || !Number.isFinite(Number(v))) return '—';
+  const n = Number(v);
+  const sign = n > 0 ? '+' : (n < 0 ? '' : '');
+  return sign + n.toFixed(2) + 'R';
+}
+
+async function refreshPnl() {
+  const strip = document.getElementById('pnl-strip');
+  const grid = document.getElementById('pnl-grid');
+  const monthLabel = document.getElementById('pnl-month-label');
+  const monthSub = document.getElementById('pnl-month-sub');
+  try {
+    const r = await fetch(bust('mind/PNL_CALENDAR.json'), {cache: 'no-store'});
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const d = await r.json();
+    const s7 = d.pnl_7d || {};
+    const s30 = d.pnl_30d || {};
+    const today = d.today || {};
+    const cls = (v) => (Number(v) > 0 ? 'up' : (Number(v) < 0 ? 'dn' : ''));
+    const paceLine = (pnl, pace, note) =>
+      '<span class="lbl" style="margin-top:8px">Pace</span>' +
+      '<span class="val ' + cls(pace) + '">' + fmtUsdSigned(pace) + '</span>' +
+      '<span class="subn" style="color:var(--muted);font-size:11px">' + note + '</span>';
+    const n7 = (s7.pace_n != null ? s7.pace_n : (s7.days || 7));
+    const n30 = (s30.pace_n != null ? s30.pace_n : (s30.days || 30));
+    strip.innerHTML =
+      '<div class="chip"><span class="lbl">1-day PnL</span>' +
+        '<span class="val ' + cls(today.pnl_usd) + '">' + fmtUsdSigned(today.pnl_usd) + '</span>' +
+        '<span class="subn" style="color:var(--muted);font-size:11px">' +
+          (today.date || '—') + ' · ' + (today.n || 0) + ' closes</span>' +
+        paceLine(today.pnl_usd, today.pace_usd,
+          'live · locks 20:00 ET · day × 365') +
+        '</div>' +
+      '<div class="chip"><span class="lbl">7-day PnL</span>' +
+        '<span class="val ' + cls(s7.pnl_usd) + '">' + fmtUsdSigned(s7.pnl_usd) + '</span>' +
+        '<span class="subn" style="color:var(--muted);font-size:11px">' +
+          fmtR(s7.r) + ' · ' + (s7.n || 0) + ' closes</span>' +
+        paceLine(s7.pnl_usd, s7.pace_usd,
+          'avg day × 365 · N=' + n7) +
+        '</div>' +
+      '<div class="chip"><span class="lbl">30-day PnL</span>' +
+        '<span class="val ' + cls(s30.pnl_usd) + '">' + fmtUsdSigned(s30.pnl_usd) + '</span>' +
+        '<span class="subn" style="color:var(--muted);font-size:11px">' +
+          fmtR(s30.r) + ' · ' + (s30.n || 0) + ' closes</span>' +
+        paceLine(s30.pnl_usd, s30.pace_usd,
+          'avg day × 365 · N=' + n30) +
+        '</div>' +
+      '<div class="meta">Day = closes in [prev 20:00, this 20:00) ET · ' +
+        'Pace locks with that day at 20:00 ET · ' +
+        '1-day = PnL × 365 · 7/30 = (sum PnL / N) × 365 · ' +
+        'updated ' + (d.updated_iso || '—') +
+        '<br/>window ' + ((d.current_session_window || {}).start_et || '') +
+        ' → ' + ((d.current_session_window || {}).end_et || '') + '</div>';
+
+    const m = d.month || {};
+    const y = m.year, mo = m.month;
+    monthLabel.textContent = (MONTH_NAMES[(mo || 1) - 1] || '') + ' ' + (y || '');
+    monthSub.textContent = 'Session cutoff 20:00 ET · cell Pace = day PnL × 365 · locks with the day';
+
+    let g = '';
+    for (const dow of DOW) g += '<div class="cal-dow">' + dow + '</div>';
+    const cells = m.cells || [];
+    for (const c of cells) {
+      if (!c) {
+        g += '<div class="cal-cell blank"></div>';
+        continue;
+      }
+      const pnl = Number(c.pnl_usd || 0);
+      const empty = !!c.empty || c.n === 0;
+      let pnlCls = 'zero';
+      let bg = '';
+      if (!empty && pnl > 0) { pnlCls = 'up'; bg = ' up-bg'; }
+      else if (!empty && pnl < 0) { pnlCls = 'dn'; bg = ' dn-bg'; }
+      const fut = c.is_future ? ' future' : '';
+      const tod = c.is_today ? ' today' : '';
+      const pnlTxt = empty ? (c.is_future ? '—' : '$0') : fmtUsdSigned(pnl);
+      // $550 session day only (2026-10-03). Parenthetical is display-only.
+      // 7d/30d chips keep using actual pnl. Pace above stays day PnL × 365.
+      let cfHtml = '';
+      if (!c.is_future && c.counterfactual_pnl_usd != null &&
+          Number.isFinite(Number(c.counterfactual_pnl_usd))) {
+        cfHtml = ' <span class="cf" title="if never reset: actual × (pre-reset Balance / 550)">(' +
+          fmtUsdSigned(Number(c.counterfactual_pnl_usd)) + ')</span>';
+      }
+      let sub = empty
+        ? (c.is_future ? '' : 'no closes')
+        : ((c.n || 0) + ' close' + (c.n === 1 ? '' : 's') +
+           (c.r != null ? (' · ' + fmtR(c.r)) : ''));
+      if (cfHtml) sub = (sub ? sub + ' · ' : '') + 'no-reset × pre/550';
+      let paceHtml = '';
+      if (!c.is_future) {
+        const pace = (c.pace_usd == null) ? (pnl * 365) : Number(c.pace_usd);
+        const paceCls = (empty || Math.abs(pace) < 0.005) ? 'zero' : (pace > 0 ? 'up' : 'dn');
+        const lockTag = c.is_today ? 'live' : 'locked';
+        paceHtml = '<div class="pace ' + paceCls + '"><span class="tag">Pace</span>' +
+          fmtUsdSigned(pace) + ' · ' + lockTag + '</div>';
+      }
+      g += '<div class="cal-cell' + bg + fut + tod + '">' +
+        '<div class="d">' + c.day + '</div>' +
+        '<div class="pnl ' + pnlCls + '">' + pnlTxt + cfHtml + '</div>' +
+        paceHtml +
+        '<div class="subn">' + sub + '</div>' +
+        '</div>';
+    }
+    grid.innerHTML = g;
+  } catch (e) {
+    strip.textContent = 'Waiting for PnL calendar… (' + e.message + ')';
+    grid.innerHTML = '';
+  }
+}
+
+
+async function refreshSoftOfflineBadge() {
+  const el = document.getElementById('soft-offline-badge');
+  if (!el) return;
+  const lbl = el.querySelector('.lbl');
+  const sub = el.querySelector('.sub');
+  try {
+    const r = await fetch(bust('mind/SOFT_OFFLINE_FALLBACK.json'), {cache: 'no-store'});
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const d = await r.json();
+    const armed = !!d.armed;
+    const pct = d.usage_remaining_pct;
+    const thr = (d.threshold_pct != null ? Number(d.threshold_pct) : 2);
+    const live = armed || (pct != null && Number(pct) <= thr);
+    el.classList.toggle('live', live);
+    lbl.textContent = live ? 'Soft Offline · LIVE' : 'Soft Offline · off';
+    let tip = live
+      ? (d.reason || 'box Soft/Ideology owns every-9')
+      : 'agent Soft (prefer while usage > ' + thr + '%)';
+    if (pct != null && Number.isFinite(Number(pct))) {
+      tip += ' · usage ' + Number(pct).toFixed(1) + '%';
+    }
+    sub.textContent = live ? (d.armed_ts_et ? ('since ' + String(d.armed_ts_et).replace(/\s*ET$/, '')) : '') : '';
+    el.title = tip;
+  } catch (e) {
+    el.classList.remove('live');
+    lbl.textContent = 'Soft Offline · —';
+    sub.textContent = '';
+    el.title = 'Soft Offline status unavailable (' + e.message + ')';
+  }
+}
+
+const MIND_MAX = 200;
+let mindStick = true;
+let mindLastSig = '';
+function escHtml(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+(function () {
+  const box = document.getElementById('mind-box');
+  if (box) box.addEventListener('scroll', () => {
+    mindStick = (box.scrollHeight - box.scrollTop - box.clientHeight) < 24;
+  });
+})();
+async function refreshMind() {
+  const box = document.getElementById('mind-box');
+  const meta = document.getElementById('mind-meta');
+  if (!box) return;
+  let rows = [];
+  try {
+    const r = await fetch(bust('mind/MIND_STREAM.jsonl'), {cache: 'no-store'});
+    if (r.ok) {
+      const txt = await r.text();
+      const lines = txt.split('\n').filter(l => l.trim()).slice(-MIND_MAX);
+      for (const l of lines) { try { rows.push(JSON.parse(l)); } catch (e) {} }
+    }
+  } catch (e) { rows = []; }
+  const sig = rows.length + '|' + (rows.length ? (rows[rows.length - 1].ts + rows[rows.length - 1].text) : '');
+  if (sig === mindLastSig) return;
+  mindLastSig = sig;
+  if (!rows.length) {
+    box.innerHTML = '<div class="quiet">Mind is quiet.</div>';
+    meta.textContent = '';
+    return;
+  }
+  let html = '';
+  for (const d of rows) {
+    const kind = String(d.kind || 'thought').replace(/[^a-z0-9]/gi, '');
+    const et = String(d.ts_et || '');
+    const hm = (et.match(/(\d{2}:\d{2}:\d{2})/) || [,''])[1];
+    html += '<div class="mline ' + kind + '" title="' + escHtml(et + (d.ref ? ' · ' + d.ref : '')) + '">' +
+      '<span class="t">' + escHtml(hm ? hm.slice(0, 5) + ' ET' : '—') + '</span>' +
+      '<span class="a">' + escHtml(d.author || '—') + '</span>' +
+      '<span class="x"><span class="k">' + escHtml(kind) + '</span>' +
+        (d.symbol ? '<strong>' + escHtml(String(d.symbol).replace(/USDT$/, '')) + '</strong> · ' : '') +
+        escHtml(d.text || '') + '</span>' +
+      '</div>';
+  }
+  box.innerHTML = html;
+  const last = rows[rows.length - 1];
+  meta.innerHTML = '<strong>' + rows.length + '</strong> recent · last ' + escHtml(last.ts_et || '—');
+  if (mindStick) box.scrollTop = box.scrollHeight;
+}
+
+let mindPanelsSig = '';
+const mindIdeoOpen = {};
+function setPanel(id, sub, html) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.querySelector('h3 .sub').textContent = sub || '';
+  const body = el.querySelector('.body');
+  const st = body.scrollTop;
+  body.innerHTML = html;
+  body.scrollTop = st;
+}
+function fmtR2(v) { const n = Number(v); return Number.isFinite(n) ? ((n > 0 ? '+' : '') + n.toFixed(2) + 'R') : '—'; }
+async function refreshMindPanels() {
+  let d;
+  try {
+    const r = await fetch(bust('mind/MIND_PANELS.json'), {cache: 'no-store'});
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    d = await r.json();
+  } catch (e) {
+    for (const id of ['mp-soft','mp-aplus','mp-ideo']) setPanel(id, '', '<span class="off">Waiting for panels… (' + escHtml(e.message) + ')</span>');
+    return;
+  }
+  const sig = d.generated_et + '|' + JSON.stringify(d.src_mtimes || {});
+  if (sig === mindPanelsSig) return;
+  mindPanelsSig = sig;
+  // (a) Soft growth
+  const s = d.soft || {};
+  let h = '<div class="chipline"><span>Kept closes <strong>' + escHtml(s.n_kept ?? '—') + '</strong></span>' +
+    '<span>Last 13 avg <strong>' + fmtR2(s.last13_avg_r) + '</strong>' + (s.last13_at_close_count != null ? ' at close ' + s.last13_at_close_count : '') + '</span>' +
+    '<span>Baseline <strong>' + fmtR2(s.baseline_avg_r) + '</strong></span></div>';
+  if (s.bias_bars_label) h += '<div class="lbl2">Bias harden / un-harden bars</div><div class="ro">' + escHtml(s.bias_bars_label) + '</div>';
+  h += '<div class="lbl2">Active flags</div><ul>' + ((s.active_flags || []).map(f => '<li>' + escHtml(f.text) + '</li>').join('') || '<li class="off">none</li>') + '</ul>';
+  h += '<div class="lbl2">Ranking unlocks</div><ul>' + ((s.unlocks || []).map(u => '<li>' + escHtml(u) + '</li>').join('') || '<li class="off">none</li>') + '</ul>';
+  const cd = s.combo_demotions || [];
+  h += '<div class="lbl2">Provisional combo demotions (' + cd.length + ')</div><ul>' +
+    (cd.map(c => '<li><strong>' + escHtml(c.label) + '</strong> · n=' + escHtml(c.n ?? '—') + ' · avg ' + fmtR2(c.avg_net_r) + ' net · sum ' + fmtR2(c.sum_net_r) + (c.provisional ? ' · provisional' : '') + '</li>').join('') || '<li class="off">none</li>') + '</ul>';
+  h += '<div class="lbl2">Floors</div><ul>' + ((s.floors || []).map(f => '<li title="' + escHtml(f.note || '') + '"><span class="' + (f.on ? 'ph' : 'off') + '">' + (f.on ? 'ON' : 'off') + '</span> ' + escHtml(f.floor) + (f.applied_et ? ' · ' + escHtml(String(f.applied_et).slice(0, 19)) : '') + '</li>').join('') || '<li class="off">none</li>') + '</ul>';
+  if (s.next_best) h += '<div class="ro">Next Soft step: ' + escHtml(s.next_best) + '</div>';
+  setPanel('mp-soft', 'updated ' + (s.updated_et || '—'), h);
+  // (c) A+ criteria
+  const a = d.a_plus || {};
+  h = '<div class="chipline"><span>' + escHtml(a.scale || '') + '</span></div>';
+  h += '<div class="lbl2">A+ combos</div><ul>' + ((a.a_plus_combos || []).map(c => '<li><strong>' + escHtml(c.label) + '</strong> · <span class="' + (c.status === 'placeholder' ? '' : 'ph') + '">' + escHtml(c.role || c.status) + '</span>' +
+    ((c.tfs && c.tfs.length) ? ' · TFs ' + escHtml(c.tfs.join(', ')) : '') + '<br/><span class="off">' + escHtml(c.evidence || '') + '</span></li>').join('') || '<li class="off">none</li>') + '</ul>';
+  if (a.placeholder_rule) h += '<div class="lbl2">Placeholder rule</div><div>' + escHtml(a.placeholder_rule) + '</div>';
+  if (a.proof_bar) h += '<div class="lbl2">Proof bar</div><div>' + escHtml(a.proof_bar) + '</div>';
+  if (a.cont_profile) h += '<div class="lbl2">Cont yardstick (high-A, cap 92)</div><div>Counts ' + escHtml((a.cont_profile.cont_counts || []).join('/')) + ' · ≥' + escHtml(a.cont_profile.min_tfs) + ' TFs · unison ≥' + escHtml(a.cont_profile.min_unison) + '</div>';
+  if ((a.combo_floors || []).length) h += '<div class="lbl2">Approved combo floors</div><ul>' + a.combo_floors.map(f => '<li>' + escHtml(f.combo) + ' · floor ' + escHtml(f.floor) + ' / cap ' + escHtml(f.cap) + (f.scope ? ' · ' + escHtml(f.scope) : '') + '</li>').join('') + '</ul>';
+  setPanel('mp-aplus', 'updated ' + (a.updated_et || '—'), h);
+  // (b) Ideology (collapsible sections; keeps user's open/closed choice)
+  const ideo = d.ideology || {};
+  document.querySelectorAll('#mp-ideo details').forEach(el => { mindIdeoOpen[el.dataset.h] = el.open; });
+  h = (ideo.sections || []).map(sec => {
+    const open = (sec.heading in mindIdeoOpen) ? mindIdeoOpen[sec.heading] : !!sec.open;
+    return '<details data-h="' + escHtml(sec.heading) + '"' + (open ? ' open' : '') + '><summary>' + escHtml(sec.heading) + '</summary><pre>' + escHtml(sec.text) + '</pre></details>';
+  }).join('') || '<span class="off">IDEOLOGY.md not found.</span>';
+  setPanel('mp-ideo', 'updated ' + (ideo.updated_et || '—'), h);
+  // (d) Ideas — display only
+  const ideas = (d.ideas || []).slice(-50);
+  h = ideas.length ? ideas.slice().reverse().map(i => '<div class="idea"><span class="t">' + escHtml(String(i.ts_et || '').slice(5, 16)) + ' · ' + escHtml(i.author || '') + '</span>' + (i.symbol ? '<strong>' + escHtml(String(i.symbol).replace(/USDT$/, '')) + '</strong> · ' : '') + escHtml(i.text || '') + '</div>').join('')
+    : '<span class="off">No ideas yet.</span>';
+  h += '<div class="ro">Display only — ideas never auto-apply to Soft or Ideology.</div>';
+  setPanel('mp-ideas', ideas.length + ' shown', h);
+}
+
+let _tk = 0;
+function tick() {
+  refreshPng();                       // paper positions: every 1s (changes each paper tick)
+  const heavy = (_tk++ % 3 === 0);    // history / PnL / Mind / badge files are big: every 3s
+  if (heavy) refreshSoftOfflineBadge();
+  if (heavy && document.getElementById('panel-history').classList.contains('active')) {
+    refreshHistory();
+  }
+  if (heavy && document.getElementById('panel-pnl').classList.contains('active')) {
+    refreshPnl();
+  }
+  if (heavy && document.getElementById('panel-mind').classList.contains('active')) {
+    refreshMind();
+    refreshMindPanels();
+  }
+}
+// Deep link: live-positions.html#mind (also #history, #pnl) opens that tab.
+(function () {
+  const h = (location.hash || '').replace('#', '');
+  const b = h && document.querySelector('.tab[data-tab="' + h + '"]');
+  if (b) b.click();
+})();
+tick();
+setInterval(tick, 1000)  /* 10/19: 1s poll (was 2.5s) */;
+
+async function loadShadow() {
+  try {
+    const r = await fetch(bust('positions-live.json'), {cache: 'no-store'});
+    const d = await r.json(); const s = d.shadow; const el = document.querySelector('#mp-shadow .body');
+    if (!s) { el.textContent = 'No shadow data yet.'; return; }
+    const g = d.paper_live_regime || {};
+    el.textContent = `Balance $${s.balance} · Equity $${s.equity} · Available $${s.available} · start $${Number(s.start_balance).toFixed(4)} · ` +
+      `${s.n_open} open (${(s.opens||[]).join(', ')}) · ${s.n_closed} closed · ${s.n_skipped} skipped (min qty) · ${s.n_liquidations} cross liquidations · ` +
+      `regime ${g.id||''} fee ${(g.fee_rate*100||0).toFixed(3)}%/side, stop slip ${(g.stop_slip_frac*100||0).toFixed(0)}% of gap`;
+  } catch (e) {}
+}
+loadShadow(); setInterval(loadShadow, 10000);
+async function loadLiq() {
+  try {
+    const r = await fetch(bust('positions-live.json'), {cache: 'no-store'});
+    const d = await r.json(); const L = d.liquidation; const el = document.getElementById('liq-hot');
+    { const ss = document.getElementById('slot-split'); if (ss) { const ps = d.positions || []; const na = ps.filter(p => (p.source||'') === 'apothua').length; ss.textContent = `Paper ${ps.length - na}/8 · Apothua ${na}/1`; } }
+    if (!el) return;
+    el.className = L ? (L.state || '') : '';
+    if (!L) { el.title = 'Liquidation: flat, no opens'; return; }
+    const th = L.thresholds || {};
+    const lines = (d.positions || []).map(p => `${(p.symbol||'').replace('USDT','')} ${p.side}: liq ${p.liq_price == null ? 'none (cross cushion covers it)' : p.liq_price} · ${p.distance_to_liq_pct == null ? '—' : p.distance_to_liq_pct.toFixed(2) + '%'} away · MMR ${((p.liq_mmr||0)*100).toFixed(2)}%`);
+    el.title = `Margin level (liq measure) ${L.margin_level_pct}% (equity $${L.equity} ÷ maintenance margin $${L.maint_margin_total}) · same number the ML guard reads\n` +
+      `Equity / used margin ${L.equity_used_pct}% (used margin $${L.used_margin}) · cross · ${L.source}\n` +
+      `Amber: ML ≤${th.margin_level_amber}% or liq ≤${th.liq_dist_amber}% · Red: ML ≤${th.margin_level_red}% or liq ≤${th.liq_dist_red}%\n\n` + lines.join('\n');
+  } catch (e) {}
+}
+loadLiq(); setInterval(loadLiq, 1000);
+// Live Account (Bitunix) tab: same board as Paper Positions, rendered from live-account.json
+// (read-only export) by live-mirror/render_live_account_board.py into live-account-board.png.
+const acctImg = document.getElementById('acct-board');
+function refreshAcct() {
+  const next = new Image();
+  next.onload = () => { acctImg.src = next.src; acctImg.style.display = ''; document.getElementById('acct-summary').style.display = 'none'; };
+  next.onerror = () => { if (!acctImg.naturalWidth) { acctImg.style.display = 'none'; document.getElementById('acct-summary').style.display = ''; } };
+  next.src = bust('live-account-board.png');
+}
+setInterval(() => { if (document.getElementById('panel-acct').classList.contains('active')) refreshAcct(); }, 2000);
+</script>
+</body>
+</html>

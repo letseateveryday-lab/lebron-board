@@ -1,0 +1,58 @@
+{
+  "threshold_pct": 5.0,
+  "armed": true,
+  "armed_ts": "2026-10-20T02:09:59-0400",
+  "armed_ts_et": "2026-10-20 02:09:59 ET",
+  "disarmed_ts_et": null,
+  "reason": "chill_on_20261020_0202",
+  "usage_detection": "manual_arm",
+  "usage_remaining_pct": null,
+  "usage_source": "manual_arm",
+  "last_apply": {
+    "ts_et": "2026-10-20 10:01:50 ET",
+    "dry_run": false,
+    "cohort": 99,
+    "stamped_fill": 891,
+    "soft_change": "none",
+    "gate_reason": "chill_on_20261020_0202",
+    "backups": {
+      "SOFT_GROWTH.json": "/workspace/mind/SOFT_GROWTH.json.bak-pre-offline-soft-20261020-100147",
+      "IDEOLOGY.md": "/workspace/mind/IDEOLOGY.md.bak-pre-offline-ideo-20261020-100147",
+      "AUDIT_EVERY9_STATE.json": "/workspace/mind/AUDIT_EVERY9_STATE.json.bak-pre-offline-state-20261020-100147",
+      "GRADE_CRITERIA.json": "/workspace/mind/GRADE_CRITERIA.json.bak-pre-offline-grade-20261020-100147",
+      "INDICATOR_COMBOS.json": "/workspace/mind/INDICATOR_COMBOS.json.bak-pre-offline-combos-20261020-100147"
+    },
+    "review_packet": "/workspace/mind/soft_offline_packets/apply-c99-20261020-100147.json"
+  },
+  "note": "Arm at \u22645% weekly usage (Chill 2026-10-16). Box watcher also arms with no LLM when no agent heartbeat \u226560m or usage reading is blank/stale (>24h). Disarm only on a real usage % >5 (--sync-handoff --agent-awake --usage-pct N) or manual disarm; LeBron review-on-return runs at disarm.",
+  "last_agent_wake_et": "2026-10-21 02:32:53 ET",
+  "last_agent_wake_ts": 1792564373.794175,
+  "last_agent_wake_source": "soft_usage_handoff",
+  "last_handoff": {
+    "ts_et": "2026-10-21 02:36:54 ET",
+    "source": "box_watch",
+    "decision": "stay_armed",
+    "why": "box-only sync: no agent signal",
+    "agent_awake": false,
+    "usage_pct_in": null
+  },
+  "window": {
+    "id": "window-20261020-020959",
+    "packet": "/workspace/mind/soft_offline_packets/window-20261020-020959.json",
+    "opened_et": "2026-10-20 02:09:59 ET",
+    "closed_et": null,
+    "reason": "manual_hold: Chill (cli)"
+  },
+  "manual_hold": {
+    "on": true,
+    "by": "Chill (cli)",
+    "set_et": "2026-10-20 02:09:59 ET",
+    "rule": "while on: stay armed; no auto-disarm on usage > threshold; release only when Chill says"
+  },
+  "manual_off": {
+    "on": true,
+    "by": "Chill (group chat)",
+    "set_et": "2026-10-19 11:38 ET",
+    "rule": "Soft offline stays OFF; blank/stale usage or heartbeat gaps never auto-arm; only a real usage % <= threshold or Chill re-arms"
+  }
+}
