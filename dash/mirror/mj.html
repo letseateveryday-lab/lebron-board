@@ -1,0 +1,245 @@
+<!doctype html><html><head><script src="./shim.js"></script><meta http-equiv="Cache-Control" content="no-store"><meta charset="utf-8"><title>MJ GOAT · Paper Parlays</title>
+<style>
+body{font-family:system-ui,Segoe UI,Arial;background:#0d1117;color:#e6edf3;margin:0}
+header{padding:10px 16px;background:#161b22;border-bottom:1px solid #30363d;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+h1{font-size:18px;margin:0;color:#f0b429} .pill{padding:2px 8px;border-radius:10px;font-size:12px;background:#21262d}
+nav button{background:#21262d;color:#e6edf3;border:1px solid #30363d;padding:6px 12px;border-radius:6px;cursor:pointer;margin-right:4px}
+nav button.on{background:#f0b429;color:#000} main{padding:12px 16px}
+table{border-collapse:collapse;width:100%;font-size:13px;margin:6px 0 14px} th,td{border-bottom:1px solid #30363d;padding:4px 6px;text-align:left;vertical-align:top}
+th{color:#8b949e;font-weight:600} .card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:10px 12px;margin-bottom:14px}
+.g{color:#3fb950}.r{color:#f85149}.y{color:#d29922}.m{color:#8b949e;font-size:12px} .APPROVE{color:#3fb950;font-weight:700}.DOWNGRADE{color:#d29922;font-weight:700}.REJECT{color:#f85149;font-weight:700}
+.flag{display:inline-block;background:#3d2e00;color:#f0b429;border-radius:4px;padding:0 4px;margin:1px;font-size:11px}.hard{background:#4a1515;color:#ff9b9b}
+.repl{background:#0f3d24;color:#7ee2a8;border-radius:4px;padding:0 4px;font-size:11px} .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:1100px){.grid{grid-template-columns:1fr}} pre{white-space:pre-wrap;font-size:12px}
+
+.slip{background:#161b22;border:1px solid #30363d;border-radius:10px;margin-bottom:12px;overflow:hidden}
+.sh{display:flex;align-items:center;gap:8px 12px;padding:10px 12px;cursor:pointer;flex-wrap:wrap;user-select:none}.sh:hover{background:#1c2129}
+.sh .tt{font-weight:700;font-size:15px}.sh .nl{color:#8b949e;font-size:13px}.sh .od{margin-left:auto;font-weight:800;font-size:17px;color:#f0b429}
+.chev{display:inline-block;transition:transform .15s;color:#8b949e;font-size:14px;width:14px}.slip.open .chev{transform:rotate(90deg)}
+.bdg{font-size:11px;padding:2px 8px;border-radius:10px;background:#21262d;color:#c9d1d9;font-weight:600}.bdg.won,.bdg.APPROVE{background:#0f3d24;color:#3fb950}.bdg.lost,.bdg.REJECT{background:#4a1515;color:#ff9b9b}.bdg.DOWNGRADE{background:#3d2e00;color:#f0b429}
+.stk{font-size:12px;color:#8b949e;width:100%}
+.sb{display:none;border-top:1px solid #30363d}.slip.open .sb{display:block}.sx{padding:8px 12px}
+.lg{display:flex;gap:10px;padding:9px 12px;border-bottom:1px solid #21262d;align-items:flex-start;border-left:4px solid #30363d}
+.lg.won{background:#0f3d24;border-left-color:#3fb950}.lg.lost{background:#3a1418;border-left-color:#f85149}.lg.void{opacity:.6}
+.lg .ic{width:20px;text-align:center;font-weight:800;color:#8b949e}.lg.won .ic{color:#3fb950}.lg.lost .ic{color:#f85149}
+.lg .bd{flex:1;min-width:0}.lg .sel{font-weight:700}.lg .mk{font-size:12px;color:#c9d1d9}.lg .ex{font-size:11px;color:#8b949e;margin-top:2px}
+.lg .lo{font-weight:700;text-align:right;max-width:38%}.lg .lo .m{display:block;font-weight:400;color:#8b949e}
+@media(max-width:640px){.sh .od{margin-left:0}.lg{padding:8px}main{padding:8px}table{font-size:11px}}
+.lvs{font-size:12px;font-weight:700;padding:1px 6px;border-radius:6px;background:#21262d;color:#c9d1d9;margin-left:4px}.lvs.won{background:#196c2e;color:#fff}.lvs.lost{background:#8e1519;color:#fff}
+.livedot{font-size:10px;color:#f85149;font-weight:700}.hitc{font-size:12px;font-weight:700;color:#c9d1d9;background:#21262d;padding:2px 8px;border-radius:10px}.hitc.all{background:#196c2e;color:#fff}.hitc.bust{background:#4a1515;color:#ff9b9b}
+.pb{margin:5px 0 2px;max-width:520px}.pbt{position:relative;height:7px;background:#30363d;border-radius:4px;overflow:hidden}.pbf{height:100%;background:#8b949e;border-radius:4px;transition:width .4s}.pbf.won{background:#3fb950}.pbf.lost{background:#f85149}
+.pbm{position:absolute;top:0;bottom:0;width:2px;background:#c9d1d9;z-index:2}.pbl{display:flex;justify-content:space-between;gap:8px;font-size:11px;color:#c9d1d9;margin-top:2px;flex-wrap:wrap}.lg.won .pbt{background:#1d4d2e}.lg.lost .pbt{background:#5a1c20}
+.bdg.LOCK,.bdg.lock,.bdg.unanimous{background:linear-gradient(90deg,#7a5b00,#c9a227);color:#1a1200;font-weight:800;letter-spacing:.3px;box-shadow:0 0 0 1px #f0b429}
+.bdg.mj33{background:linear-gradient(90deg,#5a5a5a,#c0c0c0);color:#111;font-weight:800;box-shadow:0 0 0 1px #ddd}
+.bdg.two_thirds{background:linear-gradient(90deg,#5a3a14,#cd7f32);color:#1a0e00;font-weight:800;box-shadow:0 0 0 1px #e0a060}
+.unan{border:1px solid #c9a227;background:#1a1608;border-radius:10px;padding:10px 12px;margin:10px 0}
+.unan h3{color:#f0b429;margin:0 0 6px}
+.unan .rec{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.unan .rec .rbox{background:#0d1117;border:1px solid #30363d;border-radius:8px;padding:6px 10px;min-width:140px}
+.unan .rec .rbox b{display:block;font-size:12px;margin-bottom:2px}</style></head><body>
+<header><h1>🐐 MJ GOAT · NBA Paper Parlays</h1><span class="pill">PAPER ONLY · no bets placed</span>
+<span id="upd" class="pill"></span><label class="pill">Book <select id="booksel" onchange="localStorage.book=this.value;render()" style="background:#0d1117;color:#e6edf3;border:1px solid #30363d"></select></label><span id="stale" class="pill"></span>
+<nav id="nav"></nav></header><main id="main">Loading…</main>
+<script>
+let _h=0;const TABS=['Tonight\'s Parlays','Board','Injuries','Ledger / Results','Sources','Method','Results & Learning'];let tab=location.hash=='#learning'?6:0,S=null;
+const pct=x=>x==null?'—':(100*x).toFixed(1)+'%', am=x=>x==null?'—':(x>0?'+'+x:''+x), esc=s=>String(s??'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+function nav(){document.getElementById('nav').innerHTML=TABS.map((t,i)=>`<button class="${i==tab?'on':''}" onclick="tab=${i};render()">${t}</button>`).join('')}
+function flags(l){return (l.flags||[]).map(f=>`<span class="flag ${/excluded|heavy|questionable|not weak/.test(f)?'hard':''}">${esc(f)}</span>`).join('')}
+function legRow(l,extra){const ev=l.ev;return `<tr><td><b>${esc(l.label)}</b> ${extra||''}<div class="m">${esc(l.game)} · ${esc(l.tip_et)} · ${esc(l.book)}</div></td>
+<td>${am(l.price)}</td><td>${l.rating??'—'}</td><td>${pct(l.model_p)}</td><td>${pct(l.novig)}</td><td class="${l.edge>0?'g':'r'}">${(100*l.edge).toFixed(1)}</td>
+<td class="${ev>0?'g':'r'}">${(100*ev).toFixed(1)}%</td><td>${l.consistency||'—'}${l.l13?'<div class=m>L13 '+l.l13+'</div>':''}</td><td>${esc(l.confidence)}</td>
+<td class="m"><b>APE</b> ${esc(l.lens?.APE)}<br><b>Apotheosis</b> ${esc(l.lens?.Apotheosis)}<br><b>NeoShua</b> ${esc(l.lens?.NeoShua)}<br><b>Counter:</b> ${esc(l.counter)} ${flags(l)}</td></tr>`}
+const LH='<tr><th>Leg</th><th>Odds</th><th>Rating</th><th>Model p</th><th>No-vig p</th><th>Edge pts</th><th>EV</th><th>7/9</th><th>Conf.</th><th>Three-lens notes (automated rules, not the reviewer bots)</th></tr>';
+function wkHtml(w,title){if(!w)return '';if(typeof w==='string')w={leg:w};if(!w.leg)return '';const sw=w.swap||{};const sc=(w.scores||[]).slice().sort((a,b)=>b.risk-a.risk);
+ const swap=sw.type=='drop the leg'?`drop the leg${sw.card_after?` → card ${esc(sw.card_after)} (SGP est. ${esc(sw.card_after_sgp_est)}), joint ${pct(sw.joint_after)}, EV ${(100*sw.ev_after).toFixed(1)}%`:''}${sw.note?' ('+esc(sw.note)+')':''}`:sw.type?`${esc(sw.type)}: <b>${esc(sw.to)}</b>${sw.price!=null?' ('+am(sw.price)+', model '+pct(sw.model_p)+')':''}${sw.note?' ('+esc(sw.note)+')':''}`:'';
+ const rec=w.rec||{};const cand=rec.candidate||{};
+ const recLine=rec.action?`<br>Recommendation: <b>${esc(rec.action)}</b>${rec.reason?' — '+esc(rec.reason):''}${cand.to?` → <b>${esc(cand.to)}</b>${cand.price!=null?' ('+am(cand.price)+', model '+pct(cand.model_p)+')':''}`:''}${rec.card_after?' · card after drop '+esc(rec.card_after):''}${(rec.other_alters||[]).map(a=>`<br><span class=m>pre-bet ALTER (separate): ${esc(a.of)} → ${esc(a.to)}${a.price!=null?' ('+am(a.price)+')':''}</span>`).join('')}`:'';
+ return `<div style="border-left:3px solid #f85149;padding:4px 8px;margin:6px 0;font-size:13px">⚠ <b>${title||'Weakest leg'}:</b> ${esc(w.leg)} · bust risk <b class=r>${w.risk??'—'}</b>/100 <span class=m>(${(w.why||[]).map(esc).join('; ')})</span>${swap?`<br>Safer swap: ${swap}`:''}${recLine}${sc.length?`<div class=m>Bust risk by leg: ${sc.map(x=>esc(x.leg)+' '+x.risk).join(' · ')}</div>`:''}</div>`}
+
+function slipOpen(){try{return new Set(JSON.parse(localStorage.slipOpen||'[]'))}catch(e){return new Set()}}
+function tg(el){const sl=el.closest('.slip'),k=sl.dataset.k,o=slipOpen();sl.classList.toggle('open');sl.classList.contains('open')?o.add(k):o.delete(k);localStorage.slipOpen=JSON.stringify([...o])}
+function mkt(l){const k=l.kind||l.struct?.kind,st=l.stat||l.struct?.stat,lab=l.label||l.leg||'';const SN={PTS:'Points',REB:'Rebounds',AST:'Assists','3PM':'3-Pointers Made',PRA:'Pts+Reb+Ast',PR:'Pts+Reb',PA:'Pts+Ast',BLK:'Blocks',STL:'Steals'};
+ if(k=='ml'||/ ML$/.test(lab))return 'Moneyline';if(k=='spread'||/^[A-Z]{2,4} [+-]\d/.test(lab))return 'Point Spread';if(k=='total'||/ [OU] \d/.test(lab))return 'Game Total';
+ if(k=='prop'||/\d\+ /.test(lab)){const m=lab.match(/\d\+\s*(.+)$/);return 'Player '+(SN[(st||'').toUpperCase()]||SN[(m?m[1]:'').trim().toUpperCase()]||(m?m[1]:'Prop'))+' (milestone)'}return ''}
+function stCls(x){x=(x||'').toLowerCase();return x=='won'||x=='win'||x=='hit'?'won':x=='lost'||x=='loss'?'lost':/void|push|cancel/.test(x)?'void':'pend'}
+function liveOf(g){return LV?.legs?.[(g.matchup||'')+'|'+(g.sel||'')]||null}
+function effLeg(g){const lv=liveOf(g);let st=g.status;const fin=stCls(st)!='pend';if(!fin&&lv&&['won','lost','push','void'].includes(lv.status))st=lv.status;return {...g,status:st,lv,isLive:!fin&&lv&&lv.status=='live',lock:!fin&&lv&&lv.status!='live'&&lv.state=='in'}}
+function fmtN(x){return x==null?'':(+x).toFixed(1).replace(/\.0$/,'')}
+function progBar(g){const lv=g.lv,c=stCls(g.status);const fin=c=='won'||c=='lost'||c=='void';
+ const bar=(pct,cls,left,right,mark)=>`<div class=pb><div class=pbt>${mark!=null?`<span class=pbm style="left:${mark}%"></span>`:''}<div class="pbf ${cls}" style="width:${Math.max(0,Math.min(100,pct)).toFixed(1)}%"></div></div><div class=pbl><span>${left}</span><span>${right}</span></div></div>`;
+ const col=c=='won'?'won':c=='lost'?'lost':'';
+ if(!lv){if(c=='won')return bar(100,'won','','✓ Hit');if(c=='lost')return bar(100,'lost','','✗ Missed');return bar(0,'','Not started','')}
+ if(lv.state=='pre'||(lv.cur==null&&lv.diff==null&&!fin)){return bar(0,'',lv.stale||lv.text=='live feed missing'?'<span class=r>Live feed missing'+(LV?.generated_at?' · as of '+esc(LV.generated_at.slice(11,16))+' ET':'')+'</span>':'Not started',lv.text&&lv.text!='Not started'&&lv.text!='live feed missing'?esc(lv.text):'')}
+ const clk=lv.state=='in'?' · '+esc(lv.clock||''):lv.state=='post'?' · Final':'';
+ const k=lv.kind;
+ if(k=='prop'){const pct=lv.line?100*lv.cur/lv.line:0,left=Math.max(0,lv.line-lv.cur);
+  return bar(pct,col,`<b>${fmtN(lv.cur)}/${fmtN(lv.line)} ${esc(lv.stat||'')}</b>${clk}`,c=='won'?'✓ Hit':c=='lost'?'✗ Missed by '+fmtN(left):c=='void'?'Void (DNP)':fmtN(left)+' more')}
+ if(k=='total'){const pct=lv.line?100*lv.cur/lv.line:0,d=lv.line-lv.cur,ov=lv.side=='over';
+  return bar(pct,col,`<b>${fmtN(lv.cur)}/${fmtN(lv.line)} total</b>${clk}`,ov?(c=='won'?'✓ Over hit':c=='lost'?'✗ Stayed under':fmtN(d)+' pts to go'):(c=='lost'?'✗ Passed the cap':c=='won'?'✓ Stayed under':fmtN(d)+' pts of room left'))}
+ if(k=='spread'||k=='ml'){const d=lv.diff,m=lv.margin,t=esc(lv.team||'');const lead=d>0?`${t} up ${fmtN(d)}`:d<0?`${t} down ${fmtN(-d)}`:`Tied`;
+  const pct=50+Math.max(-50,Math.min(50,(k=='spread'?m:d)*50/20));
+  if(k=='ml')return bar(pct,col,`<b>${lead}</b> · ${fmtN(lv.pts)}-${fmtN(lv.opp_pts)}${clk}`,c=='won'?'✓ Won':c=='lost'?'✗ Lost':d>0?'<span class=g>winning by '+fmtN(d)+'</span>':d<0?'<span class=r>losing by '+fmtN(-d)+'</span>':'tied',50);
+  const L=lv.line||0,need=L<0?`needs to win by ${Math.floor(-L)+1}+`:`can lose by up to ${Math.ceil(L)-1}`;
+  return bar(pct,col,`<b>${lead}</b>, ${need}${clk}`,c=='won'?'✓ Covered':c=='lost'?'✗ Did not cover':c=='void'?'Push':m>0?'<span class=g>covering by '+fmtN(m)+'</span>':m<0?'<span class=r>not covering ('+fmtN(m)+')</span>':'on the number',50)}
+ return ''}
+function legLine(g0){const g=effLeg(g0);const c=stCls(g.status);const lv=g.lv;
+ const lt=lv&&lv.text?`<span class="lvs ${c}">${esc(lv.text)}${g.isLive||g.lock?' · '+esc(lv.clock||''):''}${lv.stale?' · STALE':''}</span>`:'';const ic=c=='won'?'✓':c=='lost'?'✗':c=='void'?'–':'○';
+ return `<div class="lg ${c}"><div class=ic>${ic}</div><div class=bd><div class=sel>${esc(g.sel)}${g.isLive?' <span class=livedot>● LIVE</span>':''}${g.lock?' <span class=bdg style="background:#0f3d24;color:#3fb950">HIT</span>':''}${g.weak?' <span class="flag hard">weakest leg</span>':''}</div><div class=mk>${esc(g.market)}${g.matchup?' · '+esc(g.matchup):''}${g.tip?' · '+esc(g.tip):''}</div>${progBar(g)}${g.extra?`<div class=ex>${g.extra}</div>`:''}</div><div class=lo>${g.odds}${g.sub?`<span class=m style="font-size:11px">${g.sub}</span>`:''}</div></div>`}
+function gradeOf(cid,leg,st){if(st&&st!='pending')return st;const c=(S.learning?.cards||[]).find(x=>x.id==cid);const l=c?.legs?.find(x=>x.leg==leg);return l?.status||st}
+function decOf(a){return a>0?1+a/100:1+100/-a}
+function amOf(d){return d>=2?Math.round((d-1)*100):Math.round(-100/(d-1))}
+function slip(k,o){const op=slipOpen().has(k)?' open':'';const ef=o.legs.map(effLeg);const nh=ef.filter(x=>stCls(x.status)=='won').length,nb=ef.filter(x=>stCls(x.status)=='lost').length,nl=ef.filter(x=>x.isLive).length;
+ const hitTxt=`<span class="hitc${nb?' bust':nh==o.legs.length&&nh?' all':''}">${nh} of ${o.legs.length} hit${nb?' · '+nb+' busted':''}${nl?' · '+nl+' live':''}</span>`;
+ return `<div class="slip${op}" data-k="${esc(k)}"><div class=sh onclick="tg(this)"><span class=chev>▶</span><span class=tt>${o.title}</span><span class=nl>${o.n} Leg ${o.n==1?'Bet':'Parlay'}</span>${hitTxt}${(o.badges||[]).filter(b=>b&&b[0]).map(b=>`<span class="bdg ${esc(b[1]||b[0])}">${esc(b[0])}</span>`).join('')}<span class=od>${o.odds||'—'}</span>${o.stake?`<span class=stk>${o.stake}</span>`:''}</div>
+ <div class=sb>${o.legs.map(legLine).join('')}${o.body?`<div class=sx>${o.body}</div>`:''}</div></div>`}
+function bkOdds(bp,label,i,fallback,fbNote){const c=curBook();let x=null;if(bp&&bp.legs){const r=i!=null&&bp.legs[i]&&(bp.legs[i].label==label||!label)?bp.legs[i]:bp.legs.find(q=>q.label==label);x=r?.prices?.[c]}
+ if(x&&x.odds!=null)return {odds:am(x.odds),sub:c+(x.note?' · '+esc(x.note):'')};return {odds:am(fallback),sub:(fbNote||'DK')+(x?.note?' · '+c+': '+esc(x.note):'')}}
+function cardOdds(legs){let d=1;for(const l of legs){const a=l.odds??l.odds_american;if(a==null)return null;d*=decOf(a)}return amOf(d)}
+function cardStatus(legs){const st=legs.map(l=>stCls(l.status));return st.includes('lost')?'lost':st.length&&st.every(x=>x=='won'||x=='void')?'won':'pending'}
+function trackedSlip(c){const TB=(S.tracked_book_prices||{})[c.id];const wk=(c.weakest&&c.weakest.leg)||c.weakest;const amr=c.american??cardOdds(c.legs);const amn=amr==null?null:+amr;const st=c.status||cardStatus(c.legs);
+ const kinds=c.lock_kinds||(c.lock_kind?[c.lock_kind]:[]);const lab={unanimous:'Unanimous (real bots)',mj33:'MJ 3/3',two_thirds:'2/3'};
+ const lockBadges=kinds.map(k=>[lab[k]||k,k]);
+ return slip('t:'+c.id,{title:esc(c.id)+' <span class=m>'+esc(c.source||'')+(c.tier?' · '+esc(c.tier):'')+'</span>',n:c.legs.length,odds:typeof amr=='string'?esc(amr):am(amr),badges:[...lockBadges,[c.locked?'🔒 locked':'not locked','x'],[st,st]],
+  stake:amn!=null&&!isNaN(amn)?`Paper $10 → to win $${(10*(decOf(amn)-1)).toFixed(2)}${c.american==null?' (product of locked leg odds)':''}${TB&&TB.best?' · best book: '+esc(TB.best):''}`:'',
+  legs:c.legs.map(l=>{const b=bkOdds(TB,l.leg,null,l.odds,'locked');return {sel:l.leg,market:mkt(l),matchup:l.game,status:l.status,weak:wk&&wk==l.leg,odds:b.odds,sub:b.sub,
+   extra:[l.model_p!=null?'model '+pct(l.model_p):'',l.edge!=null?'edge '+(100*l.edge).toFixed(1)+' pts':'',l.bust_risk!=null?'bust risk '+Math.round(l.bust_risk):'',l.actual!=null&&l.actual!==''?'actual '+esc(l.actual)+(l.margin!=null?' ('+(l.margin>0?'+':'')+(+l.margin).toFixed(1)+')':''):'',l.close_odds!=null?'close '+am(l.close_odds):'',l.clv_prob!=null?'CLV '+(l.clv_prob>0?'+':'')+(100*l.clv_prob).toFixed(1)+' pts':'',l.cut_by?.length?'<span class=r>cut by '+l.cut_by.join('/')+'</span>':''].filter(Boolean).join(' · ')}}),
+  body:(wkHtml(c.weakest,(st==='pending'||st==='open'||st==='live')?'Weakest leg (unplaced lock — recommendation only)':'Weakest leg')||'')+(TB?bookBox(TB,'Price by book (this card)'):'')})}
+function parlayCard(t,p,L){if(!p)return `<div class="slip"><div class=sh style="cursor:default"><span class=tt>${t}</span><span class="r" style="font-size:13px">No qualifying parlay right now.</span><span class=stk>${esc((S.build_notes?.[t]||[]).join('; '))}</span></div></div>`;
+ const v=p.verdicts||{};const rep=Object.fromEntries((p.replacements||[]).map(r=>[r.new,r]));const bp=p.book_prices;const c=curBook();const bc=bp?.books?.[c];const wk=p.weakest?.leg;
+ const legs=p.legs.map((i,j)=>{const l=L[i]||{label:i};const b=bkOdds(bp,l.label,j,l.price,'DK');return {sel:l.label,market:mkt(l),matchup:l.game,tip:l.tip_et,status:l.status,weak:wk==l.label,odds:b.odds,sub:b.sub,
+  extra:[l.model_p!=null?'model '+pct(l.model_p):'',l.edge!=null?'edge '+(100*l.edge).toFixed(1)+' pts':'',l.ev!=null?'EV '+(100*l.ev).toFixed(1)+'%':'',p.weakest?.scores?.find(x=>x.leg==l.label)?'bust risk '+p.weakest.scores.find(x=>x.leg==l.label).risk:'',rep[i]?'<span class=repl>replacement for '+esc(rep[i].old)+'</span>':''].filter(Boolean).join(' · ')}});
+ const odds=bc&&bc.full&&bc.american!=null?am(bc.american):p.american;
+ const vv=['APE','Apotheosis','NeoShua'].map(a=>(v[a]||[])[0]);const nA=vv.filter(x=>x==='APPROVE').length,nD=vv.filter(x=>x==='DOWNGRADE').length,nR=vv.filter(x=>x==='REJECT').length;
+ const lb=[];if(nA===3)lb.push(['MJ 3/3','mj33']);if(nA===2&&nD===1&&nR===0)lb.push(['2/3','two_thirds']);
+ return slip('p:'+t,{title:t+(p.target&&p.legs.length<p.target?' <span class=y style="font-size:12px">(short: target '+p.target+')</span>':''),n:p.legs.length,odds:odds,badges:[...lb,[v.final,v.final],['pending','pending']],
+  stake:`Paper $10 → pays $${p.payout10}${bc&&bc.full?' · '+c+' '+am(bc.american):' · '+c+' can\'t price every leg; showing DK product'}${bp?.best?' · best book: '+esc(bp.best):''}`,legs:legs,body:`<div>
+ <div class="card" style="margin:0"><h3>${t} · ${p.legs.length} legs ${p.target&&p.legs.length<p.target?'<span class="y">(short: target '+p.target+')</span>':''} · <span class="${v.final}">${v.final||''}</span></h3>
+ <div>Odds (product) <b>${p.american}</b> · $10 pays <b>$${p.payout10}</b>${p.sgp_games?.length?` · <span class="y">SGP in ${p.sgp_games.join(', ')}: est. book price ${p.american_sgp_est} ($${p.payout10_sgp_est})</span>`:''}</div>
+ <div>Joint p (correlation-adj) <b>${pct(p.joint_adj)}</b> vs implied <b>${pct(p.implied_sgp_est??p.implied)}</b> · independent ${pct(p.joint_indep)} · EV <b class="${p.ev>0?'g':'r'}">${(100*p.ev).toFixed(1)}%</b></div>
+ ${(p.dropped||[]).map(d=>`<div class="m">✂ dropped <b>${esc(d.label)}</b>: ${esc(d.reason)}${d.replaced_by?' → replaced by <b>'+esc(d.replaced_by)+'</b>':' → <span class=y>no qualified replacement</span>'}</div>`).join('')}
+ ${p.composition?`<div class="y" style="font-size:12px">${esc(p.composition)}</div>`:''}${p.note?`<div class="m">${esc(p.note)}</div>`:''}${wkHtml(p.weakest)}${bookBox(p.book_prices)}
+ <table>${LH}${p.legs.map(i=>{const l=L[i];if(!l)return '';const r=rep[i];return legRow(l,r?`<span class="repl">replacement for ${esc(r.old)} (${esc(r.reason)})</span>`:'')}).join('')}</table>
+ <div class="m"><b>APE</b> <span class="${v.APE?.[0]}">${v.APE?.[0]||''}</span> ${esc(v.APE?.[1])}<br><b>Apotheosis</b> <span class="${v.Apotheosis?.[0]}">${v.Apotheosis?.[0]||''}</span> ${esc(v.Apotheosis?.[1])}<br><b>NeoShua</b> <span class="${v.NeoShua?.[0]}">${v.NeoShua?.[0]||''}</span> ${esc(v.NeoShua?.[1])}<br>(automated rule-based verdicts)</div></div></div>`})}
+function origCard(o,L){const TB=(S.tracked_book_prices||{})[o.id];const wk=o.weakest?.leg;const cs=(o.consensus||'').split(' ')[0];const st=cardStatus(o.legs.map(l=>({status:gradeOf(o.id,l.leg,l.status)})));
+ return slip('o:'+o.id,{title:esc(o.id)+' <span class=m>MJ original · '+esc(o.tier)+'</span>',n:o.legs.length,odds:esc(o.american),badges:[[cs,cs],[st,st]],stake:(()=>{const a=parseInt(o.american);return isNaN(a)?'':`Paper $10 → to win $${(10*(decOf(a)-1)).toFixed(2)}${TB&&TB.best?' · best book: '+esc(TB.best):''}`})(),
+  legs:o.legs.map(l=>{const b=bkOdds(TB,l.leg,null,l.odds_american,'then');return {sel:l.leg,market:mkt(l),matchup:l.game,tip:l.tip,status:gradeOf(o.id,l.leg,l.status),weak:wk==l.leg,odds:b.odds,sub:b.sub,extra:[l.model_p!=null?'model '+pct(l.model_p):'',l.cut?'<span class=r>CUT: '+esc(l.cut)+'</span>':''].filter(Boolean).join(' · ')}}),
+  body:(TB?bookBox(TB,'Price by book (this card)'):'')+_origBody(o,L)})}
+function _origBody(o,L){return `<div class="card" style="margin:0"><h3>${esc(o.id)} · ${esc(o.tier)} · ${esc(o.american)} · reviewer consensus: <span class="${(o.consensus||'').split(' ')[0]}">${esc(o.consensus)}</span></h3>
+ <div class="m">${(o.reviews||[]).map(r=>'<b>'+esc(r[0])+'</b>: '+esc(r[1])).join('<br>')}</div>
+ <table><tr><th>Original leg</th><th>Odds then</th><th>Status</th><th>Reviewer cut?</th></tr>${o.legs.map(l=>`<tr><td>${esc(l.leg)} <span class=m>${esc(l.game)} ${esc(l.tip)}</span></td><td>${am(l.odds_american)}</td><td>${esc(l.status)}</td><td>${l.cut?'<span class=r>CUT</span> '+esc(l.cut):''}</td></tr>`).join('')}</table>${wkHtml(o.weakest,'Weakest leg (original card)')}${wkHtml(o.weakest_rev,'Weakest leg (revised card)')}
+ ${o.revised?`<div><b>Revised (cuts applied${o.revised.replacements?.length?' + replacements':''}):</b> ${o.revised.legs_labels.map(esc).join(' · ')} → <b>${o.revised.american}</b>, joint ${pct(o.revised.joint_adj)} vs implied ${pct(o.revised.implied)} ${o.revised.note?'<span class=m>'+esc(o.revised.note)+'</span>':''}</div>
+ ${(o.revised.replacements||[]).map(r=>`<div class=m><span class=repl>replacement</span> ${esc(r.new_label)} for ${esc(r.old)} (${esc(r.reason)})</div>`).join('')}
+ ${(o.revised.unreplaced||[]).map(r=>`<div class=m>✂ ${esc(r)}: <span class=y>no qualified replacement</span></div>`).join('')}`:''}</div>`}
+
+function svgCurve(curves){const W=640,H=220,P=36;const all=Object.values(curves).flat();if(!all.length)return '<div class=m>No graded cards yet. The curve starts after the first card settles (tonight\'s late games finish about 12:00–12:30 AM ET).</div>';
+ const ys=all.map(p=>p.bank),mn=Math.min(...ys,990),mx=Math.max(...ys,1010),nmax=Math.max(...Object.values(curves).map(c=>c.length))-1||1;
+ const col=['#f0b429','#58a6ff','#3fb950','#f85149','#bc8cff'];let i=0,leg='';
+ const lines=Object.entries(curves).map(([k,c])=>{const cl=col[i++%5];leg+=`<span style="color:${cl}">■ ${esc(k)}</span> `;
+  return `<polyline fill="none" stroke="${cl}" stroke-width="2" points="${c.map((p,j)=>`${P+j*(W-2*P)/nmax},${H-P-(p.bank-mn)/(mx-mn)*(H-2*P)}`).join(' ')}"/>`}).join('');
+ return `<svg width="${W}" height="${H}" style="background:#0d1117;border:1px solid #30363d"><line x1="${P}" y1="${H-P-(1000-mn)/(mx-mn)*(H-2*P)}" x2="${W-P}" y2="${H-P-(1000-mn)/(mx-mn)*(H-2*P)}" stroke="#30363d" stroke-dasharray="4"/>${lines}<text x="4" y="14" fill="#8b949e" font-size="11">$${mx.toFixed(0)}</text><text x="4" y="${H-P}" fill="#8b949e" font-size="11">$${mn.toFixed(0)}</text><text x="${P}" y="${H-8}" fill="#8b949e" font-size="11">cards settled →  (dashed = $1,000 start)</text></svg><div>${leg}</div>`}
+function svgCalib(c){const W=320,H=320,P=34;if(!c.length)return '<div class=m>No graded legs yet.</div>';const X=v=>P+v*(W-2*P),Y=v=>H-P-v*(H-2*P);
+ return `<svg width="${W}" height="${H}" style="background:#0d1117;border:1px solid #30363d"><line x1="${X(0)}" y1="${Y(0)}" x2="${X(1)}" y2="${Y(1)}" stroke="#30363d" stroke-dasharray="4"/>
+ ${c.map(b=>`<circle cx="${X(b.pred)}" cy="${Y(b.actual)}" r="${4+Math.sqrt(b.n)*2}" fill="#f0b42988" stroke="#f0b429"><title>${b.bucket}: pred ${pct(b.pred)} actual ${pct(b.actual)} n=${b.n}</title></circle>`).join('')}
+ <text x="${W/2-40}" y="${H-6}" fill="#8b949e" font-size="11">predicted p →</text><text x="2" y="14" fill="#8b949e" font-size="11">actual hit ↑</text></svg>`}
+function catTable(name,g){const rows=Object.entries(g).sort((a,b)=>(b[1].all.roi??-9)-(a[1].all.roi??-9));if(!rows.length)return '';
+ return `<h4>${esc(name)}</h4><table><tr><th>Category</th><th>n</th><th>W-L-P</th><th>Hit</th><th>Pred</th><th>ROI (flat 1u)</th><th>Brier</th><th>Last-13 hit</th><th>Last-13 ROI</th></tr>${rows.map(([k,v])=>`<tr><td>${esc(k)}</td><td>${v.all.n}${v.all.n<20?' <span class=y>small</span>':''}</td><td>${v.all.won}-${v.all.lost}-${v.all.push}</td><td>${pct(v.all.hit)}</td><td>${pct(v.all.pred)}</td><td class="${v.all.roi>=0?'g':'r'}">${pct(v.all.roi)}</td><td>${v.all.brier==null?'—':v.all.brier.toFixed(3)}</td><td>${pct(v.last13.hit)}</td><td class="${v.last13.roi>=0?'g':'r'}">${pct(v.last13.roi)}</td></tr>`).join('')}</table>`}
+
+function lockTs(c){return String(c.locked_at||c.at||((c.id||'').match(/(\d{4})(\d{2})(\d{2})/)||[]).slice(1).join('-')||'')}
+function lockNewest(a,b){const x=lockTs(a),y=lockTs(b);return x<y?1:x>y?-1:String(b.id||'').localeCompare(String(a.id||''))}
+function lockDay(c){const m=(c.id||'').match(/(\d{4})(\d{2})(\d{2})/);return m?m[1]+'-'+m[2]+'-'+m[3]:lockTs(c).slice(0,10)}
+function todayET(){return new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date())}
+function unanBox(){const U=S.unanimous;if(!U)return '';if(U.error)return `<div class="unan r">Locks error: ${esc(U.error)}</div>`;
+ const R=U.records||{};const lab={unanimous:['Unanimous (real bots)','unanimous'],mj33:['MJ 3/3','mj33'],two_thirds:['2/3 (2 APPROVE + 1 DOWNGRADE)','two_thirds']};
+ const fmt=r=>{r=r||{};return `${r.W||0}-${r.L||0}${r.n?` · ROI ${r.roi==null?'—':((r.roi*100).toFixed(1)+'%')} on $${r.staked}`:' (none settled)'}`};
+ let h=`<div class=unan><h3>🔒 Lock desk · paper only</h3><div class=m>${esc(U.note||'Gold = real-bot unanimous · Silver = MJ automated 3/3 · Bronze = 2 APPROVE + 1 DOWNGRADE. 2 APPROVE + REJECT = near-miss only.')}</div><div class=rec>`;
+ for(const k of ['unanimous','mj33','two_thirds']){const [t,cls]=lab[k];h+=`<div class=rbox><b><span class="bdg ${cls}">${t}</span></b>${fmt(R[k])}</div>`}
+ h+=`</div>`;
+ const locks=U.locks||[];
+ if(!locks.length)h+=`<div class=m>No locks yet.</div>`;
+ else h+=locks.slice().sort(lockNewest).map(L=>{const kinds=L.lock_kinds||(L.lock_kind?[L.lock_kind]:[]);
+  const badges=kinds.map(k=>`<span class="bdg ${k}">${lab[k]?lab[k][0]:k}</span>`).join(' ');
+  return `<div class=m style="margin:6px 0">${badges} <b>${esc(L.id)}</b> · ${esc(L.tier||'')} · ${esc(L.american||'')} · ${esc(L.status||'pending')} · ${esc(L.at||'')}<div class=m>${(L.legs||[]).map(esc).join(' · ')}</div><div class=m>${esc(L.source||'')}${L.note?' · '+esc(L.note):''}</div></div>`}).join('');
+ const near=U.near||[];
+ if(near.length){h+=`<div style="margin-top:8px;font-weight:700">Near-misses (not locked)</div>`+near.slice(0,10).map(n=>`<div class=m>${esc(n.id)} · ${Object.entries(n.votes||{}).map(([a,v])=>a+':'+v).join(', ')} · ${esc(n.american||'')} · ${esc(n.note||n.result||'')}</div>`).join('')}
+ return h+`</div>`}
+
+function pastWins(){const W=S.past_wins;if(!W)return '';if(W.error)return `<div class="card r">Past Wins: ${esc(W.error)}</div>`;const m=W.summary||{};
+ let h=`<div class=card><h3>Past Wins (Chill's real slips)</h3><div class="card" style="border-color:#d29922"><b class=y>${esc(W.bias_note)}</b> ${esc(W.caveat||'')}</div>`;
+ h+=`<h4>Pattern summary</h4><div>${m.slips} slips (${m.nba_slips} NBA, avg ${m.avg_legs} legs, odds ${(m.odds||[]).map(esc).join(' / ')}, stakes ${(m.stakes||[]).map(esc).join(' / ')}). NBA legs: ${m.ml_legs} ML, ${m.total_legs} totals, ${m.prop_legs} props across ${m.sgp_blocks} SGP blocks; heavy-favorite anchors: ${(m.heavy_fav_anchors||[]).map(esc).join(', ')||'none'}.</div><ul>${(W.patterns||[]).map(p=>`<li>${esc(p)}</li>`).join('')}</ul><h4>Audit of the slips vs the stated pattern</h4><ul>${(m.audit||[]).map(p=>`<li>${esc(p)}</li>`).join('')}</ul>`;
+ h+=(W.slips||[]).map(s=>`<div class=card><b>${esc(s.book)} · ${esc(s.date)} · ${esc(s.sport)} · ${esc(s.legs)} legs · ${esc(s.odds)}</b> <span class="${(s.result||'won')=='won'?'g':'r'}">${esc((s.result||'won').toUpperCase())}</span> · stake ${esc(s.stake)} → payout $${esc(s.payout)}<div class=m>${esc(s.structure)}</div><ul>${(s.legs_detail||[]).map(x=>typeof x=='string'?`<li>${esc(x)}</li>`:x.legs?`<li><b>${esc(x.g)}</b>: ${x.legs.map(esc).join(' + ')}${x.final?' <span class=m>(final '+esc(x.final)+')</span>':''}</li>`:`<li>${esc(x.leg||'')}${x.g?' <span class=m>'+esc(x.g)+'</span>':''}${x.final?' <span class=m>(final '+esc(x.final)+')</span>':''}</li>`).join('')}</ul><div>${(s.images||[]).map(i=>`<a href="/winners/${encodeURIComponent(i)}" target=_blank><img src="/winners/${encodeURIComponent(i)}" style="height:360px;margin:4px;border:1px solid #30363d;border-radius:6px"></a>`).join('')}</div></div>`).join('');
+ if((W.unlinked_images||[]).length)h+=`<h4>New screenshots not yet described in a JSON file</h4><div>${W.unlinked_images.map(i=>`<a href="/winners/${encodeURIComponent(i)}" target=_blank><img src="/winners/${encodeURIComponent(i)}" style="height:300px;margin:4px"></a>`).join('')}</div>`;
+ h+=`<div class=m>To add slips: drop screenshots plus a JSON file into /workspace/mj-bets/winners/ ({"slips":[...]} or one slip object; set "images" to the file names and "result" to won or lost). They appear here on the next refresh. Files read: ${(W.files||[]).map(f=>esc(f.file)).join(', ')}.</div></div>`;return h}
+
+function oneOff(){const O=S.learning?.one_off;if(!O)return '';const f=(x)=>x==null?'—':pct(x);
+ const row=(k,v)=>`<tr><td>${k}</td><td>${v.cards}</td><td>${v.lost}</td><td><b>${v.one_off}</b></td><td>${f(v.one_off_share_of_losses)}</td><td>${f(v.one_off_share_of_cards)}</td><td>${(v.bust_types||[]).map(t=>esc(t[0])+' ×'+t[1]).join(', ')||'—'}</td><td>${v.weakest_flag_caught[1]?v.weakest_flag_caught[0]+'/'+v.weakest_flag_caught[1]:'—'}</td><td>${v.avg_bust_risk_of_busted_legs??'—'}</td></tr>`;
+ let h=`<div class=card><h3>One-leg-off tracker</h3><div class=m>Every graded card, ours and Chill's real slips (winners/NEAR_MISS*.json plus the Past Wins slips), records which leg busted, its type and its bust risk. Small sample: read as anecdotes until dozens of cards are graded.</div>
+ <table><tr><th>Set</th><th>Graded cards</th><th>Lost</th><th>Lost by exactly 1 leg</th><th>1-off share of losses</th><th>1-off share of all cards</th><th>Most common bust types</th><th>Busted leg was the flagged weakest</th><th>Avg bust risk of busted legs</th></tr>${row("Engine + MJ cards (tracked)",O.tracked)}${row("Chill's real slips",O.real)}${row('All',O.all)}</table>`;
+ const rows=[...(O.real_rows||[]).filter(r=>r.n_lost),...(O.rows||[]).filter(r=>r.n_lost)];
+ h+=`<h4>Busted legs</h4><table><tr><th>Card</th><th>Source</th><th>Legs lost</th><th>Busted leg</th><th>Type</th><th>Actual</th><th>Bust risk</th><th>Flagged weakest?</th></tr>${rows.map(r=>r.busts.map(b=>`<tr><td>${esc(r.card)}</td><td>${esc(r.source)}</td><td>${r.n_lost}/${r.legs}${r.n_lost==1?' <span class=y>1 off</span>':''}</td><td>${esc(b.leg)}</td><td>${esc(b.type)}</td><td>${esc(b.actual??'')}</td><td>${b.risk??'—'}</td><td>${b.flagged_weakest?'<span class=g>yes</span>':'<span class=r>no</span> (flagged: '+esc(r.weakest||'—')+')'}</td></tr>`).join('')).join('')||'<tr><td colspan=8 class=m>None yet.</td></tr>'}</table>`;
+ (O.real_rows||[]).filter(r=>r.scores).forEach(r=>{h+=wkHtml({leg:r.weakest,risk:Math.max(...r.scores.map(x=>x.risk)),why:(r.scores.find(x=>x.leg==r.weakest)||{}).why,swap:r.swap,scores:r.scores},'Near miss '+r.card+': rule-based weakest leg')+(r.images||[]).map(i=>`<a href="/winners/${encodeURIComponent(i)}" target=_blank><img src="/winners/${encodeURIComponent(i)}" style="height:320px;margin:4px;border:1px solid #30363d;border-radius:6px"></a>`).join('')});
+ return h+'</div>'}
+function learnTab(){const R=S.learning||{};if(R.error)return `<div class=r>Learning module error: ${esc(R.error)}</div>`;let h='';h+=unanBox();
+ h+=`<div class="card" style="border-color:#d29922"><b class=y>Small sample.</b> ${R.n_unique_graded||0} unique legs graded so far (${R.n_card_legs_graded||0} card-legs). Treat every rate below as noise until categories reach dozens of legs; the engine only nudges itself after ${R.min_n_for_learning} graded legs in a category. Learning is <b>${R.learning_enabled?'ON':'OFF'}</b> (data/LEARNING.json). Grading runs automatically on every refresh from ESPN finals and box scores.</div>`;
+ h+=oneOff();
+ h+='<div class=grid><div class=card><h3>Paper bankroll ($10 per card, start $1,000)</h3>'+svgCurve(R.curves||{})+'<table><tr><th>Source</th><th>Record</th><th>Pending</th><th>P&L</th><th>ROI</th><th>Bankroll</th></tr>'+Object.entries(R.record||{}).map(([k,v])=>`<tr><td>${esc(k)}</td><td>${v.won}-${v.lost}</td><td>${v.pending}</td><td class="${v.pnl>=0?'g':'r'}">$${v.pnl.toFixed(2)}</td><td>${pct(v.roi)}</td><td>$${v.bank}</td></tr>`).join('')+'</table></div>';
+ h+=`<div class=card><h3>Model calibration</h3>${svgCalib(R.calibration||[])}<div>Brier: model <b>${R.brier==null?'—':R.brier.toFixed(4)}</b> vs market implied <b>${R.brier_market==null?'—':R.brier_market.toFixed(4)}</b> (lower is better)</div></div></div>`;
+ h+='<div class=card><h3>Reviewer cuts: would they have helped?</h3><table><tr><th>Reviewer</th><th>Cuts</th><th>Helped (cut leg lost)</th><th>Hurt (cut leg won)</th><th>Pending</th><th>Legs</th></tr>'+Object.entries(R.reviewers||{}).map(([k,v])=>`<tr><td>${k}</td><td>${v.cuts}</td><td class=g>${v.helped}</td><td class=r>${v.hurt}</td><td>${v.pending}</td><td class=m>${v.legs.map(esc).join('<br>')}</td></tr>`).join('')+'</table>';
+ h+='<table><tr><th>Card</th><th>Original P&L</th><th>Reviewer-cut P&L</th><th>Revised P&L</th></tr>'+(R.card_compare||[]).map(c=>`<tr><td>${c.card}</td><td>$${c.original}</td><td>$${c.cut??'—'}</td><td>$${c.revised??'—'}</td></tr>`).join('')+'</table></div>';
+ h+='<div class=card><h3>Category leaderboards (cumulative and last-13)</h3>'+Object.entries(R.categories||{}).map(([k,g])=>catTable(k,g)).join('')+(R.n_unique_graded?'':'<div class=m>Fills in as legs settle.</div>')+'</div>';
+ h+='<div class=card><h3>Tracked cards (tap to expand legs)</h3><div class=m>Legs turn green when won, red when busted, neutral while pending. Grading from ESPN finals and box scores.</div>'+(R.cards||[]).filter(c=>c.locked).slice().sort(lockNewest).map(trackedSlip).join('')+((R.cards||[]).some(c=>!c.locked)?`<div class=m>Waiting to lock (locks ≤7 min before first tip): ${(R.cards||[]).filter(c=>!c.locked).map(c=>esc(c.id)).join(', ')}</div>`:'')+'</div>';
+ const P=R.params||{};h+='<div class=card><h3>Learned adjustments</h3><div class=m>Current: shift '+esc(JSON.stringify(P.shift||{}))+' · learned edge floors '+esc(JSON.stringify(P.min_edge||{}))+'. Bounds: shift ±3 pts (1 pt steps), edge floor 0–2 pts (0.5 pt steps). Core bars (binary legs, ≥75% L13 for props, no fabricated data) never loosen.</div><table><tr><th>Time</th><th>Category</th><th>Before</th><th>After</th><th>Reason</th></tr>'+((R.adjustments||[]).slice().reverse().map(a=>`<tr><td>${esc(a.t)}</td><td>${esc(a.category)}</td><td>${esc(JSON.stringify(a.before))}</td><td>${esc(JSON.stringify(a.after))}</td><td>${esc(a.reason)}</td></tr>`).join('')||'<tr><td colspan=5 class=m>No adjustments yet. Needs ≥20 graded legs in a category.</td></tr>')+'</table></div>';
+ h+=pastWins();
+ return h}
+
+function curBook(){const o=S.book_order||[];const have=b=>Object.values(S.book_lines||{}).some(g=>g.books&&g.books[b]);
+ if(localStorage.book&&o.includes(localStorage.book))return localStorage.book;return have('FanDuel')?'FanDuel':'DraftKings'}
+function bookSel(){const e=document.getElementById('booksel');if(!e||!S)return;const c=curBook();e.innerHTML=(S.book_order||[]).map(b=>`<option ${b==c?'selected':''}>${b}</option>`).join('')}
+function bookFeed(){const b=S.books||{};return `<span class="${b.stale?'r':'g'}">Per-book lines: Action Network public JSON (${esc(b.endpoint||'')}) · fetched ${esc((b.fetched_at||'').slice(11,16))} UTC (${b.age_min??'?'} min ago)${b.stale?' · STALE'+(b.error?': '+esc(b.error):''):''}</span>`}
+function bookBox(bp,title){if(!bp||bp.error||!bp.books)return bp?.error?`<div class=r>book pricing error: ${esc(bp.error)}</div>`:'';const c=curBook();const o=S.book_order||Object.keys(bp.books);
+ const cell=b=>{const x=bp.books[b]||{};const t=(x.missing||[]).join('\n');const sel=b==c?'outline:2px solid #d29922;':'';const best=b==bp.best?'background:#12361f;':'';
+  return `<td title="${esc(t)}" style="${sel}${best}text-align:center">${x.american!=null?(x.full?'<b>'+am(x.american)+'</b>':'<span class=m>'+am(x.american)+'</span>'):'—'}<br><span class=m style="font-size:11px">${x.priced}/${x.legs} legs${b==bp.best?' · BEST':''}</span></td>`};
+ return `<div style="margin:6px 0"><b>${title||'Price by book'}</b> <span class=m>(selected: ${c}; full price only when every leg is quoted; props are DraftKings-only in public feeds; hover for missing legs${bp.started?'; started games use the last pre-tip snapshot, not bettable now':''})</span>
+ <table><tr>${o.map(b=>`<th style="text-align:center">${b}</th>`).join('')}</tr><tr>${o.map(cell).join('')}</tr></table>
+ <div class=m>Best full-card book: <b>${bp.best||'none (no single book quotes every leg)'}</b>${bp.best_team_legs?` · best on the team legs alone: <b>${bp.best_team_legs}</b> (${am(bp.team_legs_american[bp.best_team_legs])})`:''}</div></div>`}
+function trackedBooks(){const T=S.tracked_book_prices||{};const ks=Object.keys(T).filter(k=>!T[k].error);if(!ks.length)return '';const c=curBook();const o=S.book_order||[];
+ return `<h2>Per-book prices · today's tracked cards</h2><div class=m>${bookFeed()}</div><table><tr><th>Card</th><th>Tier</th>${o.map(b=>`<th style="text-align:center;${b==c?'color:#d29922':''}">${b}</th>`).join('')}<th>Best book</th></tr>${ks.map(k=>{const v=T[k];return `<tr><td>${esc(k)}</td><td>${esc(v.tier||'')}</td>${o.map(b=>{const x=v.books[b];return `<td title="${esc(x.missing.join('\n'))}" style="text-align:center;${b==c?'outline:2px solid #d29922;':''}${b==v.best?'background:#12361f;':''}">${x.american!=null?(x.full?'<b>'+am(x.american)+'</b>':'<span class=m>'+am(x.american)+'</span>'):'—'} <span class=m style="font-size:11px">${x.priced}/${x.legs}</span></td>`}).join('')}<td>${v.best||'—'}${v.best_team_legs&&v.best_team_legs!=v.best?' <span class=m>(team legs: '+v.best_team_legs+')</span>':''}</td></tr>`}).join('')}</table>`}
+
+function render(){nav();bookSel();const m=document.getElementById('main');if(!S){m.innerHTML='Waiting for first refresh…';return}
+ const L=Object.fromEntries((S.legs||[]).map(l=>[l.id,l]));let h='';if([0,3,6].includes(tab)){const ag=LV?.generated_at?Math.round((Date.now()-Date.parse(LV.generated_at.replace(' ET','').replace(' ','T')+'-05:00'))/60000):null;const ng=Object.values(LV?.games||{}).filter(g=>g.state=='in').length;
+ h+=LV?`<div class="m ${ag!=null&&ag>3?'r':''}">Live legs: ESPN public boxscore every ${LV.interval_s}s · updated ${esc((LV.generated_at||'').slice(11,16))} ET${ag!=null?' ('+ag+' min ago)':''}${ag!=null&&ag>3?' · STALE':''} · ${ng} game(s) in progress${LV.errors?.length?' · <span class=r>feed failed for '+LV.errors.length+' game(s)</span>':''}. Overs/props flip green the moment the line is reached; unders flip red when passed; ML/spreads settle at final.</div>`:'<div class="m r">Live leg feed missing (data/live.json not available)</div>'}
+ if(tab==0){h+=`<div class="m">Eligible (not started) games: ${(S.eligible_games||[]).join(', ')||'none'} · ${S.legs?.length||0} candidate legs · Model lines: DraftKings; per-book prices for FanDuel / DraftKings / BetMGM / Caesars / theScore Bet / Fanatics / Consensus below each card. ${bookFeed()}. Refresh every ${S.next_refresh_min} min.</div>`;
+  const Ulocks=(S.learning?.cards||[]).filter(c=>(c.lock_kinds&&c.lock_kinds.length)||c.lock_kind||(c.id||'').startsWith('LOCK-')||(c.source||'').toLowerCase().includes('lock')).sort(lockNewest);const tdy=todayET();const Ltoday=Ulocks.filter(c=>lockDay(c)==tdy);const LS=c=>trackedSlip({...c,id:c.id,source:c.source||'Unanimous LOCK'});const Learlier=Ulocks.filter(c=>lockDay(c)!=tdy);
+   h+=`<h2 id=locks-today>🔒 Today's LOCKs · ${tdy} ET <span class=m style="font-size:13px;font-weight:400">paper only · frozen · newest first</span></h2>`+(Ltoday.length?Ltoday.map(LS).join(''):'<div class=m>No locks yet today.</div>');
+   h+=`<h2 id=locks-unanimous>🔒 Unanimous LOCKs <span class=m style="font-size:13px;font-weight:400">paper only · tonight's pending build first · earlier below, newest first</span></h2>`;
+   h+='<h3 id=locks-pending>Tonight\'s pending build (3 / 6 / 9)</h3><div class=m>Live engine cards — lines are starting points; not locked until the three reviewers agree.</div>'+['Probability','Balanced','Jackpot'].map(t=>parlayCard(t,S.parlays?.[t],L)).join('');
+   if(Ltoday.length)h+='<h3>Today\'s pending locks</h3>'+Ltoday.map(LS).join('');
+   if(Learlier.length)h+='<h3>Earlier locks</h3>'+Learlier.map(LS).join('');
+   h+='<h2>Chill-style build (ML backbone + same-side SGP blocks + heavy-favorite anchors)</h2><div class=m>Structure borrowed from Chill\'s past winning slips (see Results &amp; Learning → Past Wins). Wins-only sample: a structural prior, not proof of edge. Every system bar still applies; SGP-aware pricing.</div>'+parlayCard('Chill-style',S.parlays?.['Chill-style'],L);
+  h+=trackedBooks();
+  h+='<h2>Original MJ parlays · reviewer consensus</h2><div class=m>Newest first. These are the frozen original builds, not the live engine cards.</div>'+(S.originals||[]).slice().sort(lockNewest).map(o=>origCard(o,L)).join('');
+  h+=unanBox()}
+ if(tab==1){for(const g of S.games||[]){const ls=(S.legs||[]).filter(l=>l.eid==g.eid);
+  h+=`<div class="card"><h3>${g.game} · ${g.tip_et} · ${esc(g.status)} ${g.eligible?'<span class=g>eligible</span>':'<span class=m>not eligible (started/final)</span>'}</h3>`;
+  if(g.eligible){h+=`<div class=m>Rest: ${Object.entries(g.rest).map(([k,v])=>k+' '+v).join(' · ')} · model margin (home) ${g.model_margin_home} · ESPN predictor home ${pct(g.bpi_home)} · exp total ${g.exp_total??'—'} · DK line age ${g.dk_age_min??'?'} min · lineups ${g.lineups_confirmed?'<span class=g>confirmed</span>':'<span class=y>pending</span>'}</div>`;
+   const bk=Object.entries(g.books||{});if(bk.length)h+='<table><tr><th>Book</th><th>ML A/H</th><th>Spread H</th><th>Total O/U</th><th>Updated</th></tr>'+bk.map(([n,b])=>`<tr><td>${n}</td><td>${am(b.ml_away)} / ${am(b.ml_home)}</td><td>${b.spread_home} (${am(b.spread_home_line)})</td><td>${b.total} (${am(b.over)}/${am(b.under)})</td><td class=m>${esc((b.inserted||'').slice(0,19))}Z</td></tr>`).join('')+'</table>';
+   h+='<table>'+LH+ls.sort((a,b)=>b.ev-a.ev).map(l=>legRow(l)).join('')+'</table>'}h+='</div>'}}
+ if(tab==2){h+=`<div class=m>ESPN injuries (feed ts ${esc(S.espn_inj_ts)}) cross-checked with NBA official report ${S.nba_ir?.url?'<a style="color:#58a6ff" href="'+S.nba_ir.url+'">'+esc(S.nba_ir.time)+'</a> ('+S.nba_ir.rows+' rows)':'<span class=r>unavailable</span>'}</div>`;
+  for(const t of S.injuries||[]){h+=`<div class=card><h3>${t.team} · ${t.game} · ${t.tip_et}</h3><div class=m>Season leaders (ESPN): ${t.season_leaders.join(', ')}</div><table><tr><th>Player</th><th>ESPN</th><th>NBA official</th><th>Note</th></tr>${t.players.map(p=>`<tr><td>${esc(p.name)}</td><td>${esc(p.espn)}</td><td>${esc(p.nba_official||'—')}</td><td class=m>${esc(p.comment)}</td></tr>`).join('')||'<tr><td colspan=4>none listed</td></tr>'}</table></div>`}}
+ if(tab==3){for(const [src,b] of Object.entries(S.bankroll||{}))h+=`<div class=card><h3>${src}</h3>Record ${b.won}-${b.lost} (${b.pending} pending) · staked $${b.staked} · returned $${b.returned} · P&L <b class="${b.pnl>=0?'g':'r'}">$${b.pnl}</b> · ROI ${b.roi==null?'—':pct(b.roi)} · paper bankroll $${b.bankroll} (start $1000, $10 stakes)</div>`;
+  for(const [src,led] of Object.entries(S.ledgers||{}))h+=`<h3>${src}</h3>`+led.slice().reverse().map(p=>{const st=p.status||cardStatus(p.legs);const TB=(S.tracked_book_prices||{})[p.parlay_id];
+   return slip('l:'+p.parlay_id,{title:esc(p.parlay_id)+' <span class=m>'+esc(p.tier||'')+' · built '+esc(p.built_at||'')+'</span>',n:p.legs.length,odds:esc(p.combined_american),badges:[[p.locked?'🔒 locked':'',''],[p.verdict?.final||(typeof p.verdict=='string'?p.verdict:''),p.verdict?.final||p.verdict],[st,st]],
+    stake:p.stake_paper!=null&&p.potential_payout!=null?`Paper $${p.stake_paper} → pays $${p.potential_payout}`:'',
+    legs:p.legs.map(l=>{const b=bkOdds(TB,l.leg,null,l.odds_american,'then');return {sel:l.leg,market:mkt(l),matchup:l.game,tip:l.tip,status:gradeOf(p.parlay_id,l.leg,l.status),odds:b.odds,sub:b.sub,extra:[l.model_p!=null?'model '+pct(l.model_p):'',l.book?esc(l.book):''].filter(Boolean).join(' · ')}}),
+    body:`<div class=m>Joint ${pct(p.est_joint_p)} vs implied ${pct(p.implied_p)}${p.sgp_note?' · '+esc(p.sgp_note):''}</div>`+(TB?bookBox(TB,'Price by book (this card)'):'')})}).join('')}
+ if(tab==4){h+='<table><tr><th>Source</th><th>OK</th><th>Fail</th><th>Last OK</th><th>Last error</th><th>Notes</th></tr>'+Object.entries(S.sources||{}).map(([k,v])=>`<tr><td>${esc(k)}<div class=m>${esc(v.url)}</div></td><td>${v.ok}</td><td class="${v.fail?'r':''}">${v.fail}</td><td>${esc(v.last_ok)}</td><td class=r>${esc(v.last_err)}</td><td class=m>${v.ambiguous_dropped?'ambiguous dropped '+v.ambiguous_dropped+'; ':''}${v.implausible_skipped?'implausible skipped '+v.implausible_skipped:''}${v.report_time?'report '+v.report_time:''}</td></tr>`).join('')+'</table>';
+  h+='<div class=m>Fanatics and theScore Bet are requested from Action Network but publish no public prices; DraftKings is the reference line.</div>'}
+ if(tab==5){h+=`<div class=card><pre>${esc(S.method||'')}</pre></div>`}
+ if(tab==6){h+=learnTab()}
+ m.innerHTML=h}
+let LV=null;async function pollLive(){try{const r=await fetch('/data/live.json?'+Date.now());if(r.ok)LV=await r.json()}catch(e){}}
+async function poll(){try{const r=await fetch('/data/state.json?'+Date.now());S=await r.json();await pollLive();
+ const age=(Date.now()/1000-S.generated_epoch)/60;document.getElementById('upd').textContent='Last refresh '+S.generated_at+' ('+age.toFixed(1)+' min ago)';
+ const st=document.getElementById('stale');st.textContent=S.stale||age>12?'⚠ STALE since '+(S.stale_since||S.generated_at):'live';st.style.background=S.stale||age>12?'#4a1515':'#0f3d24';
+ if(!document.activeElement||document.activeElement.tagName!='INPUT')render()}catch(e){document.getElementById('stale').textContent='⚠ cannot read state.json'}}
+poll();setInterval(poll,5000);
+</script></body></html>

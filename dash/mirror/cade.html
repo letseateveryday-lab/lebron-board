@@ -1,0 +1,190 @@
+<!doctype html><html><head><script src="./shim.js"></script><meta charset="utf-8"><title>Cade · Trenches</title><meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+:root{--bg:#0b0d12;--p:#12151d;--p2:#181c26;--b:#232838;--t:#d7dbe6;--m:#7c859b;--g:#2ee59d;--r:#ff5470;--y:#ffcc4d;--c:#5ab4ff;--v:#a07bff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--t);font:12.5px/1.35 Inter,ui-sans-serif,system-ui,Segoe UI,sans-serif}
+a{color:var(--c);text-decoration:none}a:hover{text-decoration:underline}.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+header{display:flex;align-items:center;gap:14px;padding:8px 14px;background:var(--p);border-bottom:1px solid var(--b);position:sticky;top:0;z-index:5;flex-wrap:wrap}
+.logo{font-weight:800;font-size:15px;letter-spacing:.5px}.logo span{color:var(--g)}
+.badge{padding:2px 8px;border-radius:4px;font-weight:700;font-size:11px;border:1px solid}.paper{color:var(--y);border-color:var(--y);background:#ffcc4d14}.live{color:var(--r);border-color:var(--r)}
+.hk{display:flex;gap:16px;flex-wrap:wrap}.hk div{display:flex;flex-direction:column}.hk b{font-size:14px}.hk small{color:var(--m);font-size:10.5px;text-transform:uppercase}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:5px;background:var(--g);box-shadow:0 0 6px var(--g)}.dot.bad{background:var(--r);box-shadow:0 0 6px var(--r)}.dot.warn{background:var(--y);box-shadow:0 0 6px var(--y)}
+nav{display:flex;gap:2px;padding:0 14px;background:var(--p);border-bottom:1px solid var(--b);overflow:auto}
+nav button{background:none;border:0;color:var(--m);padding:9px 13px;cursor:pointer;font:600 12.5px inherit;border-bottom:2px solid transparent;white-space:nowrap}
+nav button.on{color:var(--t);border-color:var(--g)}nav button .n{background:var(--p2);border-radius:8px;padding:0 6px;margin-left:4px;font-size:10.5px}
+main{padding:12px 14px}.tab{display:none}.tab.on{display:block}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px;margin-bottom:12px}
+.card{background:var(--p);border:1px solid var(--b);border-radius:8px;padding:10px 12px}.card small{color:var(--m);text-transform:uppercase;font-size:10.5px;letter-spacing:.4px}.card b{display:block;font-size:18px;margin-top:3px}.card i{font-style:normal;color:var(--m);font-size:11px}
+.pnl+{}.up{color:var(--g)}.dn{color:var(--r)}.mut{color:var(--m)}.yel{color:var(--y)}
+h3{margin:14px 0 6px;font-size:12px;text-transform:uppercase;letter-spacing:.6px;color:var(--m)}
+table{width:100%;border-collapse:collapse;background:var(--p);border:1px solid var(--b);border-radius:8px;overflow:hidden}
+th{position:sticky;top:0;background:var(--p2);color:var(--m);font-weight:600;font-size:10.5px;text-transform:uppercase;text-align:right;padding:7px 8px;white-space:nowrap}
+td{padding:6px 8px;border-top:1px solid var(--b);text-align:right;white-space:nowrap}th:first-child,td:first-child{text-align:left}
+tr:hover td{background:#1a1f2b}.tok{display:flex;align-items:center;gap:8px}.tok img,.tok .ph{width:26px;height:26px;border-radius:6px;background:var(--p2);object-fit:cover}
+.tok .s{font-weight:700}.tok .mm{color:var(--m);font-size:10.5px}.lk a{margin-left:6px;font-size:10.5px;color:var(--m)}.lk a:hover{color:var(--c)}
+.pill{display:inline-block;padding:1px 6px;border-radius:4px;font-size:10.5px;font-weight:700;margin:1px}
+.ok{background:#2ee59d1c;color:var(--g)}.no{background:#ff54701f;color:var(--r)}.wa{background:#ffcc4d1c;color:var(--y)}.ne{background:#7c859b22;color:var(--m)}.bu{background:var(--g);color:#000}
+.bar{height:5px;background:var(--p2);border-radius:3px;overflow:hidden;min-width:60px}.bar>div{height:100%}
+.chart{background:var(--p);border:1px solid var(--b);border-radius:8px;padding:8px}canvas{width:100%;height:240px;display:block}
+pre.log{background:#07090d;border:1px solid var(--b);border-radius:8px;padding:10px;max-height:70vh;overflow:auto;font:11.5px/1.45 ui-monospace,monospace;margin:0}
+.lb{color:var(--g)}.ls{color:var(--y)}.le{color:var(--r)}.lw{color:var(--v)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media(max-width:1000px){.two{grid-template-columns:1fr}}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}.cal div{background:var(--p);border:1px solid var(--b);border-radius:6px;padding:6px;min-height:58px;font-size:11px}.cal div b{display:block;font-size:13px}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;background:var(--p);border:1px solid var(--b);border-radius:8px;padding:10px 12px}.kv span:nth-child(odd){color:var(--m)}
+.banner{padding:8px 12px;border-radius:6px;margin-bottom:10px;font-weight:600}.banner.r{background:#ff547022;border:1px solid var(--r);color:var(--r)}.banner.y{background:#ffcc4d14;border:1px solid var(--y);color:var(--y)}
+.stl{opacity:.38;filter:grayscale(1)}.stag{display:inline-block;margin-left:4px;padding:0 4px;border-radius:3px;font-size:9.5px;font-weight:700;background:#7c859b33;color:#aab;opacity:1;filter:none}.fr{cursor:help}
+.tw{overflow:auto;max-height:78vh;border-radius:8px}
+
+/* Live Log · Tape — styled after the paper bot's Mind tab */
+#mind-wrap{--mbg:#141821;--mline:#2a3344;--mmut:#8b95a5;--mw:#e8edf5;display:flex;flex-direction:column;gap:10px;font:13px/1.35 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+#mind-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;color:var(--mmut);font-size:12px}#mind-head strong{color:var(--mw);font-weight:600}
+.mfil{display:flex;flex-wrap:wrap;gap:6px}.mf{background:var(--mbg);border:1px solid var(--mline);color:var(--mmut);border-radius:999px;padding:3px 10px;font:600 11px inherit;cursor:pointer}.mf span{margin-left:6px;opacity:.7}.mf.on{color:var(--mw);border-color:#5aa0ff;background:#5aa0ff22}
+#mbox{height:58vh;min-height:260px;overflow-y:auto;background:var(--mbg);border:1px solid var(--mline);border-radius:12px;padding:10px 14px;font:13px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+#mbox .mline{display:grid;grid-template-columns:74px 104px 1fr;gap:10px;padding:4px 0 4px 8px;border-left:2px solid transparent;border-bottom:1px solid rgba(42,51,68,.45)}#mbox .mline:last-child{border-bottom:0}
+#mbox .t{color:var(--mmut);font-variant-numeric:tabular-nums}#mbox .k{font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;opacity:.9}
+#mbox .x{color:#cfd6e2;white-space:pre-wrap;word-break:break-word;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}#mbox .tk{color:var(--mw)}
+#mbox .ml a{font-size:10px;color:var(--mmut);margin-left:4px}#mbox .ml a:hover{color:#5aa0ff}#mbox .ml{margin-right:2px}
+#mbox .rep{font-size:10.5px;color:var(--mmut);background:#2a334466;border-radius:4px;padding:0 5px;font-family:ui-monospace,monospace}
+.rawb{background:none;border:1px solid var(--mline);color:var(--mmut);border-radius:4px;font:10px ui-monospace,monospace;padding:0 5px;cursor:pointer;margin-left:4px;opacity:.6}.rawb:hover{opacity:1}
+#mbox pre.raw{margin:4px 0 2px;padding:6px 8px;background:#0c0e12;border:1px solid var(--mline);border-radius:6px;font:11px/1.45 ui-monospace,monospace;color:var(--mmut);white-space:pre-wrap;word-break:break-all}
+#mbox .quiet{color:var(--mmut);padding:40px 0;text-align:center;font-size:15px}
+.mline.buy{border-left-color:rgba(46,196,126,.6)!important}.mline.buy .k,.mf.buy{color:#2ec47e}
+.mline.tp{border-left-color:rgba(94,200,255,.6)!important}.mline.tp .k,.mf.tp{color:#5ec8ff}
+.mline.sell,.mline.trail{border-left-color:rgba(201,162,39,.6)!important}.mline.sell .k,.mline.trail .k,.mf.sell,.mf.trail{color:#c9a227}
+.mline.stop,.mline.error{border-left-color:rgba(232,88,88,.65)!important}.mline.stop .k,.mline.error .k,.mf.stop,.mf.error{color:#e85858}
+.mline.veto,.mline.system{border-left-color:rgba(139,149,165,.45)!important}.mline.veto .k,.mline.system .k{color:#8b95a5}
+.mline.watch{border-left-color:rgba(90,160,255,.5)!important}.mline.watch .k,.mf.watch{color:#5aa0ff}
+.mline.halt{border-left-color:rgba(255,170,60,.8)!important}.mline.halt .k,.mf.halt{color:#ffaa3c}
+.mline.withdraw{border-left-color:rgba(180,140,255,.6)!important}.mline.withdraw .k,.mf.withdraw{color:#b48cff}
+#mind-panels{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:10px}
+.mpanel{background:var(--mbg);border:1px solid var(--mline);border-radius:12px;padding:10px 14px 12px;min-width:0}
+.mpanel h3{margin:0 0 8px;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--mmut);display:flex;justify-content:space-between;gap:8px}.mpanel h3 .sub{text-transform:none;letter-spacing:0;font-weight:600;opacity:.8}
+.mpanel .body{max-height:260px;overflow-y:auto;font-size:12.5px;line-height:1.45;color:#cfd6e2}.mpanel .idea{padding:4px 0;border-bottom:1px solid rgba(42,51,68,.45)}.mpanel .idea:last-child{border-bottom:0}.mpanel .idea .t{color:var(--mmut);font-size:11px;margin-right:8px;display:inline-block;min-width:34px}
+.mpanel .chipline{display:flex;flex-wrap:wrap;gap:6px 14px;color:var(--mmut);font-size:12px;margin-bottom:4px}.mpanel .chipline strong{color:var(--mw)}.mpanel .lbl2{color:var(--mmut);font-size:11px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;margin:8px 0 2px}
+</style></head><body>
+<header><div class="logo">CADE<span>/trenches</span></div><span id="mode" class="badge paper">PAPER</span>
+<span id="eng"></span><div class="hk" id="hk"></div><div style="margin-left:auto" class="mut mono" id="upd"></div></header>
+<nav id="nav"></nav><main id="main"></main>
+<script>
+const MTAGS=["BUY","SELL","TP","STOP","TRAIL","VETO","WATCH","HALT","WITHDRAW","ERROR","SYSTEM"],MI={BUY:"▲",SELL:"▼",TP:"◎",STOP:"✕",TRAIL:"↘",VETO:"⊘",WATCH:"◉",HALT:"■",WITHDRAW:"⇪",ERROR:"!",SYSTEM:"⚙"},MF=new Set(),MR=new Set();
+function mf(t){MF.has(t)?MF.delete(t):MF.add(t);render()}function rt(k){MR.has(k)?MR.delete(k):MR.add(k);render()}
+const TABS=[["ov","Overview"],["pos","Open Positions"],["scan","Scanner · Top Now"],["hist","Closed / History"],["cal","PnL Calendar"],["wd","Wallet & Withdrawals"],["cfg","Config & Rules"],["log","Live Log · Tape"]];
+let cur=location.hash.slice(1)||"ov",S=null;
+const $=s=>document.querySelector(s),E=(v,d=2)=>v==null||isNaN(v)?"—":Number(v).toFixed(d);
+const usd=(v,d=2)=>v==null?"—":(v<0?"-$":"$")+Math.abs(v).toLocaleString(undefined,{minimumFractionDigits:d,maximumFractionDigits:d});
+const sgn=(v,d=2,pre="$")=>v==null?"<span class=mut>—</span>":`<span class="${v>0?"up":v<0?"dn":"mut"}">${v>0?"+":v<0?"-":""}${pre}${Math.abs(v).toFixed(d)}</span>`;
+const pct=(v,d=1)=>v==null?"<span class=mut>—</span>":`<span class="${v>0?"up":v<0?"dn":"mut"}">${v>0?"+":""}${Number(v).toFixed(d)}%</span>`;
+const K=v=>v==null?"—":v>=1e9?"$"+(v/1e9).toFixed(2)+"B":v>=1e6?"$"+(v/1e6).toFixed(2)+"M":v>=1e3?"$"+(v/1e3).toFixed(1)+"K":"$"+Math.round(v);
+const N=v=>v==null?"—":v>=1e3?(v/1e3).toFixed(1)+"K":v;
+const px=v=>{if(!v)return"—";if(v>=1)return"$"+v.toFixed(4);const s=v.toExponential(3).split("e");const z=-parseInt(s[1])-1;return z>=4?`$0.0<sub>${z}</sub>${(v*10**(z+1)).toFixed(3).replace(".","").slice(0,4)}`:"$"+v.toPrecision(4)};
+const age=h=>h==null?"—":h<1?Math.round(h*60)+"m":h<48?h.toFixed(1)+"h":(h/24).toFixed(1)+"d";
+const dur=m=>m==null?"—":m<60?Math.round(m)+"m":(m/60).toFixed(1)+"h";
+const tm=s=>s?new Date(s).toLocaleString("en-US",{timeZone:"America/Detroit",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:false}):"—";
+const ageS=ts=>ts?(new Date(S.now)-new Date(ts))/1000:null;
+const F=(h,ts,src,L,force)=>{const a=ageS(ts),st=force||a==null||a>(L||40);return`<span class="fr${st?" stl":""}" title="${(src||"?").replace(/"/g,"")}${ts?" · "+tm(ts)+" ET · "+Math.round(a)+"s old":" · no timestamp"}">${h}</span>${st?'<span class=stag>stale</span>':""}`};
+const short=m=>m.slice(0,4)+"…"+m.slice(-4);
+const links=(m,pair)=>`<span class=lk><a target=_blank href="https://dexscreener.com/solana/${pair||m}">DS</a><a target=_blank href="https://solscan.io/token/${m}">Solscan</a><a target=_blank href="https://gmgn.ai/sol/token/${m}">GMGN</a><a target=_blank href="https://rugcheck.xyz/tokens/${m}">RC</a><a href="#" onclick="navigator.clipboard.writeText('${m}');return false" title="copy mint">⧉</a></span>`;
+const tok=(t,d)=>`<div class=tok>${d&&d.img?`<img src="${d.img}" loading=lazy onerror="this.style.visibility='hidden'">`:'<div class=ph></div>'}<div><div class=s>${t.sym} ${links(t.mint,d&&d.pair)}</div><div class="mm mono">${short(t.mint)}${typeof t.dex=="string"?" · "+t.dex:t.dex_id?" · "+t.dex_id:""}</div></div></div>`;
+const rugp=r=>{if(!r)return'<span class="pill ne">checking…</span>';return`<span class="pill ${r.mint_ok?"ok":"no"}">${r.mint_ok?"✓":"✗"} Mint</span><span class="pill ${r.freeze_ok?"ok":"no"}">${r.freeze_ok?"✓":"✗"} Freeze</span><span class="pill ${r.lp>=95?"ok":r.lp>=50?"wa":"no"}">LP ${Math.round(r.lp)}%</span>${r.rugged?'<span class="pill no">RUGGED</span>':""}`};
+const sbar=s=>`<div style="display:flex;align-items:center;gap:6px;justify-content:flex-end"><b>${E(s,0)}</b><div class=bar style="width:60px"><div style="width:${Math.min(100,s||0)}%;background:${s>=95?"var(--g)":s>=70?"var(--y)":"var(--r)"}"></div></div></div>`;
+function nav(){$("#nav").innerHTML=TABS.map(([k,l])=>{let n="";if(S){if(k=="pos")n=S.positions.length;if(k=="scan")n=S.top.length;if(k=="hist")n=S.closed.length;if(k=="wd")n=S.withdrawals.length}return`<button class="${k==cur?"on":""}" onclick="go('${k}')">${l}${n!==""?`<span class=n>${n}</span>`:""}</button>`}).join("")}
+function go(k){cur=k;location.hash=k;nav();render()}
+function header(){const a=S.acct,c=S.cycle,e=S.engine;$("#mode").textContent=S.mode;$("#mode").className="badge "+(S.mode=="PAPER"?"paper":"live");
+const stale=c.age_s>90;$("#eng").innerHTML=`<span class="dot ${!e.running?"bad":stale?"warn":""}"></span>${e.running?"engine pid "+e.pids.join(","):"ENGINE DOWN"} <span class=mut>· cycle ${c.age_s==null?"—":Math.round(c.age_s)+"s ago"}</span>`;
+$("#hk").innerHTML=`<div><small>Equity</small><b>${usd(a.equity)}</b></div><div><small>Cash</small><b>${usd(a.cash)}</b></div><div><small>Today</small><b>${sgn(a.pnl_today)}</b></div><div><small>All-time</small><b>${sgn(a.pnl_all)}</b></div><div><small>Open</small><b>${S.positions.length}/${S.config.max_open||"?"}</b></div><div><small>Halt</small><b class="${c.halt||S.kill?"dn":"up"}">${c.halt||(S.kill?"KILL":"none")}</b></div>`;
+$("#upd").textContent="updated "+tm(S.now)+" ET"}
+function curve(cv){const el=$("#cv");if(!el||!S.curve.length)return;const W=el.clientWidth,H=240,r=devicePixelRatio||1;el.width=W*r;el.height=H*r;const x=el.getContext("2d");x.scale(r,r);
+const d=S.curve,ys=d.map(p=>p[1]),st=S.acct.start,mn=Math.min(...ys,st)*0.998,mx=Math.max(...ys,st)*1.002,t0=d[0][0],t1=d[d.length-1][0]||t0+1;
+const X=t=>40+(W-50)*(t-t0)/Math.max(1,t1-t0),Y=v=>10+(H-30)*(1-(v-mn)/(mx-mn||1));x.strokeStyle="#232838";x.fillStyle="#7c859b";x.font="10px sans-serif";
+for(let i=0;i<=4;i++){const v=mn+(mx-mn)*i/4;x.beginPath();x.moveTo(40,Y(v));x.lineTo(W,Y(v));x.stroke();x.fillText("$"+v.toFixed(2),2,Y(v)+3)}
+x.setLineDash([4,4]);x.strokeStyle="#ffcc4d88";x.beginPath();x.moveTo(40,Y(st));x.lineTo(W,Y(st));x.stroke();x.setLineDash([]);
+const up=ys[ys.length-1]>=st,col=up?"#2ee59d":"#ff5470",g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,col+"55");g.addColorStop(1,col+"00");
+x.beginPath();d.forEach((p,i)=>i?x.lineTo(X(p[0]),Y(p[1])):x.moveTo(X(p[0]),Y(p[1])));x.strokeStyle=col;x.lineWidth=1.6;x.stroke();x.lineTo(X(t1),H-20);x.lineTo(X(t0),H-20);x.fillStyle=g;x.fill();
+x.fillStyle="#7c859b";[t0,(t0+t1)/2,t1].forEach((t,i)=>{const s=new Date(t*1000).toLocaleTimeString("en-US",{timeZone:"America/Detroit",hour:"2-digit",minute:"2-digit",hour12:false});x.fillText(s,i==0?40:i==1?X(t)-14:W-30,H-5)})}
+function exitsTbl(ex){const k=Object.keys(ex);return k.length?k.map(w=>`<span class="pill ${/TP|partials/.test(w)?"ok":/stop|rug|liq/.test(w)?"no":"wa"}">${w}: ${ex[w]}</span>`).join(" "):"<span class=mut>no closes yet</span>"}
+function statCards(s,l){return`<div class=card><small>${l} closes</small><b>${s.n}</b><i>${s.wins}W / ${s.losses}L</i></div><div class=card><small>${l} win rate</small><b>${s.wr==null?"—":E(s.wr,1)+"%"}</b><i>PF ${s.pf==null?"—":E(s.pf)}</i></div><div class=card><small>${l} realized</small><b>${sgn(s.pnl)}</b><i>best ${sgn(s.best)} · worst ${sgn(s.worst)}</i></div><div class=card><small>${l} avg W / L</small><b>${sgn(s.avg_win)} <span class=mut>/</span> ${sgn(s.avg_loss)}</b></div>`}
+const R={
+ov(){const a=S.acct,c=S.cycle,src=c.sources||{},bad=Object.entries(src).filter(([k,v])=>v!="ok");
+return`${S.kill?'<div class="banner r">KILL file present (/workspace/cade/KILL) — new entries halted</div>':""}${c.halt&&!S.kill?`<div class="banner r">HALT: ${c.halt}</div>`:""}${!S.engine.running?'<div class="banner r">cade.py is not running</div>':""}${S.config.withdraw_address=="SET_ME_SOLANA_ADDRESS"?'<div class="banner y">Live trading not set up: withdraw address is unset and there is no wallet key. Running PAPER only.</div>':""}
+<div class=grid><div class=card><small>Mode</small><b class=yel>${S.mode}</b><i>cycle ${S.config.cycle_sec}s (actual ${E(c.cycle_sec_actual,1)}s) · seen ${c.seen} · fee ${c.fee_lamports??"—"} lam</i></div>
+<div class=card><small>Equity</small><b>${usd(a.equity)}</b><i>drawdown from peak ${pct(a.dd_from_peak,2)}</i></div><div class=card><small>Cash</small><b>${usd(a.cash)}</b><i>in positions ${usd(a.invested)}</i></div>
+<div class=card><small>Start capital</small><b>${usd(a.start)}</b><i>${S.config.start_capital_sol} SOL</i></div><div class=card><small>PnL today</small><b>${sgn(a.pnl_today)}</b><i>day open ${usd(a.day_eq)} · realized ${sgn(a.realized_today)}</i></div>
+<div class=card><small>PnL all-time</small><b>${sgn(a.pnl_all)}</b><i>${pct(a.start?a.pnl_all/a.start*100:null,2)} · unreal ${sgn(a.upnl)}</i></div>
+<div class=card><small>Halt status</small><b class="${c.halt?"dn":"up"}">${c.halt||"trading"}</b><i>daily-loss floor ${usd(a.daily_floor)}</i></div><div class=card><small>KILL file</small><b class="${S.kill?"dn":"up"}">${S.kill?"PRESENT":"absent"}</b><i>/workspace/cade/KILL</i></div>
+<div class=card><small>Data sources</small><b class="${bad.length?"dn":"up"}">${bad.length?bad.length+" failing":"all ok"}</b><i>${Object.keys(src).length} engine sources · see table below</i></div>
+<div class=card><small>SOL / USD</small><b>${F(usd(c.sol_usd&&c.sol_usd.v),c.sol_usd&&c.sol_usd.ts,(c.sol_usd&&c.sol_usd.src)+" · block "+(c.sol_usd&&c.sol_usd.block),S.max_age)}</b><i>${c.sol_usd?c.sol_usd.src+" · block "+c.sol_usd.block:"—"}</i></div>
+<div class=card><small>Holder coverage</small><b>${c.holder_cov||"—"}</b><i>fresh ${c.holder_cov_fresh||"—"} · non-fatal ${c.holder_cov_nonfatal||"—"}</i></div><div class=card><small>Withdrawn</small><b>${usd(a.withdrawn)}</b><i>${S.withdrawals.length} payouts</i></div>
+<div class=card><small>Open</small><b>${S.positions.length} / ${S.config.max_open}</b><i>${S.config.equity_pct_per_trade}% equity per trade</i></div></div>
+${(c.stale_marks||[]).length?`<div class="banner r">Stale marks: ${c.stale_marks.join(", ")}</div>`:""}
+<h3>Sources (engine)</h3><table><tr><th>Source</th><th>Status</th><th>Last OK (ET)</th><th>Age</th><th>Error</th></tr>${[...new Set([...Object.keys(src),...Object.keys(c.source_ts||{}),...Object.keys(c.source_err||{})])].map(k=>{const t=(c.source_ts||{})[k],a=ageS(t),st=a==null||a>S.max_age,e=(c.source_err||{})[k];return`<tr class="${st?"stl":""}"><td>${k}</td><td><span class="pill ${(src[k]||"ok")=="ok"?"ok":"no"}">${src[k]||"—"}</span></td><td>${tm(t)}</td><td>${a==null?"—":Math.round(a)+"s"}${st?"<span class=stag>stale</span>":""}</td><td class=dn>${e?String(typeof e=="object"?JSON.stringify(e):e).replace(/</g,"&lt;"):""}</td></tr>`}).join("")}</table>
+<h3>Equity curve (ET)</h3><div class=chart><canvas id=cv></canvas></div>
+<h3>Today</h3><div class=grid>${statCards(S.stats.today,"Today")}</div><div>${exitsTbl(S.stats.today.exits)}</div>
+<div class=two><div><h3>Open positions</h3>${posMini()}</div><div><h3>Top now</h3>${scanMini()}</div></div>`},
+pos(){if(!S.positions.length)return'<div class="card mut">No open positions.</div>';const L=S.max_age;
+return`${S.cycle.stale_marks&&S.cycle.stale_marks.length?`<div class="banner r">Stale marks (no live quote, no exit decisions): ${S.cycle.stale_marks.join(", ")}</div>`:""}
+<div class=tw><table><tr><th>Token</th><th>Held</th><th>Entry</th><th>Mark (Jup exact qty)</th><th>Multiple</th><th>Peak</th><th>Unrealized</th><th>Value</th><th>Left</th><th>TPs</th><th>Hard stop</th><th>Trail</th><th>Liq / pull @</th><th>MCap</th><th>5m / 1h / 24h</th><th>Sell route (mark)</th><th>Entry imp / RT</th><th>Entry LP / top10</th><th>Fills</th><th>Score</th></tr>
+${S.positions.map(p=>{const d=p.dex||{},mt=p.mark_ok===false?null:p.mark_ts,ms=`${p.mark_src||"?"}${p.mark_slot?" · slot "+p.mark_slot:""}`,dx=d.ts?new Date(d.ts*1000).toISOString():null;
+const fl=(p.fills||[]).map(f=>`${f.side} ${tm(f.ts).slice(6)}${f.why?" "+f.why:""}${f.impact!=null?" imp "+f.impact+"%":""}${f.fee_lamports?" fee "+f.fee_lamports+"lam":""}`).join("\n");
+return`<tr><td>${tok(p,d)}</td><td>${dur(p.held_min)}<div class=mut>${tm(p.entry).slice(6)}</div></td><td class=mono>${px(p.entry_px)}<div class=mut>${usd(p.cost)}</div></td>
+<td class=mono>${p.mark_ok===false?'<span class="pill no">NO MARK</span> ':""}${F(px(p.px),p.mark_ts,ms,L)}</td>
+<td>${F(`<b class="${p.x>=1?"up":"dn"}">${E(p.x)}x</b>`,p.mark_ts,ms,L)}</td><td>${E(p.peak_x)}x${p.peak_note?` <span class=mut title="${p.peak_note}">ⓘ</span>`:""}</td><td>${F(sgn(p.upnl)+"<div>"+pct(p.upnl_pct)+"</div>",p.mark_ts,ms,L)}</td><td>${F(usd(p.value),p.mark_ts,ms,L)}</td><td>${E(p.left_pct,0)}%</td>
+<td>${p.tps.map(t=>`<span class="pill ${t.hit?"ok":"ne"}">${t.mult}x</span>`).join("")}</td><td class=mono>${px(p.hard_px)}<div class=mut>${E((p.hard_px/p.px-1)*100,1)}% away</div></td>
+<td class=mono>${p.trail_armed?px(p.trail_px)+`<div class=mut>${E((p.trail_px/p.px-1)*100,1)}%</div>`:'<span class=mut>arms after TP1</span>'}</td>
+<td>${F(K(p.dex_liq!=null?p.dex_liq:d.liq_now),p.dex_liq!=null?p.dex_ts:dx,p.dex_liq!=null?"engine · dexscreener":"dashboard · dexscreener",L)}<div class=mut>pull @ ${K(p.liq_pull_at)}</div></td>
+<td>${F(K(d.mcap_now),dx,"dashboard · dexscreener",L)}</td><td>${F(pct(d.chg_m5)+" "+pct(d.chg_h1)+" "+pct(d.chg_h24),dx,"dashboard · dexscreener",L)}</td>
+<td>${p.mark_ok===false?'<span class="pill no">NO ROUTE</span>':F(`<span class="pill ${p.mark_impact<=S.config.max_price_impact_pct?"ok":"no"}">route ✓ ${E(p.mark_impact,3)}%</span>`,p.mark_ts,ms,L)}</td>
+<td>${E(p.impact)}% / ${E(p.rt_loss_pct)}%</td><td>${p.entry_lp==null?"—":E(p.entry_lp,0)+"%"} / ${p.entry_top10==null?"—":E(p.entry_top10,1)+"%"}</td>
+<td title="${fl}">${(p.fills||[]).length?`<span class="pill ne">${p.fills.length}</span>`:'<span class=mut title="pre-v2 position">—</span>'}</td><td>${sbar(p.score)}</td></tr>`}).join("")}</table></div>
+${S.positions.some(p=>(p.fills||[]).length)?`<h3>Fills</h3><table><tr><th>Token</th><th>Time</th><th>Side</th><th>Reason</th><th>Qty / in</th><th>Out</th><th>Impact</th><th>Fee</th><th>Slot</th></tr>${S.positions.flatMap(p=>(p.fills||[]).map(f=>`<tr><td>${p.sym}</td><td>${tm(f.ts)}</td><td class="${f.side=="buy"?"up":"yel"}">${f.side}</td><td>${f.why||"—"}</td><td>${f.qty!=null?E(f.qty,2):f.in_lamports!=null?f.in_lamports+" lam":"—"}</td><td>${f.out_lamports!=null?f.out_lamports+" lam":f.out_raw!=null?f.out_raw+" raw":"—"}</td><td>${f.impact!=null?f.impact+"%":"—"}</td><td>${f.fee_lamports??"—"} lam</td><td>${f.slot??"—"}</td></tr>`)).join("")}</table>`:""}`},
+scan(){if(!S.top.length)return'<div class="card mut">No candidates this cycle.</div>';const c=S.config,L=S.max_age;
+return`<div class="mut" style="margin-bottom:6px">Buy needs score ≥ ${c.buy_score} for ${c.persist_cycles} cycles in a row, plus mint & freeze revoked (RPC), LP locked ≥ ${c.min_lp_locked_pct}%, top10 &lt; ${c.max_top10_pct}%, Jupiter route with impact ≤ ${c.max_price_impact_pct}%. Values older than ${L}s are greyed and tagged stale; hover any value for its source and timestamp.</div>
+<div class=tw><table><tr><th>Token</th><th>Age</th><th>Price</th><th>MCap</th><th>Liq</th><th>Vol 24h</th><th>Vol 1h</th><th>5m</th><th>1h</th><th>6h</th><th>24h</th><th>Txns 1h B/S</th><th>Holders</th><th>Top10</th><th>Mint / Freeze</th><th>LP locked</th><th>Score</th><th>Streak</th><th>Status</th><th>Signals</th></tr>
+${S.top.map(t=>{const d=t.dex||{},f=t.fresh||{},dx=d.ts?new Date(d.ts*1000).toISOString():null,dsh="dashboard · dexscreener",fs=k=>f[k]?f[k].filter(x=>typeof x=="string"&&!/^\d{4}-/.test(x)&&!/^(fresh|stale)/.test(x)).join(" ")+(typeof f[k][1]=="number"?" · slot "+f[k][1]:""):"",ft=k=>f[k]?f[k].find(x=>typeof x=="string"&&/^\d{4}-/.test(x)):null;
+const st=t.action=="BUY"?'<span class="pill bu">BUY</span>':t.action=="avoid"?'<span class="pill no">AVOID</span>':'<span class="pill wa">WATCH</span>';
+const v=t.veto||"",mf=v=="mint_auth"?'<span class="pill no">✗ Mint</span>':v=="freeze_auth"?'<span class="pill ok">✓ Mint</span><span class="pill no">✗ Freeze</span>':f.mint&&v!="rpc_mint_unverified"?'<span class="pill ok">✓ Mint</span><span class="pill ok">✓ Freeze</span>':'<span class="pill ne">unverified</span>';
+const lp=t.lp_pct==null?'<span class="pill ne">—</span>':`<span class="pill ${t.lp_pct>=c.min_lp_locked_pct?"ok":t.lp_pct>=50?"wa":"no"}">LP ${E(t.lp_pct,0)}%</span>`;
+const tstale=f.top10&&/stale/.test(f.top10[3]||"");
+return`<tr><td>${tok(t,d)}</td><td>${F(age(d.age_h),ft("liq_vol_age")||dx,f.liq_vol_age?"engine · "+fs("liq_vol_age"):dsh,L)}</td><td class=mono>${F(px(t.price),ft("price"),fs("price"),L)}</td>
+<td>${F(K(t.mcap),ft("mcap"),fs("mcap"),L)}</td><td>${F(K(t.liq),ft("liq_vol_age"),fs("liq_vol_age"),L)}</td><td>${F(K(t.vol_h24),ft("liq_vol_age"),fs("liq_vol_age"),L)}</td><td>${F(K(d.vol_h1),dx,dsh,L)}</td>
+<td>${F(pct(d.chg_m5),dx,dsh,L)}</td><td>${F(pct(d.chg_h1),dx,dsh,L)}</td><td>${F(pct(d.chg_h6),dx,dsh,L)}</td><td>${F(pct(d.chg_h24),dx,dsh,L)}</td>
+<td>${F(`<span class=up>${N(d.buys_h1)}</span>/<span class=dn>${N(d.sells_h1)}</span>`,dx,dsh,L)}</td><td>${F(N(t.holders),ft("top10"),fs("top10"),L,tstale)}</td>
+<td>${F(`<span class="${t.top10_pct==null?"mut":t.top10_pct>=c.max_top10_pct?"dn":t.top10_pct<25?"up":"yel"}">${t.top10_pct==null?"—":E(t.top10_pct,1)+"%"}</span>`,ft("top10"),fs("top10"),L,tstale)}</td>
+<td>${F(mf,ft("mint"),fs("mint"),L)}</td><td>${F(lp,ft("lp"),fs("lp"),L)}</td><td>${sbar(t.score)}</td><td>${t.streak}/${c.persist_cycles}</td><td>${st}${t.veto?`<div><span class="pill no">${t.veto}</span></div>`:""}${(t.fatal||[]).map(f=>`<span class="pill no">${f}</span>`).join("")}</td>
+<td style="text-align:left;white-space:normal;max-width:240px">${(t.why||[]).map(w=>`<span class="pill ${w=="wash?"||w=="thin-liq"?"no":"ne"}">${w}</span>`).join("")}</td></tr>`}).join("")}</table></div>`},
+hist(){const a=S.stats.all;return`<div class=grid>${statCards(a,"All-time")}${statCards(S.stats.today,"Today")}</div><h3>Exit breakdown (all-time)</h3><div>${exitsTbl(a.exits)}</div><h3>Closed trades</h3>
+${S.closed.length?`<div class=tw><table><tr><th>Token</th><th>Opened</th><th>Closed</th><th>Duration</th><th>Cost</th><th>Proceeds</th><th>PnL</th><th>PnL %</th><th>Peak</th><th>TPs</th><th>Exit</th><th>Score</th><th>Entry impact</th></tr>
+${S.closed.map(c=>`<tr><td>${tok(c)}</td><td>${tm(c.entry)}</td><td>${tm(c.exit_ts)}</td><td>${dur(c.dur_min)}</td><td>${usd(c.cost)}</td><td>${usd(c.proceeds)}</td><td>${sgn(c.pnl)}</td><td>${pct(c.pnl_pct)}</td><td>${E(c.peak_x)}x</td><td>${c.tps}</td><td><span class="pill ${/TP|partials/.test(c.why)?"ok":/stop|liq/.test(c.why)?"no":"wa"}">${c.why}</span></td><td>${E(c.score,0)}</td><td>${E(c.impact)}%</td></tr>`).join("")}</table></div>`:'<div class="card mut">No closed trades yet.</div>'}`},
+cal(){const cal=S.calendar,n=new Date(S.now),y=n.getFullYear(),m=n.getMonth(),first=new Date(y,m,1).getDay(),days=new Date(y,m+1,0).getDate();let tot=0,cells="";
+for(const d of["Sun","Mon","Tue","Wed","Thu","Fri","Sat"])cells+=`<div class=mut style="min-height:0;text-align:center">${d}</div>`;for(let i=0;i<first;i++)cells+="<div style='opacity:.3'></div>";
+for(let d=1;d<=days;d++){const k=`${y}-${String(m+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`,c=cal[k];if(c)tot+=c.pnl;cells+=`<div style="${c?`border-color:${c.pnl>=0?"var(--g)":"var(--r)"}`:""}"><span class=mut>${d}</span>${c?`<b>${sgn(c.pnl)}</b>${c.n} trades · ${c.w}W${c.wd?`<br><span class=yel>wd ${usd(c.wd)}</span>`:""}`:""}</div>`}
+return`<div class=grid><div class=card><small>${n.toLocaleString("en-US",{month:"long",year:"numeric"})} realized</small><b>${sgn(tot)}</b></div><div class=card><small>Today unrealized + realized</small><b>${sgn(S.acct.pnl_today)}</b></div></div><div class=cal>${cells}</div>`},
+wd(){const c=S.config,set=c.withdraw_address&&c.withdraw_address!="SET_ME_SOLANA_ADDRESS";
+return`<div class=grid><div class=card><small>Wallet mode</small><b class=yel>${S.mode}</b><i>simulated balance, no on-chain wallet</i></div><div class=card><small>Live wallet key</small><b class=dn>not set</b><i>needed before going live</i></div>
+<div class=card><small>Withdraw address</small><b class="${set?"up":"dn"}">${set?short(c.withdraw_address):"unset"}</b><i class=mono>${c.withdraw_address}</i></div><div class=card><small>Payout rule</small><b>${c.withdraw_hour_et}:00 ET</b><i>daily, cash above start sweeps out</i></div>
+<div class=card><small>Total withdrawn</small><b>${usd(S.acct.withdrawn)}</b></div><div class=card><small>Sweepable now</small><b>${usd(Math.max(0,(S.acct.cash||0)-(S.acct.start||0)))}</b><i>cash − start</i></div></div>
+<h3>Withdrawals</h3>${S.withdrawals.length?`<table><tr><th>Time (ET)</th><th>Amount</th><th>To</th><th>Paper</th></tr>${S.withdrawals.map(w=>`<tr><td>${tm(w.ts)}</td><td>${usd(w.usd)}</td><td class=mono>${w.to}</td><td>${w.paper?"yes":"no"}</td></tr>`).join("")}</table>`:'<div class="card mut">No withdrawals yet.</div>'}`},
+cfg(){const c=S.config,g=(l,v)=>`<span>${l}</span><span class=mono>${v}</span>`;
+return`<div class=two><div><h3>Entry rules</h3><div class=kv>${g("Buy score",`≥ ${c.buy_score} held ${c.persist_cycles} cycles`)}${g("Max mcap",K(c.max_mcap))}${g("Min liquidity",K(c.min_liq_usd))}${g("Max age",c.max_age_h+"h (fresh bonus)")}${g("Max top10",c.max_top10_pct+"%")}${g("Min LP locked",c.min_lp_locked_pct+"%")}${g("Mint / freeze","must be revoked")}${g("Max price impact",c.max_price_impact_pct+"%")}${g("Price cross-check","≤ "+c.price_xcheck_max_diff_pct+"% Dex vs Jup")}${g("Replace weakest if",`score +${c.replace_margin}`)}${g("Rank / enrich",`${c.rank_n} / ${c.enrich_n}`)}</div>
+<h3>Exit rules</h3><div class=kv>${g("Hard stop",c.hard_stop_pct+"%")}${g("Take profits",(c.partials||[]).map(p=>`${p[0]}x sells ${p[1]*100}%`).join(", "))}${g("Trailing stop",c.trail_from_peak_pct+"% off peak, after TP1")}${g("Liquidity pull","liq < "+c.liq_pull_ratio*100+"% of entry")}${g("Volume collapse",`1h vol < ${c.vol_collapse_ratio}× 6h avg (after 1h)`)}</div></div>
+<div><h3>Risk & sizing</h3><div class=kv>${g("Size",c.equity_pct_per_trade+"% equity per trade")}${g("Max open",c.max_open)}${g("Daily loss halt",c.daily_loss_pct+"%")}${g("Start capital",c.start_capital_sol+" SOL")}${g("Slippage cap",c.slippage_cap_bps+" bps")}${g("Max data age",(c.max_data_age_sec??40)+"s")}${g("gPA per 10s",c.gpa_per_10s??"—")}${g("Holder top owners",c.holder_top_owners??"—")}${g("Priority fee",c.priority_fee_lamports+" lamports")}${g("Jito tip",c.jito_tip_lamports)}${g("Cycle",c.cycle_sec+"s")}${g("Rugcheck cache",c.rug_cache_sec+"s")}${g("RPC",c.rpc_url)}</div>
+<h3>Raw config.json (read-only)</h3><pre class=log style="max-height:300px">${JSON.stringify(c,null,1).replace(/</g,"&lt;")}</pre></div></div>`},
+log(){const M=S.mind||[],sm={};[...S.top,...S.positions,...S.closed].forEach(t=>{if(t.sym&&t.mint&&!sm[t.sym])sm[t.sym]=t.mint});
+const cnt={};M.forEach(e=>cnt[e.tag]=(cnt[e.tag]||0)+1);const vis=M.filter(e=>!MF.size||MF.has(e.tag));
+const esc=s=>String(s??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+const hm=s=>s?new Date(s).toLocaleTimeString("en-US",{timeZone:"America/Detroit",hour:"2-digit",minute:"2-digit",hour12:false}):"—";
+const txt=e=>{let h=esc(e.text);return h.replace(/\$([A-Za-z0-9_\/-]{1,24})/g,(m,s)=>{if(/^\d/.test(s))return m;const mt=(e.sym==s&&e.mint)||sm[s];return mt?`<strong class=tk>$${s}</strong><span class=ml><a target=_blank href="https://dexscreener.com/solana/${mt}">DS</a><a target=_blank href="https://solscan.io/token/${mt}">SS</a></span>`:`<strong class=tk>$${s}</strong>`})};
+const id=e=>(e.ts_first||"")+"|"+e.tag+"|"+(e.sym||"");
+const td=new Date(S.now).toLocaleDateString("en-CA",{timeZone:"America/Detroit"}),today=M.filter(e=>new Date(e.ts_last).toLocaleDateString("en-CA",{timeZone:"America/Detroit"})==td),tc={};today.forEach(e=>tc[e.tag]=(tc[e.tag]||0)+e.n);
+return`<div id=mind-wrap><div id=mind-head><span><strong>Trench tape</strong> · Cade (paper)</span><span><strong>${vis.length}</strong> entries · last ${tm(M[0]&&M[0].ts_last)} ET</span><span class=mut>refreshes every 2.5s · newest first</span></div>
+<div class=mfil>${MTAGS.map(t=>`<button class="mf ${t.toLowerCase()} ${MF.has(t)?"on":""}" onclick="mf('${t}')">${MI[t]} ${t}<span>${cnt[t]||0}</span></button>`).join("")}${MF.size?`<button class=mf onclick="MF.clear();render()">clear</button>`:""}</div>
+<div id=mbox>${vis.length?vis.map(e=>`<div class="mline ${e.tag.toLowerCase()}"><span class=t title="${tm(e.ts_first)}${e.n>1?" → "+tm(e.ts_last):""} ET">${hm(e.ts_last)} ET</span><span class=a><span class=k>${MI[e.tag]||"·"} ${e.tag}</span></span>
+<span class=x>${txt(e)}${e.n>1?` <span class=rep title="first ${tm(e.ts_first)} ET">×${e.n} since ${hm(e.ts_first)}</span>`:""} <button class=rawb onclick="rt('${esc(id(e)).replace(/'/g,"")}')">raw</button>${MR.has(id(e).replace(/'/g,""))?`<pre class=raw>${(e.raws||[]).map(esc).join("\n")}</pre>`:""}</span></div>`).join(""):'<div class=quiet>Tape is quiet.</div>'}</div>
+<div id=mind-panels><div class=mpanel><h3>Watching now <span class=sub>cycle ${hm(S.cycle.ts)} ET</span></h3><div class=body>${S.top.map(t=>`<div class=idea><span class=t>${E(t.score,0)}</span><strong>$${esc(t.sym)}</strong> <span class=mut>${t.veto?"skip: "+esc(t.veto):(t.fatal||[]).length?"fatal: "+esc(t.fatal.join(", ")):"streak "+t.streak+"/"+S.config.persist_cycles}</span></div>`).join("")||"—"}</div></div>
+<div class=mpanel><h3>Today's tape <span class=sub>${td}</span></h3><div class=body><div class=chipline>${MTAGS.filter(t=>tc[t]).map(t=>`<span>${MI[t]} ${t} <strong>${tc[t]}</strong></span>`).join("")||"nothing yet"}</div><div class=lbl2>Realized today</div><div class=chipline><span>PnL <strong>${sgn(S.stats.today.pnl)}</strong></span><span>closes <strong>${S.stats.today.n}</strong></span><span>win rate <strong>${S.stats.today.wr==null?"—":E(S.stats.today.wr,0)+"%"}</strong></span></div></div></div>
+<div class=mpanel><h3>Open bags <span class=sub>${S.positions.length}/${S.config.max_open}</span></h3><div class=body>${S.positions.map(p=>`<div class=idea><span class=t>${E(p.x)}x</span><strong>$${esc(p.sym)}</strong> <span class=mut>peak ${E(p.peak_x)}x · TPs ${p.tps.filter(t=>t.hit).length}/${p.tps.length}</span> ${sgn(p.upnl)}</div>`).join("")||"No open bags."}</div></div></div></div>`}};
+
+function posMini(){return S.positions.length?`<table><tr><th>Token</th><th>x</th><th>Peak</th><th>uPnL</th><th>TPs</th></tr>${S.positions.map(p=>`<tr><td>${tok(p,p.dex)}</td><td class="${p.x>=1?"up":"dn"}"><b>${E(p.x)}x</b></td><td>${E(p.peak_x)}x</td><td>${sgn(p.upnl)}</td><td>${p.tps.filter(t=>t.hit).length}/${p.tps.length}</td></tr>`).join("")}</table>`:'<div class="card mut">none</div>'}
+function scanMini(){return`<table><tr><th>Token</th><th>MCap</th><th>Liq</th><th>Score</th><th>Status</th></tr>${S.top.map(t=>`<tr><td>${tok(t,t.dex)}</td><td>${K(t.mcap)}</td><td>${K(t.liq)}</td><td>${E(t.score,0)}</td><td>${t.veto?`<span class="pill no">${t.veto}</span>`:t.action=="BUY"?'<span class="pill bu">BUY</span>':`<span class="pill ${t.action=="avoid"?"no":"wa"}">${t.action}</span>`}</td></tr>`).join("")}</table>`}
+function render(){if(!S)return;header();const sc=[...document.querySelectorAll(".tw,pre.log,#mbox")].map(e=>[e.scrollTop,e.scrollLeft]);$("#main").innerHTML=`<div class="tab on">${R[cur]()}</div>`;document.querySelectorAll(".tw,pre.log,#mbox").forEach((e,i)=>{if(sc[i]){e.scrollTop=sc[i][0];e.scrollLeft=sc[i][1]}});if(cur=="ov")curve()}
+async function poll(){try{const r=await fetch("/api/state",{cache:"no-store"});S=await r.json();const sel=window.getSelection().toString();if(!sel){nav();render()}}catch(e){$("#upd").textContent="dashboard server unreachable"}setTimeout(poll,2500)}
+window.onresize=()=>cur=="ov"&&curve();nav();poll();
+</script></body></html>
