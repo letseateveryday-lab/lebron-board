@@ -1,0 +1,11 @@
+<!doctype html><html><head><script src="./shim.js"></script></head><meta charset=utf-8><title>Manifest wormhole</title><body style="font:15px sans-serif;max-width:800px;margin:auto">
+<h3>Manifest wormhole (local)</h3><div id=l style="height:65vh;overflow:auto;border:1px solid #ccc;padding:6px"></div>
+<form onsubmit="s(event)"><input id=nm placeholder="your name" style="width:90px"><input id=pw type=password placeholder="password" style="width:90px"><select id=to><option>Apothua<option>APE<option>Apotheosis<option>NeoShua<option>Manifest<option>online</select>
+<input id=m style="width:55%" autofocus placeholder="type, paste a screenshot, or drop images"><input type=file id=fp accept="image/*" multiple style="width:90px"><button>Send</button></form><div id=pv></div><script>
+nm.value=localStorage.nm||'Chill';pw.value=localStorage.pw||'';nm.onchange=()=>localStorage.nm=nm.value;pw.onchange=()=>localStorage.pw=pw.value;
+let att=[];function add(fl){for(const f of fl){if(!f.type.startsWith('image/'))continue;const rd=new FileReader();rd.onload=()=>{att.push({name:f.name||'paste.png',data:rd.result});pv.innerHTML=att.map(a=>`<img src="${a.data}" height=60>`).join(' ');};rd.readAsDataURL(f);}}
+fp.onchange=()=>add(fp.files);document.onpaste=e=>add([...e.clipboardData.items].filter(i=>i.kind=='file').map(i=>i.getAsFile()));
+document.ondragover=e=>e.preventDefault();document.ondrop=e=>{e.preventDefault();add(e.dataTransfer.files);};
+async function r(){let j=await (await fetch('/msgs',{headers:{'X-Pass':pw.value}})).json();l.innerHTML=j.map(x=>`<p><b>${x.from}&rarr;${x.to}</b> <small>${x.ts_et}</small><br>${x.body}${(x.images||[]).map(p=>`<br><a href="/img/${p.split('/').pop()}" target=_blank><img src="/img/${p.split('/').pop()}" style="max-height:160px"></a>`).join('')}</p>`).join('');}
+async function s(e){e.preventDefault();await fetch('/send',{method:'POST',headers:{'X-Pass':pw.value},body:JSON.stringify({from:nm.value,to:to.value,body:m.value,images:att})});m.value='';att=[];pv.innerHTML='';fp.value='';r();}
+r();setInterval(r,3000)</script></html>

@@ -1,0 +1,134 @@
+<!doctype html><html><head><meta charset="utf-8"><title>All Bots · GitHub backup</title>
+<style>
+:root{--bg:#0b0f17;--card:#121a27;--line:#1f2b3d;--tx:#d7e0ee;--mut:#7f8ca3;--g:#2fd38a;--r:#ff5c6c;--y:#ffc24a;--b:#5aa9ff}
+*{box-sizing:border-box}html,body{margin:0;height:100%;background:var(--bg);color:var(--tx);font:13px/1.45 Inter,system-ui,Segoe UI,Arial,sans-serif}
+#shell{display:flex;flex-direction:column;height:100%}
+#botbar{display:flex;flex-wrap:wrap;gap:8px;padding:10px 14px;background:#0e1420;border-bottom:1px solid var(--line);flex:0 0 auto;align-items:center}
+#botbar a{cursor:pointer;padding:10px 14px;border-radius:10px;background:#17223a;border:1px solid #2a3b5c;color:var(--tx);font-weight:700;font-size:14px;text-decoration:none;user-select:none}
+#botbar a:hover{background:#1f2f50}#botbar a.on{background:var(--b);color:#041021;border-color:var(--b)}
+#botbar .meta{margin-left:auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.pill{padding:2px 8px;border-radius:9px;font-size:11px;border:1px solid var(--line)}.sub{color:var(--mut);font-size:12px}
+#stale{display:none;background:#3a1418;color:#ffb3ba;padding:6px 14px}
+#main{flex:1 1 auto;min-height:0;position:relative}
+.sec{display:none;height:100%;overflow:auto;padding:16px 20px}.sec.on{display:block}
+.sec.mirror{padding:0;overflow:hidden}.sec.mirror iframe{width:100%;height:100%;border:0;background:#0c0e12;display:block}
+.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px}.card h3{margin:0 0 8px;font-size:13px;color:var(--mut);font-weight:600;text-transform:uppercase;letter-spacing:.6px}
+.big{font-size:22px;font-weight:700}.g{color:var(--g)}.r{color:var(--r)}.y{color:var(--y)}.m{color:var(--mut)}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px}.full{grid-column:1/-1}
+pre{white-space:pre-wrap;margin:0;font:11px/1.4 ui-monospace,Menlo,monospace;color:#b8c4d8}
+.chat{max-height:56vh;overflow:auto;display:flex;flex-direction:column;gap:8px}.u,.a{padding:8px 10px;border-radius:10px;max-width:85%;white-space:pre-wrap}
+.u{align-self:flex-end;background:#1d3557}.a{align-self:flex-start;background:#18222f;border:1px solid var(--line)}.ts{font-size:10px;color:var(--mut)}
+.composer{display:flex;gap:8px;margin-top:10px}textarea{flex:1;background:#0e1520;color:var(--tx);border:1px solid var(--line);border-radius:8px;padding:8px;min-height:54px;font:inherit}
+select,.send{background:#0e1520;color:var(--tx);border:1px solid var(--line);border-radius:8px;padding:6px}.send{background:var(--g);color:#04170d;font-weight:700;cursor:pointer;border:0;padding:0 18px}
+.term{background:#05080d;border:1px solid var(--line);border-radius:8px;padding:8px;max-height:30vh;overflow:auto}
+#gate{display:none;position:fixed;inset:0;background:#0b0f17f2;z-index:9;align-items:center;justify-content:center}
+</style></head><body><div id="shell">
+<div id="botbar">
+  <a data-k="overview">🏠 Overview</a>
+  <a data-k="m-lebron">📈 LeBron</a>
+  <a data-k="m-3x3">▦ 3×3</a>
+  <a data-k="m-cade">🪙 Cade</a>
+  <a data-k="m-cadepub">🪙 Cade Public</a>
+  <a data-k="m-mj">🏀 MJ Parlays</a>
+  <a data-k="m-agents">🤖 Agents / Apothua</a>
+  <a data-k="chat">💬 Chat bridge</a>
+  <a data-k="m-manifest">🌀 Manifest</a>
+  <div class="meta"><span class="pill">GitHub backup</span><button id="forget" class="pill" style="cursor:pointer;background:transparent;color:var(--mut)">forget token</button>
+  <span id="hb" class="pill" style="font-weight:700">● data …</span><span class="sub" id="gen">loading…</span>
+  <button id="refb" class="pill" style="cursor:pointer;background:transparent;color:var(--tx)">↻ Refresh</button></div>
+</div>
+<div id="stale">Data is stale — waiting for the next wormhole snapshot.</div>
+<div id="gate"><div class="card" style="max-width:520px;margin:auto"><h3>Connect your GitHub token</h3>
+<p>Paste your <b>fine-grained</b> token with <b>Contents: Read and write</b> on <b>letseateveryday-lab/manifest-wormhole</b> only. Stored only in this browser.</p>
+<input id="tokin" type="password" style="width:100%;padding:8px;background:#0e1520;color:#d7e0ee;border:1px solid #1f2b3d;border-radius:8px" placeholder="github_pat_...">
+<div style="margin-top:10px"><button class="send" id="toksave" style="padding:8px 18px">Save</button> <span id="tokerr" class="r"></span></div></div></div>
+<div id="main">
+<section class="sec" id="s-overview"></section>
+<section class="sec mirror" id="s-m-lebron"><iframe title="LeBron" src="mirror/lebron.html"></iframe></section>
+<section class="sec mirror" id="s-m-3x3"><iframe title="3x3" src="mirror/3x3.html"></iframe></section>
+<section class="sec mirror" id="s-m-cade"><iframe title="Cade" src="mirror/cade.html"></iframe></section>
+<section class="sec mirror" id="s-m-cadepub"><iframe title="Cade Public" src="mirror/cade-public.html"></iframe></section>
+<section class="sec mirror" id="s-m-mj"><iframe title="MJ" src="mirror/mj.html"></iframe></section>
+<section class="sec mirror" id="s-m-agents"><iframe title="Agents" src="mirror/lebron.html?tab=agents"></iframe></section>
+<section class="sec mirror" id="s-m-manifest"><iframe title="Manifest" src="mirror/manifest.html"></iframe></section>
+<section class="sec" id="s-chat"></section>
+</div></div>
+<script>
+const REPO='letseateveryday-lab/manifest-wormhole', DATA_REF='dash-sync-data', MSG_BRANCH='dash-sync';
+const TABS=['overview','m-lebron','m-3x3','m-cade','m-cadepub','m-mj','m-agents','chat','m-manifest'];
+const MIR=new Set(TABS.filter(k=>k.startsWith('m-')));
+let tab=(location.hash||'').slice(1)||localStorage.getItem('dtab')||'overview', chatT=localStorage.getItem('dchat')||'apothua', draft='';
+if(!TABS.includes(tab)) tab='overview';
+const $=s=>document.getElementById(s), esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const U='<span class="m">unavailable</span>', n=(v,d=2)=>v==null||v===''||isNaN(+v)?U:(+v).toFixed(d), cls=v=>+v>0?'g':+v<0?'r':'';
+const agec=a=>a==null?'r':a<30?'g':a<120?'y':'r', dot=c=>`<span class="dot" style="background:var(--${c})"></span>`;
+function tok(){return localStorage.getItem('dash_gh_token')||''}
+function showGate(on){$('gate').style.display=on?'flex':'none'}
+$('toksave').onclick=()=>{const v=$('tokin').value.trim();if(!v){return}$('tokerr').textContent='';localStorage.setItem('dash_gh_token',v);showGate(false);load()};
+$('forget').onclick=()=>{localStorage.removeItem('dash_gh_token');window.DASH=null;window.__DASH_MIRROR={};showGate(true)};
+$('botbar').onclick=e=>{const a=e.target.closest('[data-k]');if(!a)return;tab=a.dataset.k;localStorage.setItem('dtab',tab);history.replaceState(null,'','#'+tab);render()};
+function overview(D){const H=D.health||[],L=D.lebron||{},C=D.cade||{},M=D.mj||{},A=D.agents||{};
+ return `<div class="grid"><div class="card"><h3>LeBron paper</h3><div class="big">$${n(L.balance)}</div><div class="m">spot $${n(L.spot)} · ${(L.opens||[]).length} open</div><div>24h: <b class="${cls(L.pnl24)}">$${n(L.pnl24)}</b></div></div>
+ <div class="card"><h3>Cade</h3><div class="big">$${n(C.equity)}</div><div class="m">cash $${n(C.cash)} · halt ${esc(C.halt)}</div></div>
+ <div class="card"><h3>MJ parlays</h3><div class="big ${cls(M.paper_net_settled)}">$${n(M.paper_net_settled)}</div><div class="m">${M.n??'?'} parlays</div></div>
+ <div class="card"><h3>Agents</h3><div>${dot(A.ollama&&A.ollama.ok?'g':'r')}Ollama</div><div>${dot(agec(A.apothua_log_age))}Apothua</div><div>${dot(agec(A.manifest_hb_age))}Manifest</div></div>
+ <div class="card full"><h3>Processes</h3><div class="grid">${(H||[]).map(h=>`<div>${dot(h.ok?'g':'r')}${esc(h.name)}</div>`).join('')}</div></div>
+ <div class="card full m">Bot buttons open each bot's own dashboard (same look as on the desk). Data comes from your private wormhole snapshot; nothing secret is in this public page.</div></div>`}
+function chat(D){const A=D.agents||{},c=((A.conv||{})[chatT])||[],B=(D.bridge||[]).slice(-14);
+ return `<div class="grid"><div class="card full"><h3>Conversation · <select id="ct">${['apothua','neoshua_local','ape','apotheosis'].map(t=>`<option ${t===chatT?'selected':''}>${t}</option>`).join('')}</select> ${D.bridge_busy?'<span class="pill y">reply running…</span>':''}</h3>
+ <div class="chat" id="chatbox">${c.map(t=>`${t.msg?`<div class="u">${esc(t.msg)}<div class="ts">${esc(t.ts)}</div></div>`:''}<div class="a">${esc(t.reply)}<div class="ts">${esc(t.path||'')} ${t.secs??''}</div></div>`).join('')||'<span class="m">No messages yet.</span>'}</div>
+ <div class="composer"><textarea id="msg" placeholder="Message ${chatT}…"></textarea><button class="send" id="sendb">Send</button></div>
+ <div class="m" style="margin-top:6px">Writes to the private repo inbox; the desk delivers through the normal channels. Approvals can't be sent from here.</div></div>
+ <div class="card full"><h3>Terminal (bridge)</h3><div class="term"><pre>${esc(B.map(b=>`[${b.ts}] ${b.target||''} ${b.status}${b.cmd?'\n$ '+b.cmd:''}${b.out?'\n'+b.out:''}`).join('\n\n'))||'no bridge activity yet'}</pre></div></div></div>`}
+async function ghSend(target,text){
+  const t=tok();if(!t)throw new Error('no token');
+  if(/^\s*(approve|reject)\b/i.test(text))throw new Error('approvals refused');
+  const nonce=[...crypto.getRandomValues(new Uint8Array(8))].map(b=>b.toString(16).padStart(2,'0')).join('');
+  const name=Date.now()+'-'+target+'-'+nonce+'.json';
+  const content=btoa(unescape(encodeURIComponent(JSON.stringify({target,text,nonce,ts:Date.now()}))));
+  const r=await fetch(`https://api.github.com/repos/${REPO}/contents/dash-sync/inbox/${name}`,{method:'PUT',headers:{Authorization:'Bearer '+t,Accept:'application/vnd.github+json','Content-Type':'application/json'},
+    body:JSON.stringify({message:'chat '+target,content,branch:MSG_BRANCH})});
+  if(!r.ok)throw new Error('inbox '+r.status);
+}
+window.__dashGhSend=ghSend;
+function send(){const t=$('msg').value.trim();if(!t)return;if(t.length>2000){alert('Max 2000 characters');return}
+ ghSend(chatT,t).then(()=>{$('msg').value='';draft='';}).catch(e=>alert(String(e)));}
+function hbBadge(D){const a=Math.round(Date.now()/1000-(D.gen_ts||D.published_ts||0)),e=$('hb');e.textContent='● data '+a+'s old';e.style.background=a>45?'var(--r)':a>20?'var(--y)':'var(--g)';e.style.color='#041021'}
+function applyMirror(D){
+  const files=D.mirror_files||{};
+  window.__DASH_MIRROR={};
+  for(const [k,v] of Object.entries(files)){
+    window.__DASH_MIRROR[k]= (v && typeof v==='object' && 'body' in v) ? v : {ts:Date.now()/1000,ct:'application/json',body:typeof v==='string'?v:JSON.stringify(v)};
+  }
+  if(D.gen_ts) window.__DASH_MIRROR['_hb']={ts:D.gen_ts,body:String(D.gen_ts),ct:'text/plain'};
+  // nudge iframes to re-read by bumping a query once when data arrives first time
+  if(!window.__mirSynced){window.__mirSynced=true;
+    document.querySelectorAll('.sec.mirror iframe').forEach(f=>{try{const u=new URL(f.src,location.href);u.searchParams.set('_',Date.now());f.src=u.toString()}catch(e){}});}
+}
+function render(){const D=window.DASH;if(!D)return;hbBadge(D);
+ [...$('botbar').querySelectorAll('[data-k]')].forEach(b=>b.classList.toggle('on',b.dataset.k===tab));
+ TABS.forEach(k=>{const el=$('s-'+k);if(el)el.classList.toggle('on',k===tab)});
+ const age=Date.now()/1000-(D.gen_ts||D.published_ts||0);$('gen').textContent=`updated ${D.generated||D.published||'?'} (${Math.round(age)}s ago)`;$('stale').style.display=age>45?'block':'none';
+ if(MIR.has(tab))return;
+ if(tab==='chat'&&$('msg'))draft=$('msg').value;
+ if(tab==='overview'){$('s-overview').innerHTML=overview(D);return}
+ if(tab==='chat'){
+  if(document.activeElement&&document.activeElement.id==='msg'){const t=document.createElement('div');t.innerHTML=chat(D);
+   $('chatbox').innerHTML=t.querySelector('#chatbox').innerHTML;document.querySelector('#s-chat .term').innerHTML=t.querySelector('.term').innerHTML;return}
+  $('s-chat').innerHTML=chat(D);$('msg').value=draft;$('sendb').onclick=send;$('msg').onkeydown=e=>{if(e.key==='Enter'&&e.ctrlKey)send()};
+  $('ct').onchange=e=>{chatT=e.target.value;localStorage.setItem('dchat',chatT);render()};const cb=$('chatbox');cb.scrollTop=cb.scrollHeight}}
+async function load(){
+  const t=tok();if(!t){showGate(true);return} showGate(false);
+  try{
+    const r=await fetch(`https://api.github.com/repos/${REPO}/contents/dash-sync/data.json?ref=${DATA_REF}`,{headers:{Authorization:'Bearer '+t,Accept:'application/vnd.github.raw'}});
+    if(r.status===401||r.status===403){showGate(true);$('tokerr').textContent='Token rejected ('+r.status+')';return}
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    const D=await r.json();window.DASH=D;applyMirror(D);render();
+  }catch(e){$('stale').style.display='block';$('gen').textContent='error: '+e}
+}
+$('refb').onclick=()=>load();
+setInterval(()=>{if(window.DASH)hbBadge(window.DASH)},1000);
+window.addEventListener('hashchange',()=>{const k=location.hash.slice(1);if(k&&TABS.includes(k)){tab=k;render()}});
+load();setInterval(load,12000);
+</script></body></html>
