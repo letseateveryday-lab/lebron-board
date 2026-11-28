@@ -1,0 +1,16 @@
+<!doctype html>
+<html>
+<head><script src="./shim.js"></script>
+<meta charset="utf-8"/>
+
+<title>Live 3×3</title>
+<style>
+  html, body { margin:0; height:100%; overflow:hidden; background:#0c0e12; }
+  img { width:100vw; height:100vh; object-fit:contain; object-position:top center; display:block; }
+</style>
+</head>
+<body>
+<img src="../last9-board.png" id="b" alt="Live 3x3"/>
+<script>document.getElementById('b').src = '../last9-board.png?ts=' + Date.now();</script>
+</body>
+</html>

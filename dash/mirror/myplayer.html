@@ -1,0 +1,189 @@
+<!doctype html><html lang="en"><head><script src="./shim.js"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MyPlayer · NeoShua desk</title>
+<style>
+:root{--bg:#07090d;--pan:#10141c;--pan2:#161b26;--line:#262e3d;--tx:#e9edf5;--mut:#8b95a8;--gold:#e8b94a;--gold2:#ffd77a;--g:#2fd38a;--r:#ff5c6c;--b:#5aa9ff;
+--bronze:#c07a43;--silver:#c3ccd6;--goldT:#f0c04d;--hof:#9b5cf0;--legend:#ff3d6e}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(1200px 600px at 20% -10%,#2a1f08 0,transparent 60%),var(--bg);color:var(--tx);font:13px/1.45 Inter,system-ui,Segoe UI,Arial,sans-serif}
+a{color:var(--gold2)}.wrap{max-width:1320px;margin:0 auto;padding:16px 18px 60px}
+h2{font:800 15px/1 Inter,system-ui;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin:28px 0 12px;display:flex;align-items:center;gap:10px}
+h2:after{content:"";flex:1;height:1px;background:linear-gradient(90deg,#e8b94a66,transparent)}
+.pan{background:linear-gradient(180deg,var(--pan2),var(--pan));border:1px solid var(--line);border-radius:14px;padding:14px}
+.m{color:var(--mut)}.g{color:var(--g)}.r{color:var(--r)}.y{color:var(--gold2)}.sm{font-size:11px}
+.hero{display:grid;grid-template-columns:260px 1fr 300px;gap:14px;align-items:stretch}
+@media(max-width:1000px){.hero{grid-template-columns:1fr}}
+.ring{position:relative;width:220px;height:220px;margin:0 auto}.ring .num{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring .num b{font:900 64px/1 Inter,system-ui;color:var(--gold2);text-shadow:0 0 18px #e8b94a55}.ring .num span{letter-spacing:3px;color:var(--mut);font-weight:700}
+.pname{font:900 26px/1.1 Inter,system-ui;letter-spacing:.5px}.arch{font:800 20px/1.2 Inter;color:var(--gold2);margin-top:6px}
+.chip{display:inline-block;padding:3px 9px;border-radius:999px;border:1px solid var(--line);background:#0c1018;font-size:11px;font-weight:700;margin:2px 4px 2px 0}
+.chip.gold{border-color:#e8b94a88;color:var(--gold2)}
+.kv{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}.kv div{background:#0b0f16;border:1px solid var(--line);border-radius:10px;padding:8px}.kv b{display:block;font-size:17px}
+.meter{height:14px;border-radius:8px;background:#0b0f16;border:1px solid var(--line);overflow:hidden}.meter i{display:block;height:100%;background:linear-gradient(90deg,#3b82f6,#e8b94a,#ff3d6e)}
+.tko{font:900 18px/1 Inter;letter-spacing:3px}.tko.on{color:#ff6a3d;text-shadow:0 0 12px #ff6a3d}
+.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}
+.cat h3{margin:0 0 6px;font-size:13px;text-transform:uppercase;letter-spacing:1px;display:flex;justify-content:space-between}.cat h3 b{color:var(--gold2);font-size:20px}
+.bar{display:grid;grid-template-columns:150px 1fr 30px;gap:8px;align-items:center;margin:5px 0;font-size:12px}
+.bar .t{height:8px;border-radius:5px;background:#0b0f16;overflow:hidden}.bar .t i{display:block;height:100%;border-radius:5px}
+.badges{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.bdg{display:grid;grid-template-columns:64px 1fr;gap:10px;background:#0c1018;border:1px solid var(--line);border-radius:12px;padding:10px;cursor:pointer}
+.bdg.locked{opacity:.55}.bdg .nm{font-weight:800;font-size:14px}.bdg .tr{font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase}
+.bdg .req{display:none;grid-column:1/-1;font-size:11px;border-top:1px dashed var(--line);padding-top:6px;margin-top:2px}.bdg.open .req{display:block}
+.req div.met{color:var(--g)}.prog{height:6px;border-radius:4px;background:#1b2230;overflow:hidden;margin-top:6px}.prog i{display:block;height:100%;background:var(--gold)}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}.tabs button{background:#0f141e;border:1px solid var(--line);color:var(--tx);padding:6px 11px;border-radius:9px;cursor:pointer;font-weight:700}
+.tabs button.on{background:var(--gold);color:#1a1204;border-color:var(--gold)}
+table{width:100%;border-collapse:collapse;font-size:12px}th,td{padding:6px 7px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}th{color:var(--gold);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.6px}
+.tw{overflow:auto}.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media(max-width:900px){.two{grid-template-columns:1fr}}
+.tc{display:flex;gap:8px;flex-wrap:wrap}.tc div{flex:1;min-width:90px;text-align:center;border-radius:10px;padding:8px;border:1px solid var(--line);background:#0c1018}.tc b{font-size:22px;display:block}
+.ms{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px}.ms>div{border:1px solid var(--line);border-radius:10px;padding:8px;background:#0c1018}.ms>.done{border-color:#e8b94a77}
+#err{display:none;background:#3a1418;color:#ffb3ba;padding:8px 12px;border-radius:8px;margin-bottom:10px}
+.foot{margin-top:30px;color:var(--mut);font-size:11px}
+</style></head><body><div class="wrap">
+<div id="err"></div>
+<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+ <div style="font:900 13px/1 Inter;letter-spacing:4px;color:var(--gold)">MYPLAYER · TRADER BUILD</div>
+ <div class="m sm" id="upd">loading…</div></div>
+<div id="app"><div class="pan" style="margin-top:12px">Loading MyPlayer data…</div></div>
+<div class="foot">Display only: nothing on this page opens, sizes, stops or closes trades. Every number comes from the desk's closed trades (paper-book, live mirror log), the MyPlayer card, the growth phase file and the live account file. Metrics with no data show "data not tracked yet".</div>
+</div>
+<script>
+const TC={Bronze:'var(--bronze)',Silver:'var(--silver)',Gold:'var(--goldT)','Hall of Fame':'var(--hof)',Legend:'var(--legend)'};
+const TIERS=['Bronze','Silver','Gold','Hall of Fame','Legend'];
+const GL={dunk:'▲',bolt:'ϟ',snake:'§',fist:'✊',hammer:'⚒',feather:'✎',rocket:'➚',wing:'≋',target:'◎',crosshair:'⌖',range:'⟷',arc:'◠',catch:'✋',dot:'•',flame:'♨',arrow:'➤',three:'3',stack:'≣',dime:'¢',needle:'↗',court:'▦',clipboard:'✓',life:'✚',pass:'⇄',lock:'🔒',clamp:'⊓',glove:'✋',shield:'⛨',wall:'▥',box:'▣',anchor:'⚓',dodge:'↯',rebound:'⟲',putback:'↺',second:'②',week:'▤',crown:'♛',microwave:'♒',clock:'◷',star:'★',iron:'⛓',film:'▶',plug:'⚡',ice:'❄'};
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const pct=(v,d=0)=>v==null?'-':(v*100).toFixed(d)+'%', num=(v,d=1)=>v==null?'-':(+v).toFixed(d), cls=v=>v>0?'g':v<0?'r':'';
+const usd=v=>v==null?'-':(v<0?'-$':'$')+Math.abs(v).toFixed(2);
+const rc=v=>v>=90?'#ff3d6e':v>=80?'#9b5cf0':v>=70?'#f0c04d':v>=60?'#5aa9ff':'#6b7486';
+let D=null, bcat='All', bfilt='all';
+
+async function loadData(){
+  const plainFile=location.protocol==='file:'&&!window.__M;   // direct file:// open: fetch is blocked, use the .js copy
+  if(!plainFile) for(const u of ['mind/MYPLAYER_BADGES.json','../mind/MYPLAYER_BADGES.json','../../mind/MYPLAYER_BADGES.json']){
+    try{const r=await fetch(u+'?t='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();if(j&&j.badges)return j}}catch(e){}
+  }
+  return new Promise(res=>{const s=document.createElement('script');s.src='mind/MYPLAYER_BADGES.js?t='+Date.now();
+    s.onload=()=>{s.remove();res(window.MYPLAYER_BADGES||null)};s.onerror=()=>{s.remove();res(null)};document.head.appendChild(s)});
+}
+
+function ring(ovr){const r=96,c=2*Math.PI*r,f=Math.max(0,Math.min(1,(ovr||0)/99));
+ return `<div class="ring"><svg width="220" height="220" viewBox="0 0 220 220"><defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffd77a"/><stop offset="1" stop-color="#b8860b"/></linearGradient></defs>
+ <circle cx="110" cy="110" r="${r}" fill="none" stroke="#1b2230" stroke-width="14"/>
+ <circle cx="110" cy="110" r="${r}" fill="none" stroke="url(#rg)" stroke-width="14" stroke-linecap="round" stroke-dasharray="${c*f} ${c}" transform="rotate(-90 110 110)"/>
+ ${[60,70,80,90].map(t=>{const a=t/99*2*Math.PI-Math.PI/2;return `<circle cx="${110+r*Math.cos(a)}" cy="${110+r*Math.sin(a)}" r="3" fill="#07090d"/>`}).join('')}
+ </svg><div class="num"><span>OVR</span><b>${ovr??'?'}</b><span class="sm">${99-(ovr||0)} TO 99</span></div></div>`}
+
+function badgeIcon(b,sz=60){const t=b.tier_name, col=t?TC[t]:'#3a4252', g=GL[b.icon]||'★';
+ const leg=t==='Legend';
+ return `<svg width="${sz}" height="${sz}" viewBox="0 0 60 60">${leg?`<defs><linearGradient id="lg${b.id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff3d6e"/><stop offset=".5" stop-color="#ffd77a"/><stop offset="1" stop-color="#5aa9ff"/></linearGradient></defs>`:''}
+ <path d="M30 3 L53 13 L53 33 C53 46 42 54 30 58 C18 54 7 46 7 33 L7 13 Z" fill="${leg?`url(#lg${b.id})`:col}" opacity="${t?1:.35}" stroke="#000" stroke-opacity=".5" stroke-width="2"/>
+ <path d="M30 9 L47 16 L47 33 C47 43 39 49 30 52 C21 49 13 43 13 33 L13 16 Z" fill="#0b0f16" opacity=".82"/>
+ <text x="30" y="38" text-anchor="middle" font-size="20" font-weight="900" fill="${t?(leg?'#ffd77a':col):'#59627a'}" font-family="Segoe UI Symbol,Noto Sans Symbols,DejaVu Sans,sans-serif">${esc(g)}</text></svg>`}
+
+function radar(cats){const N=cats.length,cx=150,cy=140,R=110;const pt=(i,v)=>{const a=-Math.PI/2+i*2*Math.PI/N,f=(v-25)/(99-25);return [cx+R*f*Math.cos(a),cy+R*f*Math.sin(a)]};
+ let s=`<svg viewBox="0 0 300 290" width="100%" style="max-width:360px">`;
+ [40,60,80,99].forEach(l=>{s+=`<polygon points="${cats.map((c,i)=>pt(i,l).join(',')).join(' ')}" fill="none" stroke="#2a3344" stroke-width="1"/>`});
+ cats.forEach((c,i)=>{const [x,y]=pt(i,99),[lx,ly]=pt(i,113);s+=`<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#2a3344"/><text x="${lx}" y="${ly}" fill="#c9d1df" font-size="10" font-weight="700" text-anchor="middle" dominant-baseline="middle">${esc(c.name.replace(' Scoring',''))} ${c.rating}</text>`});
+ s+=`<polygon points="${cats.map((c,i)=>pt(i,c.rating).join(',')).join(' ')}" fill="#e8b94a44" stroke="#ffd77a" stroke-width="2"/>`;
+ cats.forEach((c,i)=>{const [x,y]=pt(i,c.rating);s+=`<circle cx="${x}" cy="${y}" r="3.5" fill="#ffd77a"/>`});
+ return s+'</svg>'}
+
+function court(z){// half court: distance bands by top timeframe, sectors by setup kind
+ const cx=250,cy=40,bands=[0,52,96,140,184,228],dist=['15m','45m','90m','3H','6H+'],kinds=['Reversal','Continuation','Other setups'];
+ const secs={Reversal:[0,60],Continuation:[60,120],'Other setups':[120,180]};
+ const col=h=>({hot:'#ff4d4d',warm:'#ff9a3c',even:'#8d8f99',cool:'#5aa9ff',cold:'#2f6bff',none:'#1c2230'}[h]);
+ const P=(r,a)=>[cx+r*Math.cos(a*Math.PI/180),cy+r*Math.sin(a*Math.PI/180)];
+ let s=`<svg viewBox="0 0 500 290" width="100%" style="max-width:640px;background:#0c1018;border-radius:10px">`;
+ z.forEach(q=>{const i=dist.indexOf(q.dist),[a0,a1]=secs[q.kind];const r0=bands[i],r1=bands[i+1];
+  const A=P(r1,a0),B=P(r1,a1),C=P(r0,a1),E=P(r0,a0);
+  const d=r0===0?`M${cx},${cy} L${A} A${r1},${r1} 0 0 1 ${B} Z`:`M${E} L${A} A${r1},${r1} 0 0 1 ${B} L${C} A${r0},${r0} 0 0 0 ${E} Z`;
+  const [mx,my]=P((r0+r1)/2,(a0+a1)/2);
+  s+=`<path d="${d}" fill="${col(q.heat)}" fill-opacity="${q.heat==='none'?.6:.78}" stroke="#07090d" stroke-width="2"><title>${esc(q.kind)} · ${q.dist}: n ${q.n}, win ${pct(q.win_rate)}, exp ${num(q.exp_pct)}%, net ${usd(q.net_usd)}</title></path>
+  <text x="${mx}" y="${my-3}" text-anchor="middle" font-size="10" font-weight="800" fill="#fff">${q.n>=8?num(q.exp_pct,0)+'%':'—'}</text><text x="${mx}" y="${my+9}" text-anchor="middle" font-size="8" fill="#e6e9f0cc">n${q.n}</text>`});
+ s+=`<rect x="${cx-40}" y="0" width="80" height="8" fill="#e8b94a"/><circle cx="${cx}" cy="${cy}" r="7" fill="none" stroke="#ff9a3c" stroke-width="2"/>`;
+ dist.forEach((d,i)=>{s+=`<text x="${cx}" y="${cy+bands[i+1]-4}" text-anchor="middle" font-size="9" fill="#ffd77a" font-weight="800">${d}</text>`});
+ s+=`<text x="40" y="280" fill="#c9d1df" font-size="10" font-weight="700">◀ Other setups (S/D, linreg, flips)</text><text x="250" y="280" text-anchor="middle" fill="#c9d1df" font-size="10" font-weight="700">Continuation</text><text x="460" y="280" text-anchor="end" fill="#c9d1df" font-size="10" font-weight="700">Reversal ▶</text>`;
+ return s+'</svg>'}
+
+function spark(h){if(!h||h.length<2)return '<span class="m">not enough history yet</span>';const xs=h.map(x=>x.ovr),mn=Math.min(...xs)-2,mx=Math.max(...xs)+2,W=520,H=70;
+ const p=xs.map((v,i)=>`${(i/(xs.length-1)*W).toFixed(1)},${(H-(v-mn)/(mx-mn)*H).toFixed(1)}`).join(' ');
+ return `<svg viewBox="0 0 ${W} ${H+14}" width="100%" style="max-width:560px"><polyline points="${p}" fill="none" stroke="#ffd77a" stroke-width="2"/><text x="0" y="${H+12}" fill="#8b95a8" font-size="10">${esc(h[0].et)} · ${xs[0]}</text><text x="${W}" y="${H+12}" fill="#8b95a8" font-size="10" text-anchor="end">${esc(h[h.length-1].et)} · ${xs[xs.length-1]}</text></svg>`}
+
+function statRow(nm,s){if(!s||!s.n)return `<tr><td>${nm}</td><td colspan="11" class="m">no closes</td></tr>`;
+ return `<tr><td><b>${nm}</b></td><td>${s.n}</td><td>${s.w}-${s.l}</td><td>${pct(s.win_rate,1)}</td><td class="${cls(s.ppg)}">${num(s.ppg)}%</td><td class="${cls(s.net_usd)}">${usd(s.net_usd)}</td><td>${s.big_wins}</td><td>${s.pf==null?'-':num(s.pf,2)}</td><td class="g">${num(s.best_pct,0)}%</td><td class="r">${num(s.worst_pct,0)}%</td><td>${s.symbols}</td><td>${s.skim_usd==null?'-':usd(s.skim_usd)}</td></tr>`}
+
+function render(){const d=D;if(!d)return;
+ const a=d.archetype||{},p=a.primary||{},s2=a.secondary||{},t=d.takeover||{},tl=d.takeover_live||{},rp=(d.rep||{}).paper||{},rl=(d.rep||{}).live||{},vc=d.vc||{},bc=d.badge_counts||{};
+ document.getElementById('upd').textContent='updated '+(d.updated_et||'?')+' · refreshes hourly · page polls every 60 s';
+ let h=`<div class="hero" style="margin-top:12px">
+ <div class="pan">${ring(d.ovr)}<div style="text-align:center" class="sm m">desk card OVR (same formula as the MyPlayer card)${d.ovr_change_7d!=null?` · 7d <b class="${cls(d.ovr_change_7d)}">${d.ovr_change_7d>0?'+':''}${d.ovr_change_7d}</b>`:''}${d.apothua_lane!=null?` · Apothua lane ${d.apothua_lane}`:''}</div></div>
+ <div class="pan"><div class="m sm" style="letter-spacing:2px;font-weight:800">PLAYER</div><div class="pname">${esc(d.player)}</div>
+  <div class="arch">${esc(p.name)} <span class="m" style="font-size:14px">/ ${esc(s2.name)}</span></div>
+  <div class="m">${esc(p.desc)}.</div>
+  <div style="margin-top:6px"><span class="chip gold">POS ${esc(p.position)}</span><span class="chip gold">REP ${esc(rp.tier)} ${rp.level}</span><span class="chip">phase ${esc(d.phase)}</span><span class="chip">${d.badges_earned}/${d.badges_total} badges</span></div>
+  <div class="m sm" style="margin-top:6px">Why ${esc(p.name)}: ${(p.why||[]).map(esc).join(' · ')}. Secondary: ${(s2.why||[]).map(esc).join(' · ')}.</div>
+  <div class="kv"><div><span class="m sm">VC live total</span><b>${usd(vc.live_total_usd)}</b><span class="m sm">goal $1,000</span></div><div><span class="m sm">VC live career net</span><b class="${cls(vc.live_career_net_usd)}">${usd(vc.live_career_net_usd)}</b></div><div><span class="m sm">VC paper career net</span><b class="${cls(vc.paper_career_net_usd)}">${usd(vc.paper_career_net_usd)}</b></div><div><span class="m sm">Skimmed to live Spot</span><b class="g">${usd(vc.live_skimmed_usd)}</b></div></div></div>
+ <div class="pan"><div class="m sm" style="letter-spacing:2px;font-weight:800">TAKEOVER · PAPER</div><div class="tko ${t.active?'on':''}" style="margin:6px 0">${t.active?'🔥 TAKEOVER':esc((t.status||'').toUpperCase())}</div>
+  <div class="meter"><i style="width:${(t.meter||0)*100}%"></i></div><div class="sm m" style="margin-top:4px">last 20 exp ${num(t.exp_last20)}% · last 10 wins ${pct(t.win_last10)} · net ${usd(t.net_last10)} · streak W${t.current_win_streak??0}</div>
+  <div class="m sm" style="letter-spacing:2px;font-weight:800;margin-top:12px">TAKEOVER · LIVE</div><div class="tko ${tl.active?'on':''}" style="margin:6px 0">${tl.active?'🔥 TAKEOVER':esc((tl.status||'').toUpperCase())}</div>
+  <div class="meter"><i style="width:${(tl.meter||0)*100}%"></i></div><div class="sm m" style="margin-top:4px">last 20 exp ${num(tl.exp_last20)}% · last 10 wins ${pct(tl.win_last10)} · net ${usd(tl.net_last10)}</div>
+  <div class="sm m" style="margin-top:8px">${esc(t.rule)}</div></div></div>`;
+
+ h+=`<h2>Attributes</h2><div class="two"><div class="grid">${(d.categories||[]).map(c=>`<div class="pan cat"><h3><span>${esc(c.name)}</span><b>${c.rating}</b></h3><div class="m sm" style="margin-bottom:6px">${esc(c.what)}</div>
+  ${c.subs.map(s=>`<div class="bar" title="${esc(s.how)} · raw ${s.raw??'-'}"><span>${esc(s.name)}</span><span class="t"><i style="width:${(s.rating-25)/(99-25)*100}%;background:${rc(s.rating)}"></i></span><b style="color:${rc(s.rating)}">${s.rating}</b></div>`).join('')}</div>`).join('')}</div>
+  <div class="pan" style="text-align:center"><div class="m sm" style="letter-spacing:2px;font-weight:800">BUILD SHAPE</div>${radar(d.categories||[])}
+  <div class="m sm" style="text-align:left">Category rating = average of its four sub-attributes; each sub-attribute maps a real metric onto 40–99 (hover a bar for the formula). OVR stays the desk card's weighted formula.</div>
+  <div style="text-align:left;margin-top:10px"><div class="m sm" style="letter-spacing:2px;font-weight:800">OVR HISTORY</div>${spark(d.ovr_history)}</div></div></div>`;
+
+ h+=`<h2>Badges</h2><div class="pan"><div class="tc">${TIERS.map(x=>`<div style="border-color:${TC[x]}"><b style="color:${TC[x]}">${bc[x]||0}</b><span class="sm">${x}</span></div>`).join('')}<div><b>${d.badges_total-d.badges_earned}</b><span class="sm m">not earned</span></div></div>
+  <div class="tw" style="margin-top:10px"><table><tr><th>badge points</th>${(d.badge_points||[]).map(x=>`<th>${esc(x.cat)}</th>`).join('')}<th>total</th></tr><tr><td>earned / max</td>${(d.badge_points||[]).map(x=>`<td><b class="y">${x.earned}</b> / ${x.max}</td>`).join('')}<td><b class="y">${(d.badge_points||[]).reduce((s,x)=>s+x.earned,0)}</b> / ${(d.badge_points||[]).reduce((s,x)=>s+x.max,0)}</td></tr></table>
+  <div class="m sm">1 point per tier (Bronze 1 … Legend 5). Every badge maxed at Legend = the 99 OVR build.</div></div>
+  <div style="margin-top:12px"><b class="y">Closest to the next tier:</b> ${(d.closest||[]).map(c=>`<span class="chip gold">${esc(c.name)} → ${esc(c.next_tier)} (${esc(c.value)} / ${esc(c.need)}, ${Math.round(c.progress*100)}%)</span>`).join('')}</div></div>
+  <div class="tabs" style="margin-top:12px" id="bcat">${['All','Finishing','Shooting','Playmaking','Defense','Rebounding','Personality'].map(c=>`<button data-c="${c}" class="${c===bcat?'on':''}">${c}</button>`).join('')}
+  <span style="width:14px"></span>${[['all','All'],['earned','Earned'],['unearned','To earn'],['locked','Locked']].map(([k,l])=>`<button data-f="${k}" class="${k===bfilt?'on':''}">${l}</button>`).join('')}</div>
+  <div class="badges">${(d.badges||[]).filter(b=>(bcat==='All'||b.cat===bcat)&&(bfilt==='all'||(bfilt==='earned'&&b.tier>0)||(bfilt==='unearned'&&b.tier===0&&b.status!=='not tracked')||(bfilt==='locked'&&(b.status==='not tracked'||b.status==='low sample')))).map(b=>`
+  <div class="bdg ${b.status==='not tracked'||b.status==='low sample'?'locked':''}" data-id="${b.id}">${badgeIcon(b)}<div><div class="nm">${esc(b.name)}</div>
+   <div class="tr" style="color:${b.tier_name?TC[b.tier_name]:'#7c869a'}">${b.tier_name||(b.status==='not tracked'?'🔒 locked':b.status==='low sample'?'🔒 low sample':'not earned')} <span class="m">· ${esc(b.cat)}</span></div>
+   <div class="sm">${esc(b.meaning)}</div><div class="sm m">now <b style="color:var(--tx)">${esc(b.value_txt)}</b>${b.next_tier&&b.status!=='not tracked'?` · ${esc(b.next_tier)} at ${esc(b.next_req)}`:''}</div>
+   <div class="prog"><i style="width:${b.tier>=5?100:b.progress*100}%"></i></div></div>
+   <div class="req"><div class="m">${esc(b.metric)} · window ${esc(b.window)}${b.min_n?` · min n ${b.min_n}`:''} · n ${b.n??'-'}</div>
+   ${b.requirements.map((r,i)=>`<div class="${i<b.tier?'met':''}">${i<b.tier?'✓':'○'} ${esc(r)}</div>`).join('')}
+   ${b.peak_tier?`<div class="m">best so far ${esc(b.peak_tier)} (${esc(b.peak_et)})</div>`:''}${b.note?`<div class="y">${esc(b.note)}</div>`:''}</div></div>`).join('')}</div>
+  <div class="m sm" style="margin-top:6px">Tap a badge for its exact tier requirements. Rolling-window badges re-check every hour and can drop like a cold streak; "best so far" keeps the peak.</div>`;
+
+ h+=`<h2>Archetype</h2><div class="two"><div class="pan"><div class="tw"><table><tr><th>#</th><th>build</th><th>pos</th><th>score</th><th>trading meaning</th><th>driven by</th></tr>
+  ${(a.all||[]).map((x,i)=>`<tr style="${i<2?'color:var(--gold2);font-weight:700':''}"><td>${i+1}</td><td>${esc(x.name)}</td><td>${esc(x.position)}</td><td>${x.score}</td><td style="white-space:normal">${esc(x.desc)}</td><td class="sm" style="white-space:normal">${x.why.map(esc).join(' · ')}</td></tr>`).join('')}</table></div>
+  <div class="m sm">${esc(a.method)}.</div></div>
+  <div class="pan"><div class="m sm" style="letter-spacing:2px;font-weight:800">PLAY STYLE TENDENCIES</div>${Object.values(d.styles||{}).map(s=>`<div class="bar"><span>${esc(s.label)}</span><span class="t"><i style="width:${(s.rating-25)/(74)*100}%;background:${rc(s.rating)}"></i></span><b>${s.rating}</b></div>`).join('')}
+  <div class="m sm">Tendencies show what the desk does (share of shots), not whether it pays. Raw values: ${Object.values(d.styles||{}).map(s=>esc(s.label)+' '+s.raw).join(' · ')}</div></div></div>`;
+
+ h+=`<h2>Hot / cold zones · last 30 days paper</h2><div class="two"><div class="pan" style="text-align:center">${court(d.zones||[])}
+  <div class="sm m" style="margin-top:6px">Distance = highest timeframe in the setup (rim 15m → deep 6H+). Number = expectancy (net margin % per trade). <span style="color:#ff4d4d">hot ≥ 15%</span> · <span style="color:#ff9a3c">warm ≥ 3%</span> · even · <span style="color:#5aa9ff">cool &lt; 0</span> · <span style="color:#2f6bff">cold ≤ −10%</span> · dark = n &lt; 8</div></div>
+  <div class="pan tw"><table><tr><th>setup</th><th>distance</th><th>n</th><th>win</th><th>exp %</th><th>net $</th><th>zone</th></tr>${(d.zones||[]).filter(z=>z.n).map(z=>`<tr><td>${esc(z.kind)}</td><td>${z.dist}</td><td>${z.n}</td><td>${pct(z.win_rate)}</td><td class="${cls(z.exp_pct)}">${num(z.exp_pct)}</td><td class="${cls(z.net_usd)}">${usd(z.net_usd)}</td><td>${z.heat}</td></tr>`).join('')}</table></div></div>`;
+
+ const st=d.stats||{};
+ h+=`<h2>Season &amp; career stats</h2><div class="pan tw"><table><tr><th></th><th>GP</th><th>W-L</th><th>FG% (win)</th><th>PPG (exp/trade)</th><th>net $</th><th>runners</th><th>PF</th><th>best</th><th>worst</th><th>symbols</th><th>Spot skim</th></tr>
+  ${statRow('Paper · season',st.paper_season)}${statRow('Paper · career',st.paper_career)}${statRow('Live · season',st.live_season)}${statRow('Live · career',st.live_career)}</table>
+  <div class="m sm">Season = ${esc(st.season)}; career since ${esc(st.career_since)}. PPG = average net margin % per close after fees and funding; runners = closes ≥ +100%.</div></div>`;
+
+ h+=`<h2>Box score · latest closes</h2><div class="two"><div class="pan tw"><div class="m sm" style="font-weight:800;letter-spacing:2px">PAPER</div><table><tr><th>closed</th><th>sym</th><th>side</th><th>setup</th><th>TF</th><th>gr</th><th>+/- %</th><th>$</th><th>min</th><th>exit</th></tr>
+  ${(d.box_paper||[]).map(x=>`<tr><td class="m">${esc((x.et||'').slice(5,16))}</td><td><b>${esc(x.symbol)}</b>${x.runner?' <span class="y">R</span>':''}</td><td class="${x.side==='LONG'?'g':'r'}">${x.side}</td><td>${esc(x.setup)}</td><td>${esc(x.tfs)}</td><td>${esc(x.grade)}</td><td class="${cls(x.net_pct)}">${num(x.net_pct)}</td><td class="${cls(x.net_usd)}">${usd(x.net_usd)}</td><td>${x.hold_min??'-'}</td><td class="m sm">${esc((x.exit||'').replace('stopped_',''))}</td></tr>`).join('')}</table><div class="m sm">R = runner armed.</div></div>
+  <div class="pan tw"><div class="m sm" style="font-weight:800;letter-spacing:2px">LIVE</div><table><tr><th>closed</th><th>sym</th><th>side</th><th>setup</th><th>gr</th><th>live %</th><th>paper %</th><th>$</th></tr>
+  ${(d.box_live||[]).map(x=>`<tr><td class="m">${esc((x.et||'').slice(5,16))}</td><td><b>${esc(x.symbol)}</b></td><td class="${x.side==='LONG'?'g':'r'}">${x.side}</td><td>${esc(x.setup)}</td><td>${esc(x.grade)}</td><td class="${cls(x.net_pct)}">${num(x.net_pct)}</td><td class="${cls(x.paper_pct)}">${num(x.paper_pct)}</td><td class="${cls(x.net_usd)}">${usd(x.net_usd)}</td></tr>`).join('')}</table></div></div>`;
+
+ h+=`<h2>Upgrade path to 99</h2><div class="pan tw"><table><tr><th>card attribute</th><th>now</th><th>OVR weight</th><th>measures</th><th>raw now</th><th>raw for +5</th><th>raw for 99</th><th>OVR points left</th></tr>
+  ${(d.upgrade_path||[]).map(u=>`<tr><td><b>${esc(u.attr.replace('_',' '))}</b></td><td style="color:${rc(u.rating)};font-weight:800">${u.rating}</td><td>${u.weight}</td><td>${esc(u.what)}</td><td>${u.raw??'-'}</td><td>${u.raw_for_next5} → ${u.next5}</td><td>${u.raw_for_99}</td><td><b class="y">+${u.ovr_points_left}</b></td></tr>`).join('')}</table>
+  <div class="m sm">Sorted by OVR points still on the table (gap to 99 × weight). The top rows move OVR the most.${d.next_phase?` Next phase: ${esc(d.next_phase.next)}, blocked by ${esc(d.next_phase.blocking)}.`:''}</div></div>`;
+
+ const repCard=(nm,r)=>`<div class="pan"><div class="m sm" style="font-weight:800;letter-spacing:2px">REP · ${nm}</div><div style="font:900 22px/1.2 Inter;color:var(--gold2)">${esc(r.tier)} ${r.level}</div>
+  <div class="meter" style="margin:6px 0"><i style="width:${(r.progress||0)*100}%"></i></div><div class="sm m">phase ${esc(r.phase)} → next ${esc(r.next||'-')} (${esc(r.next_phase||'-')})${r.blocking?' · blocked by '+esc(r.blocking):''}</div>
+  <table style="margin-top:6px">${(r.gaps||[]).map(g=>`<tr><td>${g.met?'✓':'○'} ${esc(g.what)}</td><td>${g.value}</td><td class="m">target ${g.target}</td></tr>`).join('')}</table></div>`;
+ h+=`<h2>REP progression</h2><div class="two">${repCard('PAPER',rp)}${repCard('LIVE',rl)}</div><div class="m sm" style="margin-top:6px">${esc((d.rep||{}).map)}</div>`;
+
+ const ms=d.milestones||[];const mc=[...new Set(ms.map(x=>x.cat))];
+ h+=`<h2>Milestones</h2>${mc.map(c=>`<div class="m sm" style="font-weight:800;letter-spacing:2px;margin:10px 0 6px">${esc(c.toUpperCase())}</div><div class="ms">${ms.filter(x=>x.cat===c).map(x=>`<div class="${x.done?'done':''}"><b class="${x.done?'y':'m'}">${x.done?'★':'☆'} ${esc(x.name)}</b><div class="sm m">${x.et?esc(x.et)+' · ':''}${esc(x.detail)}</div></div>`).join('')}</div>`).join('')}`;
+ document.getElementById('app').innerHTML=h;
+}
+document.addEventListener('click',e=>{const c=e.target.closest('#bcat button');if(c){if(c.dataset.c)bcat=c.dataset.c;if(c.dataset.f)bfilt=c.dataset.f;render();return}
+ const b=e.target.closest('.bdg');if(b)b.classList.toggle('open')});
+async function tick(){const d=await loadData();const er=document.getElementById('err');
+ if(d){D=d;er.style.display='none';render()}else if(!D){er.style.display='block';er.textContent='MyPlayer data unavailable right now (mind/MYPLAYER_BADGES.json). It rebuilds hourly.'}}
+tick();setInterval(tick,60000);
+</script></body></html>
